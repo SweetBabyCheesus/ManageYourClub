@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 def login(request):
-    return render(request, 'login/login.html')
+    return render(request, 'registration/login.html')
 
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
