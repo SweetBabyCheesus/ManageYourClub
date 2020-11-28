@@ -25,7 +25,7 @@ SECRET_KEY = 'jvyc^i$s9)s^l*qmdq6noq==n$4gl%$bo_(jcou2rrbd9*gdms'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['manageYourClub.pythonanywhere.com']
+ALLOWED_HOSTS = ['manageYourClub.pythonanywhere.com', '127.0.0.1' ]
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
 ]
 
 MIDDLEWARE = [
