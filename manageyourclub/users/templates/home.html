@@ -4,10 +4,14 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  {{ user.username }}!
   <p><a href="{% url 'logout' %}">Ausloggen</a></p>
 {% else %}
-  <p>Du bist nicht eingeloggt!</p>
-  <a href="{% url 'login' %}">Einloggen</a>
+  <h1 style="color:red">Fehler: Als nicht angemeldeter Nutzer solltest du nicht hier sein!</h1>
 {% endif %}
+<h1>ManageYourClub</h1>
+<h3>Startseite</h3>
+<p><a href="#FIXME">Mein Verein</a></p>
+<p><a href="#FIXME">Mannschaftsübersicht</a></p>
+<p><a href="#FIXME">Mitgliederübersicht</a></p>
 {% endblock %}
