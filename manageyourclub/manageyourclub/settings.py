@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'clubs'
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,16 @@ WSGI_APPLICATION = 'manageyourclub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+""" # funktioniert nicht auf dem Server. ist aber nötig um lokal zu testen.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
+    }
+}
+"""
+
+# funktioniert nur auf dem Server
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
