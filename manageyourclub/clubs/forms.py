@@ -37,11 +37,11 @@ class AddressForm(forms.ModelForm):
 # bisheriger Versuch ein funktionierendes Modelform für Vereine zu erstellen:
 
 class AddClubForm(forms.ModelForm):
-    clubname = forms.CharField(max_length=30, required=True, label='Vereinsname', show_hidden_initial='Fußballverein Bolzhausen')
-    yearOfFoundation = forms.CharField(max_length=4, required=True, label='Gründungsjahr', show_hidden_initial='2010')
-    streetAddress = forms.CharField(max_length=20, required=True, label='Straße und Hausnummer', show_hidden_initial='Kickerstraße 17')
-    postcode = forms.IntegerField(max_value=99999, min_value=0, required=True, label='PLZ', show_hidden_initial='63842')
-    village = forms.CharField(max_length=20, required=True, label='Ort', show_hidden_initial='Bolzhausen')
+    clubname = forms.CharField(max_length=30, label='Vereinsname')
+    yearOfFoundation = forms.CharField(max_length=4, label='Gründungsjahr')
+    streetAddress = forms.CharField(max_length=20, label='Straße und Hausnummer')
+    postcode = forms.IntegerField(max_value=99999, min_value=0, label='PLZ')
+    village = forms.CharField(max_length=20, label='Ort')
      
 
     # Versuch eine Speicherfunktion für das Form zu schreiben 
@@ -67,11 +67,11 @@ class AddClubForm(forms.ModelForm):
 # https://zenon.cs.hs-rm.de/twenz001/vereinsmanagement/-/issues/14 | Vorgabe von den Architekten
 # das Form so wie es aussehen soll (nutzt aber noch nicht die Models):
 class AddClubForm(forms.Form):
-    clubname = forms.CharField(max_length=30, required=True, label='Vereinsname', show_hidden_initial='Fußballverein Bolzhausen')
-    yearOfFoundation = forms.CharField(max_length=4, required=True, label='Gründungsjahr', show_hidden_initial='2010')
-    streetAddress = forms.CharField(max_length=20, required=True, label='Staße und Hausnummer', show_hidden_initial='Kickerstraße 17')
-    postcode = forms.IntegerField(max_value=99999, min_value=0, required=True, label='PLZ', show_hidden_initial='63842')
-    village = forms.CharField(max_length=20, required=True, label='Ort',show_hidden_initial='Bolzhausen')
+    clubname = forms.CharField(max_length=30, label='Vereinsname')
+    yearOfFoundation = forms.CharField(max_length=4, label='Gründungsjahr')
+    streetAddress = forms.CharField(max_length=20, label='Straße und Hausnummer')
+    postcode = forms.IntegerField(max_value=99999, min_value=0, label='PLZ')
+    village = forms.CharField(max_length=20, label='Ort')
     
     def save(self, commit=True):
         instance = super().save(commit=False)

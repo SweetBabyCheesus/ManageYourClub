@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'clubs'
+    'clubs',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +75,7 @@ WSGI_APPLICATION = 'manageyourclub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-""" # funktioniert nicht auf dem Server. ist aber nötig um lokal zu testen.
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
-    }
-}
-"""
 
-# funktioniert nur auf dem Server
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -94,8 +85,16 @@ DATABASES = {
         'USER': 'manageYourClub',
         'PASSWORD': 'nUdelhundER.187',
     }
-}
+} 
 
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+} 
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -140,6 +139,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = '/home/manageYourClub/manageyourclub/media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/manageYourClub/manageyourclub/static'
-STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

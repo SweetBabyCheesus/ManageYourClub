@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
-
 {% block title %}Startseite{% endblock %}
-
 {% block content %}
 {% if user.is_authenticated %}
-  {{ user.username }}!
+  Hey {{ user.username }}!
   <p><a href="{% url 'logout' %}">Ausloggen</a></p>
 {% else %}
   <h1 style="color:red">Fehler: Als nicht angemeldeter Nutzer solltest du nicht hier sein!</h1>
 {% endif %}
-<h1>ManageYourClub</h1>
 <h3>Startseite</h3>
 <p><a href="{% url 'addclub' %}">Mein Verein</a></p>
 <p><a href="#FIXME">Mannschaftsübersicht</a></p>
