@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'users/css/bootstrap.css' %}" />
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Startseite{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+  <div class="jumbotron text-center">
+    <h1>ManageYourClub</h1>
+    <p>Verwalte deinen Verein!</p> 
+  </div>
+  
   <main>
     {% block content %}
     {% endblock %}

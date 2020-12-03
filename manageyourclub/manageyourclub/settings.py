@@ -76,14 +76,10 @@ WSGI_APPLICATION = 'manageyourclub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'manageYourClub$myc',
-        'HOST': 'manageYourClub.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
-        'USER': 'manageYourClub',
-        'PASSWORD': 'nUdelhundER.187',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+} 
 
 
 # Password validation
@@ -129,6 +125,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = '/home/manageYourClub/manageyourclub/media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/manageYourClub/manageyourclub/static'
-STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
