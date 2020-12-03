@@ -1,18 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
+{% load static %}
+
     <div id="content-container" class="container p-none">
-        <div class="lgn-container col-lg-8">
+        <div class="lgn-container col-lg-8">          
+        <style type="text/css">
+            body { 
+            background: url('{% static "img/login_background.jpg" %}') no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        </style>
             <form id="login-form" method="post">
                 {% csrf_token %}
                 <table class="table">
                     <tr>
-                        <td><label for="id_username">Username</label></td>
+                        <td><label for="id_username" style="color: black;">Username</label></td>
                         <td><input id="id_username" name="username" 
                                    type="text" class="form-control"></td>
                     </tr>
                     <tr>
-                        <td><label for="id_password">Password</label></td>
+                        <td><label for="id_password ">Password</label></td>
                         <td><input id="id_password" name="password" 
                                    type="password" class="form-control"></td>
                     </tr>
@@ -23,8 +34,8 @@
                         Please try again.
                     </p>
                 {% endif %}
-                <p>Du hast noch kein Konto? 
-                  <a href="{% url 'signup' %}">Hier registrieren</a>
+                <p style="color: white;">Du hast noch kein Konto? 
+                  <a href="{% url 'signup' %}"" style="color: white; text-decoration: underline white;">Hier registrieren</a>
                 </p>
 
                 <input type="submit" value="Login" 
