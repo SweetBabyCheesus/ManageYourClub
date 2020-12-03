@@ -13,6 +13,7 @@ class PlaceForm(forms.ModelForm):
         fields = ('postcode', 'village',)
 
 # ModelForm für Adressen | das Problem ist die Verbindung zu PlaceForm
+# Beim Testen gibt wird bisher die Fehlermeldung "PlaceModel matching query does not exist." ausgegeben.
 class AddressForm(forms.ModelForm):
     streetAddress = forms.CharField(max_length=20, required=True, label='Straße und Hausnummer', show_hidden_initial='Kickerstraße 17')
     postcode = forms.IntegerField(max_value=99999, min_value=0, required=True, label='PLZ', show_hidden_initial='63842')

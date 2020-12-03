@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
-<!-- das form braucht noch method='POST', damit es funktioniert. Gibt dann aber bisher eine Fehlermeldung. -->
 {% block content %}
-<form>
+<form method='POST'>
     {{ form.as_p }}
     {% csrf_token %}
     <input type='submit' value='Verein anlegen'>
