@@ -42,5 +42,5 @@ def SignUpView(request):
 
 def home_view(request):
     if request.user.is_authenticated:
-        return render(request,'home.html')
-    return render(request,'home.html')
+        return TemplateView.as_view(template_name='home.html')(request)
+    return redirect(reverse_lazy('login'))

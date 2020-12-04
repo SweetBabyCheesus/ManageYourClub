@@ -1,6 +1,6 @@
 from django.db import models
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 GENDER_CHOICES = [
     ('1', 'männlich'),
@@ -9,7 +9,7 @@ GENDER_CHOICES = [
     ]
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     Geburtstag = models.DateField()
     Geschlecht = models.CharField(max_length=6, choices=GENDER_CHOICES, default='1')
     Postleitzahl = models.IntegerField()
