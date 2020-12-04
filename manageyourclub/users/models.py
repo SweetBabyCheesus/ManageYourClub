@@ -2,55 +2,37 @@ from django.db import models
 from django import forms
 from django.contrib.auth import get_user_model
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-"""
-#Manager für nutzer mit email ist unique
+#Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
-    def create_user(self,username, email, password):
-        
-        #Creates and saves a User with the given email, date of
-        #birth and password.
-        
+
+    def create_user(self, email, username, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Eine Emailadresse wird zur Accounterstellung benötigt")
 
         if not username:
-            raise ValueError('Users must have an username')
-        
-        if not password:
-            raise ValueError('Users must have an password')
+            raise ValueError("Ein Username wird zur Accounterstellung benötigt")
 
         user = self.model(
-            usnername,
             email=self.normalize_email(email),
-            password = password
+            username=username
         )
-
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password):
-        
-        #Creates and saves a superuser with the given email, date of
-        #birth and password.
-        
+    def create_superuser(self, email, username, password):
         user = self.create_user(
-            usnername,
             email=self.normalize_email(email),
-            password = password
+            username=username,
+            password=password
         )
-        user.is_admin = True
+        user.is_admin=True
+        user.is_staff=True
+        user.is_superuser=True
         user.save(using=self._db)
         return user
-"""
-
-
-# Erstellung Customuser
-# Email muss unique sein, damit Login mit mail möglich ist
-class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-    #objects = CustomUserManager()
 
 
 # Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles
@@ -60,14 +42,38 @@ GENDER_CHOICES = [
     ('3', 'divers'),
     ]
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    Vorname = models.CharField(max_length=100)
-    Nachname = models.CharField(max_length=100)
+# Erstellung Customuser
+# Email muss unique sein, damit Login mit mail möglich ist
+class CustomUser(AbstractBaseUser):
+    email = models.EmailField(verbose_name='email', max_length = 60, unique=True)
+    username = models.CharField(max_length=30, unique=True)
+    date_joined = models.DateField(verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateField(verbose_name='last login', auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    Vorname = models.CharField(max_length=30)
+    Nachname = models.CharField(max_length=30)
     Geburtstag = models.DateField()
-    Geschlecht = models.CharField(max_length=6, choices=GENDER_CHOICES, default='1')
+    Geschlecht = models.CharField(max_length=6, choices=GENDER_CHOICES) #, default='1')
     Postleitzahl = models.IntegerField()
-    Ort = models.CharField(max_length=100)
-    Straße = models.CharField(max_length=100)
+    Ort = models.CharField(max_length=30)
+    Straße = models.CharField(max_length=30)
     Hausnummer = models.IntegerField()
 
+    # damit der Custom Manager genutzt wird
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer']
+
+    def __str__(self):
+        return self.username
+    
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms (self, app_label):
+        return True

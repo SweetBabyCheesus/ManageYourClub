@@ -6,7 +6,7 @@ from django.views import generic
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login
 
-from .forms import CreateUserForm, CreateUserProfileForm
+from .forms import CreateCustomUserForm
 
 def login_view(request):
     return render(request, 'registration/login.html')
@@ -15,16 +15,11 @@ def SignUpView(request):
 
     if request.method == 'POST':
         
-        user_form = CreateUserForm(request.POST)
-        profile_form = CreateUserProfileForm(request.POST)
+        user_form = CreateCustomUserForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             
             user = user_form.save()
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
 
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password1')
@@ -33,10 +28,9 @@ def SignUpView(request):
             return render(request,'home.html')
 
     else:
-        user_form = CreateUserForm()
-        profile_form = CreateUserProfileForm()
+        user_form = CreateCustomUserForm()
 
-    context  = {'user_form':user_form, 'profile_form':profile_form}
+    context  = {'user_form':user_form}
     return  render(request,'registration/signup.html', context)
 
 
