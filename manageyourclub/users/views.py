@@ -21,9 +21,10 @@ def SignUpView(request):
             
             user = user_form.save()
 
-            username = user_form.cleaned_data.get('username')
-            password = user_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+            #username = user_form.cleaned_data.get('username')
+            #email = user_form.cleaned_data.get('email')
+            #password = user_form.cleaned_data.get('password1')
+            #user = authenticate(username=email, password=password)
             login(request, user)
             return render(request,'home.html')
 
