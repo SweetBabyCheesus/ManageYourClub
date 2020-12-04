@@ -4,7 +4,7 @@
 {% load static %}
 
     <div id="content-container" class="container p-none">
-        <div class="lgn-container col-lg-8">          
+        <div class="lgn-container ">          
         <style type="text/css">
             body { 
             background: url('{% static "img/login-background.jpg" %}') no-repeat center center fixed; 
@@ -12,8 +12,52 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-        }
+           
+            }
+            .login-form {
+		        width: 350px;
+		        margin: 30px auto;
+		        text-align: center;
+                opacity: .8;
+    	    }
+
+            .login-form h2 {
+                margin: 10px 0 25px;
+            }
+            .login-form form {
+		        color: #7a7a7a;
+		        border-radius: 10px;
+    	        margin-bottom: 15px;
+                background:rgb(87, 77, 42);
+                box-shadow: 0px 2px 2px rgba(63, 63, 63, 0.3);
+                padding: 30px;
+            }
+            .login-form .btn {        
+                font-size: 16px;
+                font-weight: bold;
+		        background: #314653;
+		        border: none;
+                outline: none !important;
+            }
+	        .login-form .btn:hover, .login-form .btn:focus {
+		        background: #128837;
+	        }
+	        .login-form a {
+		        color: #fff;
+		        text-decoration: underline;
+	        }
+	        .login-form a:hover {
+		        text-decoration: none;
+	        }
+	        .login-form form a {
+		        color: #7a7a7a;
+		        text-decoration: none;
+	        }
+	        .login-form form a:hover {
+		        text-decoration: underline;
+	        }
         </style>
+        <div class="login-form">
             <form id="login-form" method="post">
                 {% csrf_token %}
                 <table class="table">
@@ -42,6 +86,7 @@
                        class="btn btn-primary pull-right" />
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
+        </div>
         </div>
     </div>
 {% endblock content %}
