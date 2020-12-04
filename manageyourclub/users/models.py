@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager, AbstractBaseUser
 
-
+"""
 #Manager für nutzer mit email ist unique
 class CustomUserManager(BaseUserManager):
     def create_user(self,username, email, password):
@@ -43,14 +43,14 @@ class CustomUserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
-
+"""
 
 
 # Erstellung Customuser
 # Email muss unique sein, damit Login mit mail möglich ist
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    objects = CustomUserManager()
+    #objects = CustomUserManager()
 
 
 # Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles
