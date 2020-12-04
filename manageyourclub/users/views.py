@@ -42,5 +42,5 @@ def SignUpView(request):
 
 def home_view(request):
     if request.user.is_authenticated:
-        return Trender(request,'home.html')
-    return Trender(request,'home.html')
+        return render(request,'home.html')
+    return render(request,'home.html')
