@@ -137,7 +137,7 @@ STATIC_URL = '/static/'
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = '/home/manageYourClub/manageyourclub/media'
 MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/manageYourClub/manageyourclub/static'
+STATIC_ROOT = '/home/manageYourClub/manageyourclub/assets/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
