@@ -7,7 +7,7 @@
         <div class="lgn-container col-lg-8">          
         <style type="text/css">
             body { 
-            background: url('{% static "img/login_background.jpg" %}') no-repeat center center fixed; 
+            background: url('{% static "img/login-background.jpg" %}') no-repeat center center fixed; 
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -18,12 +18,12 @@
                 {% csrf_token %}
                 <table class="table">
                     <tr>
-                        <td><label for="id_username" style="color: black;">Username</label></td>
+                        <td><label for="id_username" style="color: white;">Username</label></td>
                         <td><input id="id_username" name="username" 
                                    type="text" class="form-control"></td>
                     </tr>
                     <tr>
-                        <td><label for="id_password ">Password</label></td>
+                        <td><label for="id_password" style="color: white;">Password</label></td>
                         <td><input id="id_password" name="password" 
                                    type="password" class="form-control"></td>
                     </tr>
