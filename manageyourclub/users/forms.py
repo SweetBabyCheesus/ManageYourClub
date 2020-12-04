@@ -4,20 +4,23 @@ from django import forms
 from django.contrib.auth.models import User
 
 from .models import UserProfile
-
+#https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateUserForm(UserCreationForm): 
     class Meta:
         model = User 
-        email = forms.EmailField(max_length=50, help_text='Required. Inform a valid email address.', widget=(forms.TextInput(attrs={'class': 'form-control'})))
-        username = email
-        fields = ['first_name','last_name','username','email','password1','password2']
+        fields = ['username','email','password1','password2']
+
+        def clean(self):
+            email = self.cleaned_data.get('email')
+            if User.objects.filter(email=email).exists():
+                raise ValidationError("Email exists")
+            return self.cleaned_data
 
         def save(self, commit=True):
             user = super().save(commit=False)
 
+            user.username = self.cleaned_data['username']
             user.email = self.cleaned_data['email']
-            user.first_name = self.cleaned_data['first_name']
-            user.last_name = self.cleaned_data['last_name']
 
             if commit:
                 user.save()
@@ -26,4 +29,4 @@ class CreateUserForm(UserCreationForm):
 class CreateUserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
+        fields = ['Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
