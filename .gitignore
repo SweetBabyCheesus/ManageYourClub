@@ -1,6 +1,8 @@
 manageyourclub/manageyourclub/clubs/__pycache__
 manageyourclub/manageyourclub/__pycache__
 manageyourclub/users/__pycache__
+manageyourclub/clubs/__pycache__
+ manageyourclub/db.sqlite3  
 .cache/pip/http/0/e/
 .cache/pip/http/5/
 .cache/pip/http/e/7/
@@ -9,3 +11,4 @@ manageyourclub/users/__pycache__
 .virtualenvs/mycvirtualenv/
 .cache
 .local
+.vscode
