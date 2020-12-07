@@ -1,22 +1,19 @@
 from django.shortcuts import render
 from django.views import generic
-from django.urls import reverse_lazy
 from clubs.forms import AddClubForm
 from django.http import HttpResponse
 
 
-# Create your views here.
-
 class ClubView(generic.CreateView):
     template_name = 'my_club.html'
 
+# Funktion übernommen von https://www.askpython.com/django/django-model-forms
 def AddClubView(request):
-    # FIXME den code habe ich von einer Seite übernommen. Muss evtl auch geändert werden
     if request.method == 'POST':
         form = AddClubForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse('Your review has been taken')
+            return HttpResponse('Der Verein wurde angelegt.')
   
     else:
         form = AddClubForm()
