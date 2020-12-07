@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
-from django.contrib.auth import authenticate, login
 
-from .forms import CreateCustomUserForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+
+from .forms import CreateCustomUserForm, CustomPasswordChanngeForm
 
 def login_view(request):
     return render(request, 'registration/login.html')
@@ -39,3 +41,7 @@ def home_view(request):
     if request.user.is_authenticated:
         return TemplateView.as_view(template_name='home.html')(request)
     return redirect(reverse_lazy('login'))
+
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChanngeForm
+    success_url = reverse_lazy('home')
