@@ -1,7 +1,8 @@
 {% autoescape off %}
-Guded {{ user.username }},
+Gude {{ user.username }},
 
 Herzlich Willkommen bei ManageYourClub!
 
-Bitte bestätige deine Registrierung unter: http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+Bitte bestätige deine Registrierung unter:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 {% endautoescape %}
