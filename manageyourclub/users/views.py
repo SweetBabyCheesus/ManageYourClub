@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, CreateCustomUserForm, CustomPasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import View, UpdateView
 from django.contrib.auth.models import User
@@ -17,7 +17,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
 from users.tokens import account_activation_token
-
+from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
 
 
 class ActivateAccount(View):
