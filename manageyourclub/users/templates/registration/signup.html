@@ -2,78 +2,12 @@
 {% block title %}Registrieren{% endblock %}
 {% block content %}
 {% load static %}
-
-    <div id="content-container" class="container p-none">
-        <div class="lgn-container ">          
-        <style type="text/css">
-            body { 
-            background: url('{% static "img/login-background.jpg" %}') no-repeat center center fixed; 
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-           
-            }
-            .register-form {
-		        width: 350px;
-		        margin: 30px auto;
-		        text-align: center;
-                opacity: .8;
-    	    }
-
-            .register-form-form h2 {
-                margin: 10px 0 25px;
-            }
-            .register-form form {
-		        color: #7a7a7a;
-		        border-radius: 10px;
-    	        margin-bottom: 15px;
-                background:rgb(87, 77, 42);
-                box-shadow: 0px 2px 2px rgba(63, 63, 63, 0.3);
-                padding: 30px;
-            }
-            .register-form .btn {        
-                font-size: 16px;
-                font-weight: bold;
-		        background: #314653;
-		        border: none;
-                outline: none !important;
-            }
-            .register-form .btn:hover, .register-form .btn:focus {
-		        background: #128837;
-	        }
-	        .register-form a {
-		        color: #fff;
-		        text-decoration: underline;
-	        }
-	        .register-form a:hover {
-		        text-decoration: none;
-	        }
-	        .register-form form a {
-		        color: #7a7a7a;
-		        text-decoration: none;
-	        }
-	        .register-form form a:hover {
-		        text-decoration: underline;
-	        }
-        </style>
-        <div class="register-form">
-            <form id="register-form" method="post">
-                {% csrf_token %}
-                {{user_form.as_p}}
-                {% if form.errors %}
-                    <p class=" label label-danger">
-                        Bitte Daten prüfen
-                    </p>
-                {% endif %}
-
-                <input type="submit" value="Anmelden" 
-                       class="btn btn-primary pull-right" />
-                <p>Du hast bereits ein Konto? 
-                  <a href="{% url 'login' %}">Hier anmelden</a>
-                </p>
-            </form>
-        </div>
-        </div>
-    </div>
+    <h2>Registrieren</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+        <br><br>
+        <a href="{% url 'home' %}">Home</a>
+    </form>
 {% endblock content %}

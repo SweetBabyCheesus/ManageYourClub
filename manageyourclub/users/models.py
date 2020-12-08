@@ -4,6 +4,25 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
+#Test
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.mail import send_mail
+from manageyourclub.settings import EMAIL_HOST_USER
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email_confirmed = models.BooleanField(default=False)
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        instance.profile.save()
+
 #Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
 
@@ -54,6 +73,7 @@ class CustomUser(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
+
     Vorname = models.CharField(max_length=30)
     Nachname = models.CharField(max_length=30)
     Geburtstag = models.DateField()
@@ -77,3 +97,12 @@ class CustomUser(AbstractBaseUser):
 
     def has_module_perms (self, app_label):
         return True
+
+    def email_user(self, *args, **kwargs):
+        send_mail(
+    args[0],
+    args[1],
+    EMAIL_HOST_USER,
+    [self.email],
+    fail_silently=False,
+)
