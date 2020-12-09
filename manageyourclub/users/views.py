@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_decode
 
 from users.tokens import account_activation_token
 from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
+from users.models import CustomUser
 
 
 class ActivateAccount(View):
@@ -25,13 +26,13 @@ class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
+            user = CustomUser.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
-            user.profile.email_confirmed = True
+            user.email_confirmed = True
             user.save()
             login(request, user)
             messages.success(request, ('Your account have been confirmed.'))
@@ -65,7 +66,7 @@ class SignUpView(View):
             user.save()
 
             current_site = get_current_site(request)
-            subject = 'Activate Your MySite Account'
+            subject = 'Bitte bestätige die Registrierung für ManageYourClub'
             message = render_to_string('email/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
