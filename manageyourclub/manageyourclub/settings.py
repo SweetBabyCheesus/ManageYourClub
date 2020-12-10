@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['manageYourClub.pythonanywhere.com', '127.0.0.1' ]
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -74,7 +76,7 @@ WSGI_APPLICATION = 'manageyourclub.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -93,7 +95,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 } 
-"""
+
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
