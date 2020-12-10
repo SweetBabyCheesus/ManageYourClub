@@ -8,7 +8,9 @@ from .models import CustomUser
 class CreateCustomUserForm(UserCreationForm): 
     class Meta:
         model = CustomUser 
-        fields = ['username','email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
+        #fields = ['username','email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
+        fields = ['email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
+
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
@@ -22,9 +24,12 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         model = CustomUser
     fields = ['old_password','new_password1','new_password2']
 
+"""
+warscheinlich durch heutigen fix nicht mehr nötig (10.12.2020)
     # Profile Form
 class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
         fields = ['username','email']
+"""

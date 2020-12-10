@@ -28,25 +28,27 @@ def update_user_profile(sender, instance, created, **kwargs):
 #Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, username, password=None):
+    #def create_user(self, email, username, password=None):
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError("Eine Emailadresse wird zur Accounterstellung benötigt")
 
-        if not username:
-            raise ValueError("Ein Username wird zur Accounterstellung benötigt")
+        #if not username: -> Versuch Username zu entfernen
+        #    raise ValueError("Ein Username wird zur Accounterstellung benötigt")   -> Versuch Username zu entfernen
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username
+            #username=username -> Versuch Username zu entfernen
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
+    #def create_superuser(self, email, username, password): -> Versuch Username zu entfernen
+    def create_superuser(self, email, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            username=username,
+            #username=username,
             password=password
         )
         user.is_admin=True
@@ -67,7 +69,7 @@ GENDER_CHOICES = [
 # Email muss unique sein, damit Login mit mail möglich ist
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email', max_length = 60, unique=True)
-    username = models.CharField(max_length=30, unique=True)
+    #username = models.CharField(max_length=30, unique=True) -> versuch Username zu entfernen
     date_joined = models.DateField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateField(verbose_name='last login', auto_now=True)
     is_admin = models.BooleanField(default=False)
@@ -90,7 +92,8 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer']
+    #REQUIRED_FIELDS = ['username', 'Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer'] -> versuch username zu entfernen
+    REQUIRED_FIELDS = ['Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer']
 
     def __str__(self):
         return self.username
