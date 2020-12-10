@@ -2,7 +2,7 @@
 {% block title %}Startseite{% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
-  Hey {{ user.username }}!
+  Hey <a href="{% url 'userData' %}">{{ user.Vorname }} {{ user.Nachname }}</a>!
   <p><a href="{% url 'logout' %}">Ausloggen</a></p>
   <p><a href="{% url 'password' %}">Passwort ändern</a></p>
 {% else %}

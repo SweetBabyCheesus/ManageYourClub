@@ -43,7 +43,8 @@ class ActivateAccount(View):
             return redirect('home')
 
 
-
+def showUserData(request):
+    return render(request, 'userData.html')
 
 
 def login_view(request):

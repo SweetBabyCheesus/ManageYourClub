@@ -1,0 +1,45 @@
+<table>
+    <tr>
+        <td>Vorname</td>
+        <td>{{ user.Vorname }} </td>
+    </tr>
+    <tr>
+        <td>Nachname</td>
+        <td>{{ user.Nachname }} </td>
+    </tr>
+    <tr>
+        <td>Emailadresse</td>
+        <td>{{ user.email }} </td>
+    </tr>
+    <tr>
+        <td>Geburtstag</td>
+        <td>{{ user.Geburtstag }} </td>
+    </tr>
+    <tr>
+        <td>Geschlecht</td>
+        <td> 
+
+            {% if user.Geschlecht == "1" %}
+                männlich
+            {% elif user.Geschlecht == "2" %}
+                weiblich
+            {% elif user.Geschlecht == "3" %}
+                divers
+            {% endif %} 
+            
+        </td>
+    </tr>
+    <tr>
+        <td>Postleitzahl</td>
+        <td>{{ user.Postleitzahl }} </td>
+    </tr>
+    <tr>
+        <td>Ort</td>
+        <td>{{ user.Ort }} </td>
+    </tr>
+    <tr>
+        <td>Straße/ Hausnummer</td>
+        <td>{{ user.Straße }} {{user.Hausnummer}} </td>
+    </tr>
+
+</table>
