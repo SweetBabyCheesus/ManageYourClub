@@ -1,22 +1,65 @@
-<table>
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+{% load static %}
+<style type="text/css">
+    body { 
+    background: url('{% static "img/abc.jpg" %}') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    
+    }
+    table { 
+    border: 5px solid white;
+    border-collapse: separate;
+    
+    border-radius: 10px;
+    border-spacing: 0px;
+}
+
+    th{
+        padding: 20px 15px;
+        text-align: left;
+        font-weight: 500;
+        font-size: 12px;
+        color: black;
+        background-color: white;
+  
+    }
+
+    td{
+        padding: 15px;
+        text-align: left;
+        vertical-align:middle;
+        font-weight: 300;
+        font-size: 12px;
+        color: rgb(0, 0, 0);
+        background-color: white;
+        
+    }
+</style>
+<div class="table" align="center">
+<table id="table">
     <tr>
-        <td>Vorname</td>
+        <th>Vorname</th>
         <td>{{ user.Vorname }} </td>
     </tr>
     <tr>
-        <td>Nachname</td>
+        <th>Nachname</th>
         <td>{{ user.Nachname }} </td>
     </tr>
     <tr>
-        <td>Emailadresse</td>
+        <th>Emailadresse</th>
         <td>{{ user.email }} </td>
     </tr>
     <tr>
-        <td>Geburtstag</td>
+        <th>Geburtstag</th>
         <td>{{ user.Geburtstag }} </td>
     </tr>
     <tr>
-        <td>Geschlecht</td>
+        <th>Geschlecht</th>
         <td> 
 
             {% if user.Geschlecht == "1" %}
@@ -30,16 +73,18 @@
         </td>
     </tr>
     <tr>
-        <td>Postleitzahl</td>
+        <th>Postleitzahl</th>
         <td>{{ user.Postleitzahl }} </td>
     </tr>
     <tr>
-        <td>Ort</td>
+        <th>Ort</th>
         <td>{{ user.Ort }} </td>
     </tr>
     <tr>
-        <td>Straße/ Hausnummer</td>
+        <th>Straße / Hausnummer</th>
         <td>{{ user.Straße }} {{user.Hausnummer}} </td>
     </tr>
-
 </table>
+</div>
+</div>
+{% endblock content %}

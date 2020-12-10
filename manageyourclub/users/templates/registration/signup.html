@@ -2,12 +2,86 @@
 {% block title %}Registrieren{% endblock %}
 {% block content %}
 {% load static %}
-    <h2>Registrieren</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
+
+
+<div id="content-container" class="container p-none">
+    <div class="lgn-container ">          
+    <style type="text/css">
+        body { 
+        background: url('{% static "img/sas.jpg" %}') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+       
+        }
+        .signup-form {
+		        width: 250px;
+		        margin: 30px auto;
+		        text-align: center;
+                opacity: .9;
+            }
+            
+            .signup-form h2 {
+                margin: 10px 0 25px;
+            }
+            .signup-form form {
+		        color: #7a7a7a;
+		        border-radius: 10px;
+    	        margin-bottom: 15px;
+                background:rgb(67, 112, 8);
+                box-shadow: 0px 2px 2px rgba(63, 63, 63, 0.3);
+                padding: 30px;
+            }
+            .signup-form .btn {        
+                font-size: 16px;
+                font-weight: bold;
+		        background: #314653;
+		        border: none;
+                outline: none !important;
+            }
+            .signup-form .btn:hover, .signup-form .btn:focus {
+		        background: #128837;
+	        }
+	        .signup-form a {
+		        color: #fff;
+		        text-decoration: underline;
+	        }
+	        .signup-form a:hover {
+		        text-decoration: none;
+	        }
+	        .signup-form form a {
+		        color: #7a7a7a;
+		        text-decoration: none;
+	        }
+	        .signup-form form a:hover {
+		        text-decoration: underline;
+	        }    
+
+    </style>
+    <h2 style="color: white; text-align: center; text-shadow:  1px  1px 1px black,
+    1px -1px 1px black,
+   -1px  1px 1px black,
+   -1px -1px 1px black;">Registrierung</h2>
+    <div class="signup-form">
+        <form  id="signup-form" style="color:white"  method="post" >
+            {% csrf_token %}
+            <table class="table">
+                {% for field in form %}
+                <p style="color:white">
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                </p>
+                {% endfor %}
+            </table>
+        <button type="submit">Registrieren</button>
         <br><br>
-        <a href="{% url 'home' %}">Home</a>
+        <a style="color:white" href="{% url 'home' %}">Zurück zum Login</a>
     </form>
+    </div>
+    </div>
+</div>
 {% endblock content %}

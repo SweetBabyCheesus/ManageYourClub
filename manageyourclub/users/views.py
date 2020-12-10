@@ -68,7 +68,7 @@ class SignUpView(View):
             user.save()
 
             current_site = get_current_site(request)
-            subject = 'Activate Your MySite Account'
+            subject = 'Bitte bestätige deinen ManageYourClub Account'
             message = render_to_string('email/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -77,7 +77,7 @@ class SignUpView(View):
             })
             user.email_user(subject, message)
 
-            messages.success(request, ('Please Confirm your email to complete registration.'))
+            messages.success(request, ('Bitte bestätige deinen ManageYourClub Account'))
 
             return redirect('login')
 
