@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 <!-- form übernommen von https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s 
     (Sichtbar unter Anderem bei 2:28:01) -->
+{% block title %}Mein Verein{% endblock title %}
+
+{% block stylesheets %}
+    {% load static %}
+    <link rel='stylesheet' type='text/css' href='{% static "css/forms.css" %}'>
+{% endblock stylesheets %}
+
 {% block content %}
-<form method='POST'>
-    {{ form.as_p }}
-    {% csrf_token %}
-    <input type='submit' value='Verein anlegen'>
-</form>
+    <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+    {% block form %}
+        <form method='POST'>
+            {{ form.as_p }}
+            {% csrf_token %}
+            {% block submitButton %}<input type='submit' class="btn btn-default" value='Verein anlegen'>{% endblock submitButton %}
+        </form>
+    {% endblock form %}
 {% endblock content %}

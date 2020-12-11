@@ -1,8 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
-from django.contrib.auth.models import User
-from .models import CustomUser
+from users.models import CustomUser
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm): 

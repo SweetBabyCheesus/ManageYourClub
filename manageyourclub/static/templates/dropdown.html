@@ -1,0 +1,13 @@
+<!-- Code genutzt: https://www.quora.com/How-do-I-create-a-hyperlink-in-a-drop-down-list-in-HTML -->
+
+{% load static %}
+<link rel='stylesheet' type='text/css' href='{% static "css/dropdown.css" %}'>
+
+<div class="dropdown"> 
+    <button class="dropdown-button">{% block label-text %} Verein {% endblock label-text %}</button> 
+    <div class="dropdown-list"> 
+        {% block list-elements %}
+            <a href="#">hier ist ein Link</a>
+        {% endblock list-elements %}
+    </div> 
+</div> 

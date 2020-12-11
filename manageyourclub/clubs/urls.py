@@ -1,9 +1,11 @@
 from django.urls import path
-from clubs.views import AddClubView, ClubView
+from clubs.views import AddClubView, ClubViewOrAdd, DeleteClubView
 
-
+# Tutorial genutzt: https://dev-yakuza.posstree.com/en/django/form/
 
 urlpatterns = [
     path('addclub/', AddClubView, name='addclub'),
-    path('myclub/', ClubView.as_view(), name='myclub'),
+    path('<int:pk>/', ClubViewOrAdd, name='myclub'),
+    path('edit/<int:pk>/', AddClubView, name='editclub'),
+    path('delete/<int:pk>/', DeleteClubView, name='deleteclub'),
 ]

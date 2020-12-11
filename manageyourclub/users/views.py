@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import View, UpdateView
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
@@ -27,7 +27,7 @@ class ActivateAccount(View):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
             user = CustomUser.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             user = None
 
         if user is not None and account_activation_token.check_token(user, token):

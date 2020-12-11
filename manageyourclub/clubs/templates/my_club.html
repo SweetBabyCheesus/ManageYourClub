@@ -1,0 +1,25 @@
+{% extends 'new_club.html' %}
+<!-- Tutorial genutzt: https://www.geeksforgeeks.org/detailview-class-based-views-django/ -->
+<!-- Tutorial genutzt: https://stackoverflow.com/questions/17200389/how-to-use-the-href-attribute-in-django-templates#17200402 -->
+<!-- Tutorial genutzt: https://stackoverflow.com/questions/46003056/how-to-make-delete-button-in-django#46006826 -->
+<!-- Tutorial genutzt: https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (2:58:24) -->
+
+{% block form %}
+
+{% include 'select_club_dropdown.html' %}
+
+<a href='{% url "addclub" %}'>+</a>
+<div>
+    <p><label>Vereinsname:</label> <input type='text' value='{{ object.clubname }}' disabled='True'></p>
+    <p><label>Gründungsjahr:</label> <input type='text' value='{{ object.yearOfFoundation }}' disabled='True'></p>
+    <p><label>Straße:</label> <input type='text' value='{{ object.address.streetAddress }}' disabled='True'></p>
+    <p><label>Hausnummer:</label> <input type='text' value='{{ object.address.houseNumber }}' disabled='True'></p>
+    <p><label>PLZ:</label> <input type='text' value='{{ object.address.postcode.postcode }}' size='7' disabled='True'></p>
+    <p><label>Ort:</label> <input type='text' value='{{ object.address.postcode.village }}' disabled='True'></p>
+
+    {% block submitButton %}
+        <a href='{% url "editclub" pk=object.id %}'><button class="btn btn-default">Bearbeiten</button></a>
+        {% include 'delete_club_popup.html' %}
+    {% endblock submitButton %}
+</div>
+{% endblock form %}
