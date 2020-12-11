@@ -62,6 +62,7 @@ class AddClubForm(forms.ModelForm):
         else: # Wenn der primary key gesetzt wurde, soll ein Objekt geändert werden.
             instance = ClubModel.objects.get(pk=pk) # Objekt holen
 
+            oldAdr = instance.address # wird zum Aufräumen benötigt.
             instance.clubname = self.cleaned_data['clubname'] # Diese Beiden Aktionen werden im ersten Fall automatisch ausgeführt.
             instance.yearOfFoundation = self.cleaned_data['yearOfFoundation']
 
@@ -84,14 +85,12 @@ class AddClubForm(forms.ModelForm):
             ).save()
         # Jetzt existiert die Adresse in der Datenbank.
         # speichere die Adresse im Feld address vom ClubModel ab.
-        oldAdr = instance.address # wird zum Aufräumen benötigt.
         instance.address = AddressModel.objects.get(postcode=pc, streetAddress=strtAddr, houseNumber=hN)
         
         if commit:
             instance.save()
-            
             # gegebenenfalls aufräumen
-            if not ClubModel.objects.filter(address=oldAdr).exists(): # gegebenenfalls nicht mehr gebrauchte Adresse löschen
+            if pk is not None and not ClubModel.objects.filter(address=oldAdr).exists(): # gegebenenfalls nicht mehr gebrauchte Adresse löschen
                 oldPc = oldAdr.postcode
                 oldAdr.delete()
                 if not AddressModel.objects.filter(postcode=oldPc).exists(): # gegebenenfalls nicht mehr gebrauchten Ort löschen
