@@ -7,6 +7,89 @@
 <div id="content-container" class="container p-none">
     <div class="lgn-container ">          
     <style type="text/css">
+
+        /*Styling für den Button
+        Quelle: https://webdeasy.de/top-css-buttons/ */
+        .submit {
+            width: 220px;
+            height: 50px;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+        }
+        .submit:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left:-2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .submit:active {
+            color: #000
+        }
+
+        .submit:active:after {
+            background: transparent;
+        }
+
+        .submit:hover:before {
+            opacity: 1;
+        }
+
+        .submit:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /*entfernt die Pfeile an Nummereingaben*/ 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+
+        #submit {
+ color: #fff;
+ 
+ width: 135px;
+ height: 60px;
+ border: none;
+ margin: 0;
+ padding: 0;
+ 
+}
+
         body { 
         background: url('{% static "img/sas.jpg" %}') no-repeat center center fixed; 
         -webkit-background-size: cover;
@@ -77,7 +160,7 @@
                 </p>
                 {% endfor %}
             </table>
-        <button type="submit">Registrieren</button>
+        <button type="submit" name="submit" class="submit" id="submit">Registrieren</button>
         <br><br>
         <a style="color:white" href="{% url 'home' %}">Zurück zum Login</a>
     </form>

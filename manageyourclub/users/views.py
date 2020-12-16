@@ -54,7 +54,7 @@ def login_view(request):
 class SignUpView(View):
     form_class = CreateCustomUserForm
     template_name = 'registration/signup.html'
-
+ 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
