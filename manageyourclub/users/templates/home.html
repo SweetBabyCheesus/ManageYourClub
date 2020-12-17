@@ -12,7 +12,8 @@
 {% endif %}
 
 <h3>Startseite</h3>
-<p><a href="{% url 'myclub' pk=1%}">Mein Verein</a></p>
+{% include 'select_club_dropdown.html' %}
+<p><a href="{% url 'myclub' club=club.id%}">Mein Verein</a></p>
 <p><a href="#FIXME">Mannschaftsübersicht</a></p>
-<p><a href="#FIXME">Mitgliederübersicht</a></p>
+<p><a href="{% url 'club_members' club=club.id %}">Mitgliederübersicht</a></p>
 {% endblock %}

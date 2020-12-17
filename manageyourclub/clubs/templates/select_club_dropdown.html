@@ -3,7 +3,7 @@
 {% block label-text %} Verein {% endblock label-text %}
 
 {% block list-elements %}
-    {% for obj in object_list %}
-        <a href='{% url "myclub" pk=obj.id %}'>{{ obj.clubname }}</a> 
+    {% for club in club_list %}
+        <a href='{% url to club=club.id %}'>{{ club.clubname }}</a> 
     {% endfor %}
 {% endblock list-elements %}

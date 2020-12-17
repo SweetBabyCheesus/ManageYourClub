@@ -5,13 +5,13 @@ from django.db import models
 # zum Verständnis von Models genutzt https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s
 
 class PlaceModel(models.Model):
-    """Model für Orte. Mit PLZ/postcode als primary key"""
-    postcode = models.IntegerField(primary_key=True, unique=True)
+    """Model für Orte. Mit einer automatisch generierten ID als primary key"""
+    postcode = models.IntegerField()
     village = models.CharField(max_length=20)
 
 class AddressModel(models.Model):
     """
-    Model für Adressen. Der primary key ist eine id, die von Django automatisch generiert werden sollte. 
+    Model für Adressen. Mit einer automatisch generierten ID als primary key. 
     postcode ist der foreign key zu PlaceModel
     """
     streetAddress = models.CharField(max_length=20)

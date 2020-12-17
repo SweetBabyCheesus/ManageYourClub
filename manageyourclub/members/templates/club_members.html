@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content%}
+    <p>
+        <a href='{% url "home" club=club.id %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+    </p>
+
+    {% include 'add_club_member_popup.html' %}
+
+    <table>
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>E-Mail-Adresse</th>
+            <th>Funktion</th>
+        </tr>
+        {% for membership in memberships %}
+            <tr>
+                <td>{{ membership.member.user.Vorname }}</td>
+                <td>{{ membership.member.user.Nachname }}</td>
+                <td>{{ membership.member.user.email }}</td>
+                <td>{{ membership.memberFunction.function }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+{% endblock content%}

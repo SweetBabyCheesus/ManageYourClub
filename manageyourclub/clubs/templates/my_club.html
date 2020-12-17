@@ -10,15 +10,15 @@
 
 <a href='{% url "addclub" %}'>+</a>
 <div>
-    <p><label>Vereinsname:</label> <input type='text' value='{{ object.clubname }}' disabled='True'></p>
-    <p><label>Gründungsjahr:</label> <input type='text' value='{{ object.yearOfFoundation }}' disabled='True'></p>
-    <p><label>Straße:</label> <input type='text' value='{{ object.address.streetAddress }}' disabled='True'></p>
-    <p><label>Hausnummer:</label> <input type='text' value='{{ object.address.houseNumber }}' disabled='True'></p>
-    <p><label>PLZ:</label> <input type='text' value='{{ object.address.postcode.postcode }}' size='7' disabled='True'></p>
-    <p><label>Ort:</label> <input type='text' value='{{ object.address.postcode.village }}' disabled='True'></p>
+    <p><label>Vereinsname:</label> <input type='text' value='{{ club.clubname }}' disabled='True'></p>
+    <p><label>Gründungsjahr:</label> <input type='text' value='{{ club.yearOfFoundation }}' disabled='True'></p>
+    <p><label>Straße:</label> <input type='text' value='{{ club.address.streetAddress }}' disabled='True'></p>
+    <p><label>Hausnummer:</label> <input type='text' value='{{ club.address.houseNumber }}' disabled='True'></p>
+    <p><label>PLZ:</label> <input type='text' value='{{ club.address.postcode.postcode }}' size='7' disabled='True'></p>
+    <p><label>Ort:</label> <input type='text' value='{{ club.address.postcode.village }}' disabled='True'></p>
 
     {% block submitButton %}
-        <a href='{% url "editclub" pk=object.id %}'><button class="btn btn-default">Bearbeiten</button></a>
+        <a href='{% url "editclub" club=club.id %}'><button class="btn btn-default">Bearbeiten</button></a>
         {% include 'delete_club_popup.html' %}
     {% endblock submitButton %}
 </div>

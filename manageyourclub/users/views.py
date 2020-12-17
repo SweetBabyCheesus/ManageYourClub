@@ -15,6 +15,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
+from clubs.models import ClubModel
+from clubs.views import selectClub
 
 from users.tokens import account_activation_token
 from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
@@ -82,11 +84,21 @@ class SignUpView(View):
             return redirect('login')
 
         return render(request, self.template_name, {'form': form})
+        
+def home_view(request, club=None):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    if club is None:
+        return selectClub(request)
+        
+    context = {
+        'club': ClubModel.objects.get(pk=club),
+        'club_list': ClubModel.objects.all(),
+        'to': 'home',
+    }
 
-def home_view(request):
-    if request.user.is_authenticated:
-        return TemplateView.as_view(template_name='home.html')(request)
-    return redirect(reverse_lazy('login'))
+    return render(request, 'home.html', context)
 
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm

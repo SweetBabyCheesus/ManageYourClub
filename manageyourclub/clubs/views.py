@@ -3,37 +3,51 @@
 from django.shortcuts import render, redirect
 from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
+from members.forms import addMember
+
+def selectClub(request):
+    context = {
+        'club_list': ClubModel.objects.all(),
+        'to':'home'
+    }
+    if not ClubModel.objects.all().exists():
+        return redirect('addclub')
+    return render(request, 'select_club.html', context)
 
 # Tutorial genutzt: https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (2:58:24)
-def ClubViewOrAdd(request, pk):
-    if not ClubModel.objects.filter(pk=pk).exists():
+def clubViewOrAdd(request, club):
+    if not ClubModel.objects.filter(pk=club).exists():
         return redirect('addclub')
     
-    obj = ClubModel.objects.get(pk=pk)
+    club = ClubModel.objects.get(pk=club)
     context = {
-        'object'     : obj,
-        'object_list': ClubModel.objects.all()
+        'club'     : club,
+        'club_list': ClubModel.objects.all(),
+        'to'         : 'myclub',
     }
     return render(request, 'my_club.html', context)
 
 # Funktion teilweise übernommen von https://www.askpython.com/django/django-model-forms
 # Tutorial genutzt https://www.geeksforgeeks.org/initial-form-data-django-forms/
-def AddClubView(request, pk=None):
+def addClubView(request, club=None):
     if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
         form = AddClubForm(request.POST)
         if form.is_valid():
-            form.SetInstanceID(pk)
-            pk = form.save().id
-            return redirect('myclub', pk)
+            form.SetInstanceID(club)
+            created = club is None
+            club = form.save()
+            if created:
+                addMember(eMail=request.user.email, club=club)
+            return redirect('myclub', club.pk)
   
     else:
-        if pk is None:
+        if club is None:
             instance = None
             initial = {}
         else: 
-            if not ClubModel.objects.filter(pk=pk).exists():
+            if not ClubModel.objects.filter(pk=club).exists():
                 return redirect('addclub')
-            instance = ClubModel.objects.get(pk=pk)
+            instance = ClubModel.objects.get(pk=club)
             initial = {
                 'streetAddress' : instance.address.streetAddress,
                 'houseNumber'   : instance.address.houseNumber,
@@ -44,16 +58,16 @@ def AddClubView(request, pk=None):
         
         context = {
             'form':form,
-            'object':instance,
+            'club':instance,
         }
         
-        if pk is not None:
+        if club is not None:
             return render(request, 'edit_club.html', context)
     return render(request, 'new_club.html', context)
 
-def DeleteClubView(request, pk):
-    club = ClubModel.objects.get(pk=pk)
-    if request.method == 'POST':     
+def deleteClubView(request, club):
+    club = ClubModel.objects.get(pk=club)
+    if request.method == 'POST':
         adr = club.address    
         club.delete()
         if not ClubModel.objects.filter(address=adr).exists():
@@ -61,5 +75,5 @@ def DeleteClubView(request, pk):
             adr.delete()
             if not AddressModel.objects.filter(postcode=pc).exists():
                 pc.delete()
-        return redirect('/?Verein_wurde_gelöscht:_'+str(pk))   
-    return redirect('/?Verein_wurde_NICHT_gelöscht:_'+str(pk))
+        return redirect('/?Verein_wurde_gelöscht:_'+str(club))
+    return redirect('/?Verein_wurde_NICHT_gelöscht:_'+str(club))

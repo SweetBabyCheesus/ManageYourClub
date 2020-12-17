@@ -30,16 +30,17 @@ class AddressForm(forms.ModelForm):
     def save(self, commit=True):
         """speichert die vom Nutzer eingegebenen Daten"""
         instance = super().save(commit=False)
-        fk = self.cleaned_data['postcode']
-        if not PlaceModel.objects.filter(postcode=fk).exists():
-            PlaceModel.objects.create(postcode=fk, village=self.cleaned_data['village']).save()
-        instance.postcode = PlaceModel.objects.get(pk=fk)
+        pc = self.cleaned_data['postcode']
+        vil = self.cleaned_data['village']
+        place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
+        if created and commit:
+            place.save()
+        instance.postcode = place
         instance.save(commit)
         return instance
 
 # Klasse übernommen und abgeändert von:
 # https://www.codesd.com/item/how-to-create-forms-for-the-foreign-key-django.html
-# bug-fix mithilfe von https://stackoverflow.com/questions/21764770/typeerror-got-multiple-values-for-argument
 class AddClubForm(forms.ModelForm):
     """ModelForm für Vereine"""
     clubname = forms.CharField(max_length=30, label='Vereinsname')
@@ -69,24 +70,28 @@ class AddClubForm(forms.ModelForm):
         strtAddr = self.cleaned_data['streetAddress'] 
         hN = self.cleaned_data['houseNumber']
         pc = self.cleaned_data['postcode']
-        
-        # Prüfe ob die Adresse bereits in der DB existiert.
-        if not AddressModel.objects.filter(streetAddress=strtAddr, postcode=pc, houseNumber=hN).exists():
-            # Wenn die Adresse nicht existiert, Prüfe ob Ort bereits in der DB existiert.
-            if not PlaceModel.objects.filter(postcode=pc).exists():
-                # Wenn der Ort nicht existiert, erstelle ihn und speichere ihn in der DB ab.
-                PlaceModel.objects.create(postcode=pc, village=self.cleaned_data['village']).save()
-            # Wenn die Adresse nicht existiert, erstelle sie und speichere ihn in der DB ab.
-            # Dafür wird der Ort verwendet, der evtl. eben erst erstellt wurde.
-            AddressModel.objects.create(
-                postcode=PlaceModel.objects.get(pk=pc), 
+        vil = self.cleaned_data['village']
+        place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
+        if created and commit:
+            place.save()
+            adr = AddressModel.objects.create(
+                postcode=place, 
                 streetAddress=strtAddr, 
                 houseNumber=hN
-            ).save()
+            )
+        else:
+            adr, created = AddressModel.objects.get_or_create(
+                postcode=place, 
+                streetAddress=strtAddr, 
+                houseNumber=hN
+            )
+        if created and commit:
+            adr.save()
+
         # Jetzt existiert die Adresse in der Datenbank.
         # speichere die Adresse im Feld address vom ClubModel ab.
-        instance.address = AddressModel.objects.get(postcode=pc, streetAddress=strtAddr, houseNumber=hN)
-        
+        #instance.address = AddressModel.objects.get(postcode=place, streetAddress=strtAddr, houseNumber=hN)
+        instance.address = adr
         if commit:
             instance.save()
             # gegebenenfalls aufräumen
