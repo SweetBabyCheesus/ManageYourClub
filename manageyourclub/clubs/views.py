@@ -5,6 +5,14 @@ from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
 from members.forms import addMember
 
+def allClubs(request):
+    context = {
+        'clubs': ClubModel.objects.all(),
+    }
+    if not ClubModel.objects.all().exists():
+        return redirect('addclub')
+    return render(request, 'all_clubs.html', context)
+
 def selectClub(request):
     context = {
         'club_list': ClubModel.objects.all(),
