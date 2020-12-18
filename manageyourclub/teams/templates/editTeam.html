@@ -1,0 +1,13 @@
+<!--Author: Max-->
+
+
+{% extends 'addTeam.html' %}
+<!-- form übernommen von https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s
+    (Sichtbar unter Anderem bei 2:28:01) -->
+
+{% block submitButton %}
+    <input type='submit' class="btn btn-default" value='Änderungen bestätigen'>
+    <a href='{% url "showTeam" club=club.id team=team.id %}'><button class="btn btn-default" style="background-color: #951525; color:white;">Abbrechen</button></a>
+
+{% endblock submitButton %}
+

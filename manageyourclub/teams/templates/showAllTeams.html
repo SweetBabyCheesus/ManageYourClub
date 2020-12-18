@@ -1,0 +1,27 @@
+<!--Author: Max-->
+
+
+{% extends 'base.html' %}
+
+{% block content%}
+<p>
+    <a href='{% url "home" club=club.id %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+    <p><a href="{% url 'addTeam' club=club.id%}">Mannschaft erstellen</a></p>
+</p>
+
+    <table>
+        <tr>
+            <th>Mannschaftsname</th>
+            <th>Sportart</th>
+            <th>Bearbeiten?</th>
+        </tr>
+        {% for team in teams %}
+            <tr>
+                <td>{{ team.teamName }}</td>
+                <td>{{ team.sportId.sportName }}</td>
+                <th><a href="{% url 'showTeam' club=club.id team=team.id %}">Anzeigen/ Bearbeiten</a> </th>
+            </tr>
+        {% endfor %}
+    </table>
+    
+{% endblock content%}

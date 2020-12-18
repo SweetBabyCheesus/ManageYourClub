@@ -4,7 +4,7 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-  Hey {{ user.Vorname }} {{ user.Nachname }}!
+  Hey <a href="{% url 'userData' %}">{{ user.Vorname }} {{ user.Nachname }}</a>!
   <p><a href="{% url 'logout' %}">Ausloggen</a></p>
   <p><a href="{% url 'password' %}">Passwort ändern</a></p>
 {% else %}
@@ -15,6 +15,6 @@
 {% include 'select_club_dropdown.html' %}
 <p><a href="{% url 'myclub' club=club.id%}">Mein Verein</a></p>
 <p><a href="{% url 'allclubs' %}">Übersicht aller Vereine</a></p>
-<p><a href="#FIXME">Mannschaftsübersicht</a></p>
+<p><a href="{% url 'showAllTeams' club=club.id %}">Mannschaftsübersicht</a></p>
 <p><a href="{% url 'club_members' club=club.id %}">Mitgliederübersicht</a></p>
 {% endblock %}

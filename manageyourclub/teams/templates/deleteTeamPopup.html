@@ -1,0 +1,19 @@
+<!--Author: Max-->
+
+
+{% extends 'popup.html' %}
+
+{% block modal-toggle %}
+    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal">Mannschaft löschen</button>
+{% endblock modal-toggle %}
+
+{% block modal-headline %}Bist du sicher, dass du deine Mannschaft Löschen willst?{% endblock modal-headline %}
+
+{% block modal-body %}
+    <form action="{% url 'deleteTeam' club=club.id team=team.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-default" style="background-color: #951525; color:white;" value="Ja">
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Ja</button>-->
+        <button type="button" class="btn btn-default" style="background-color: #535353; color:white;" data-dismiss="modal">Nein</button>
+    </form>
+{% endblock modal-body %}

@@ -1,0 +1,28 @@
+<!--Author: Max-->
+
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<p>
+    <a href='{% url "home" club=club.id %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+    <p><a href="{% url 'showAllTeams' club=club.id %}">Zurück zur Übersicht</a></p>
+</p>
+
+{% block form %}
+
+<div>
+    <p><label>Mannschaftsname:</label> <input type='text' value='{{ team.teamName }}' disabled='True'></p>
+    <p><label>Vereinsname:</label> <input type='text' value='{{ team.clubId.clubname }}' disabled='True'></p>
+    <p><label>Sportart:</label> <input type='text' value='{{ team.sportId.sportName }}' disabled='True'></p>
+</div>
+
+{% block submitButton %}
+<a href='{% url "editTeam" club=club.id team=team.id %}'><button class="btn btn-default">Bearbeiten</button></a>
+{% include 'deleteTeamPopup.html' %}
+{% endblock submitButton %}
+
+{% endblock form %}
+{% endblock content %}
