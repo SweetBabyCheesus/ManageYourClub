@@ -1,16 +1,21 @@
 {% extends 'popup.html' %}
 
-
+<!-- Tutorial genutzt https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (ab 2:14:16) -->
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal">Mitglied Löschen</button>
+    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#membership{{ membership.pk }}">Mitglied {{ membership.member.user.Vorname }} Löschen</button>
 {% endblock modal-toggle %}
 
-{% block modal-headline %}Mitglied hinzufügen{% endblock modal-headline %}
+{% block modalName %}membership{{ membership.pk }}{% endblock modalName %}
+
+{% block modal-headline %}Mitglied Löschen{% endblock modal-headline %}
 
 {% block modal-body %}
+    <p>
+        Möchtest du wirklich {{ membership.member.user.Vorname }} {{ membership.member.user.Nachname }} aus dem Verein werfen?
+    </p>
     <form method='POST'>
-        {{ form.as_p }}
         {% csrf_token %}
+        <input type='hidden' name='membership' value='{{membership.pk}}'>
         {% block submitButton %}<input type='submit' class="btn btn-default" value='Löschen'>{% endblock submitButton %}
     </form>
 {% endblock modal-body %}

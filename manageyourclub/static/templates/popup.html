@@ -12,19 +12,21 @@
 {% endblock modal-toggle %}
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" style="padding-top: 15%;">
-    
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">{% block modal-headline %}Headline{% endblock modal-headline %}</h4>
-            </div>
-            <div class="modal-body">
-                {% block modal-body %} Here goes some text. {% endblock modal-body %}
-            </div>
-        </div>
+{% block Modal %}
+    <div class="modal fade" id="{% block modalName %}myModal{% endblock modalName %}" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" style="padding-top: 15%;">
         
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% block modal-headline %}Headline{% endblock modal-headline %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% block modal-body %} Here goes some text. {% endblock modal-body %}
+                </div>
+            </div>
+            
+        </div>
     </div>
-</div>
+{% endblock Modal %}

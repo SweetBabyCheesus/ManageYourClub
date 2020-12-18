@@ -21,3 +21,24 @@ def addMember(eMail, club, commit=True):
         membership.save()
 
     return (member, membership)
+
+class editMemberForm(forms.Form):
+    memFunction = forms.CharField(max_length=30)
+
+    #def saveChanges(self, memship, commit=True):
+    #    memFunction = self.cleaned_data['memFunction']
+        # return saved object
+
+"""
+# Seite genutzt: https://docs.djangoproject.com/en/3.1/ref/forms/widgets/
+class DeleteClubMemberForm(forms.Form):
+    membershipID = forms.IntegerField(widget=forms.HiddenInput())
+
+    def deleteMember(self, commit=True):
+        membership = self.cleaned_data['membershipID']
+        membership = Membership.objects.get(membership)
+        if commit:
+            membership.delete()
+            return True
+        return False
+"""
