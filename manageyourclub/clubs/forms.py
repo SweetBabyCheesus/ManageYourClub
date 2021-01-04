@@ -74,17 +74,12 @@ class AddClubForm(forms.ModelForm):
         place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
         if created and commit:
             place.save()
-            adr = AddressModel.objects.create(
-                postcode=place, 
-                streetAddress=strtAddr, 
-                houseNumber=hN
-            )
-        else:
-            adr, created = AddressModel.objects.get_or_create(
-                postcode=place, 
-                streetAddress=strtAddr, 
-                houseNumber=hN
-            )
+            
+        adr, created = AddressModel.objects.get_or_create(
+            postcode=place, 
+            streetAddress=strtAddr, 
+            houseNumber=hN
+        )
         if created and commit:
             adr.save()
 

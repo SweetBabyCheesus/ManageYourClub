@@ -74,15 +74,15 @@
     </tr>
     <tr>
         <th>Postleitzahl</th>
-        <td>{{ user.Postleitzahl }} </td>
+        <td>{{ user.Adresse.postcode.postcode }} </td>
     </tr>
     <tr>
         <th>Ort</th>
-        <td>{{ user.Ort }} </td>
+        <td>{{ user.Adresse.postcode.village }} </td>
     </tr>
     <tr>
         <th>Straße / Hausnummer</th>
-        <td>{{ user.Straße }} {{user.Hausnummer}} </td>
+        <td>{{ user.Adresse.streetAddress }} {{user.Adresse.houseNumber}} </td>
     </tr>
 </table>
 </div>

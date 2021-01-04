@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
 from users.models import CustomUser
+from clubs.models import AddressModel, PlaceModel
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
@@ -29,6 +30,35 @@ class CreateCustomUserForm(UserCreationForm):
         #fields = ['username','email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
         fields = ['email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
 
+    def save(self, commit=True):
+        "speichert die vom Nutzer eingegebenen Daten"
+        instance = super().save(commit=False) # Objekt erstellen
+
+        strtAddr = self.cleaned_data['Straße'] 
+        hN = self.cleaned_data['Hausnummer']
+        pc = self.cleaned_data['Postleitzahl']
+        vil = self.cleaned_data['Ort']
+
+        place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
+        if created and commit:
+            place.save()
+            
+        adr, created = AddressModel.objects.get_or_create(
+            postcode=place, 
+            streetAddress=strtAddr, 
+            houseNumber=hN
+        )
+        if created and commit:
+            adr.save()
+
+        # Jetzt existiert die Adresse in der Datenbank.
+        # speichere die Adresse im Feld Adresse vom CustomUser ab.
+        # instance.Adresse = AddressModel.objects.get(postcode=place, streetAddress=strtAddr, houseNumber=hN)
+        instance.Adresse = adr
+        if commit:
+            instance.save()
+
+        return instance
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

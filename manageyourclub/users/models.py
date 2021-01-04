@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
+from clubs.models import AddressModel
+
 #Test
 from django.db import models
 from django.contrib.auth.models import User
@@ -82,10 +84,7 @@ class CustomUser(AbstractBaseUser):
     Nachname = models.CharField(max_length=30)
     Geburtstag = models.DateField()
     Geschlecht = models.CharField(max_length=6, choices=GENDER_CHOICES) #, default='1')
-    Postleitzahl = models.IntegerField()
-    Ort = models.CharField(max_length=30)
-    Straße = models.CharField(max_length=30)
-    Hausnummer = models.IntegerField()
+    Adresse = models.ForeignKey(to=AddressModel, on_delete=models.PROTECT)
     email_confirmed = models.BooleanField(default=False)
 
     # damit der Custom Manager genutzt wird
@@ -106,9 +105,9 @@ class CustomUser(AbstractBaseUser):
 
     def email_user(self, *args, **kwargs):
         send_mail(
-    args[0],
-    args[1],
-    EMAIL_HOST_USER,
-    [self.email],
-    fail_silently=False,
-)
+            args[0],
+            args[1],
+            EMAIL_HOST_USER,
+            [self.email],
+            fail_silently=False,
+        )
