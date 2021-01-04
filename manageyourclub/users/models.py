@@ -61,11 +61,11 @@ class CustomUserManager(BaseUserManager):
 
 
 # Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles
-GENDER_CHOICES = [
-    ('1', 'männlich'),
-    ('2', 'weiblich'),
-    ('3', 'divers'),
-    ]
+class Gender(models.Model):
+    gender = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.gender
 
 # Erstellung Customuser
 # Email muss unique sein, damit Login mit mail möglich ist
@@ -83,7 +83,7 @@ class CustomUser(AbstractBaseUser):
     Vorname = models.CharField(max_length=30)
     Nachname = models.CharField(max_length=30)
     Geburtstag = models.DateField()
-    Geschlecht = models.CharField(max_length=6, choices=GENDER_CHOICES) #, default='1')
+    Geschlecht = models.ForeignKey(to=Gender, on_delete=models.PROTECT)
     Adresse = models.ForeignKey(to=AddressModel, on_delete=models.PROTECT)
     email_confirmed = models.BooleanField(default=False)
 

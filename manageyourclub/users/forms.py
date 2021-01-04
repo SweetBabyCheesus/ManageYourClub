@@ -1,23 +1,18 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
-from users.models import CustomUser
+from users.models import CustomUser, Gender
 from clubs.models import AddressModel, PlaceModel
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
-    GENDER_CHOICES = [
-    ('1', 'männlich'),
-    ('2', 'weiblich'),
-    ('3', 'divers'),
-    ]
     email = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     Vorname = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Nachname = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Geburtstag = forms.CharField(label='Geburtstag (mm/dd/yyyy)', widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
-    Geschlecht = forms.CharField(label='Geschlecht', widget=forms.Select(choices=GENDER_CHOICES))
+    Geschlecht = forms.ModelChoiceField(label='Geschlecht', queryset=Gender.objects.all())
     Postleitzahl = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
     Ort = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Straße = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
