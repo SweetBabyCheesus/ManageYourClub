@@ -68,6 +68,10 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         model = CustomUser
     fields = ['old_password','new_password1','new_password2']
 
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = []
 
 """
 warscheinlich durch heutigen fix nicht mehr nötig (10.12.2020)

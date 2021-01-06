@@ -7,6 +7,7 @@
   Hey <a href="{% url 'userData' %}">{{ user.Vorname }} {{ user.Nachname }}</a>!
   <p><a href="{% url 'logout' %}">Ausloggen</a></p>
   <p><a href="{% url 'password' %}">Passwort ändern</a></p>
+  <p><a href="{% url 'deleteuser' %}">Konto löschen</a></p>
 {% else %}
   <h1 style="color:red">Fehler: Als nicht angemeldeter Nutzer solltest du nicht hier sein!</h1>
 {% endif %}

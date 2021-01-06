@@ -1,0 +1,13 @@
+<form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Benutzerkonto löschen</legend>
+            <p>Bist du sicher, dass du dein Konto löschen möchtest?<br>Dein Konto kann nicht wiederhergestellt werden.</p>
+            {{ form }}
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-danger" type="submit">Löschen</button>
+            <a class="btn btn-primary-custom" style="float:right;" 
+               href="{% url 'home' %}">Zurück</a>
+    </div>
+</form>
