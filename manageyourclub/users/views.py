@@ -13,7 +13,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
 from clubs.models import ClubModel
-from members.models import get_membership, club_has_user_as_member
+from members.models import get_membership, club_has_member
 
 from users.tokens import account_activation_token
 from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
@@ -115,7 +115,7 @@ def home_view(request, club=None):
     club = membership.club # für den Fall das club vorher None war
     club_list = filter(
                 lambda c: 
-                    club_has_user_as_member(c, request.user), 
+                    club_has_member(c, request.user), 
                 ClubModel.objects.all()
             )
 

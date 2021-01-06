@@ -1,5 +1,5 @@
 from django import forms
-from members.models import Member, Membership
+from members.models import Membership
 from users.models import CustomUser
 from datetime import datetime
 
@@ -12,15 +12,13 @@ class AddClubMemberForm(forms.Form):
         return addMember(eMail, club, commit)
 
 def addMember(eMail, club, commit=True):
-    user = CustomUser.objects.get(email=eMail)
-    member = Member.objects.get_or_create(user=user, memberSince=datetime.today().year)[0]
-    membership = Membership.objects.create(club=club, member=member)
+    member = CustomUser.objects.get(email=eMail)
+    membership = Membership.objects.create(club=club, member=member, memberSince=datetime.today().year)
 
     if commit:
-        member.save()
         membership.save()
 
-    return (member, membership)
+    return membership
 
 class editMemberForm(forms.Form):
     memFunction = forms.CharField(max_length=30)

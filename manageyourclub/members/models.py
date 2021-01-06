@@ -21,14 +21,6 @@ class MemberState(models.Model):
     stateID = models.SmallIntegerField(primary_key=True, unique=True)
     state   = models.CharField(max_length=15)
 
-class Member(models.Model):
-    """Model für Vereinsmitglieder"""
-    user        = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE, primary_key=True, unique=True)
-    memberSince = models.IntegerField()
-    number      = models.IntegerField(blank=True, null=True)
-    phone       = models.CharField(max_length=20, blank=True, null=True)
-
-# Tutorial genutzt: https://stackoverflow.com/questions/2201598/how-to-define-two-fields-unique-as-couple
 class Membership(models.Model):
     """Model für das Verbindungsstück zwischen Vereinen und Mitgliedern"""
     club            = models.ForeignKey(to=ClubModel, on_delete=models.CASCADE)
@@ -37,7 +29,10 @@ class Membership(models.Model):
     paymentMethod   = models.ForeignKey(to=PaymentMethod, on_delete=models.PROTECT, blank=True, null=True)
     memberFunction  = models.ForeignKey(to=MemberFunction, on_delete=models.PROTECT, blank=True, null=True)
     memberState     = models.ForeignKey(to=MemberState, on_delete=models.PROTECT, blank=True, null=True)
-    member          = models.ForeignKey(to=Member, on_delete=models.CASCADE, blank=True, null=True)
+    member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
+    memberSince     = models.IntegerField()
+    number          = models.IntegerField(blank=True, null=True)
+    phone           = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         unique_together = ('member', 'club',)
@@ -45,22 +40,13 @@ class Membership(models.Model):
 def club_has_member(club, member):
     return Membership.objects.filter(club=club, member=member).exists()
 
-def club_has_user_as_member(club, user):
-    member = Member.objects.filter(user=user).first()
-    if member is None:
-        return False
-    return club_has_member(club, member)
-
 # Quelle genutzt: https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
-def get_membership(user, club=None):
+def get_membership(member, club=None):
     """Gibt die Mitlgiedschaft beim angegebenen Verein aus. 
     Wenn kein Verein angegeben wurde, wird die erste Mitgliedschaft 
     des Benutzers ausgegeben, welche gefunden wird.
     Wenn keine Mitgliedschaft mit den entsprechenden Eigenschaften 
     gefunden wurde wird None zurückgegeben."""
-    if not Member.objects.filter(user=user).exists():
-        return None
-    member = Member.objects.get(user=user)
 
     if club is None:
         return Membership.objects.filter(member=member).first()

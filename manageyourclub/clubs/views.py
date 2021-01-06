@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
 from members.forms import addMember
-from members.models import club_has_user_as_member
+from members.models import club_has_member
 
 def allClubs(request):
     context = {
@@ -22,7 +22,7 @@ def clubViewOrAdd(request, club):
     club = ClubModel.objects.get(pk=club)
     club_list = filter(
                 lambda c: 
-                    club_has_user_as_member(c, request.user), 
+                    club_has_member(c, request.user), 
                 ClubModel.objects.all()
             )
     

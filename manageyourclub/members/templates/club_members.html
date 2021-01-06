@@ -18,9 +18,9 @@
         {% for membership in memberships %}
             <tr>
                 <td>{% include 'delete_club_member_popup.html' %}</td>
-                <td>{{ membership.member.user.Vorname }}</td>
-                <td>{{ membership.member.user.Nachname }}</td>
-                <td>{{ membership.member.user.email }}</td>
+                <td>{{ membership.member.Vorname }}</td>
+                <td>{{ membership.member.Nachname }}</td>
+                <td>{{ membership.member.email }}</td>
                 <td>{{ membership.memberFunction.function }}</td>
                 <td><a href='{% url "edit_member" memship=membership.pk %}'>Bearbeiten</a></td>
             </tr>
