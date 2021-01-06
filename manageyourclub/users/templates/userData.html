@@ -62,13 +62,7 @@
         <th>Geschlecht</th>
         <td> 
 
-            {% if user.Geschlecht == "1" %}
-                männlich
-            {% elif user.Geschlecht == "2" %}
-                weiblich
-            {% elif user.Geschlecht == "3" %}
-                divers
-            {% endif %} 
+            {{ user.Geschlecht }}
             
         </td>
     </tr>
