@@ -1,16 +1,15 @@
 from django.db import models
-from django import forms
-from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 from clubs.models import AddressModel
 
 #Test
-from django.db import models
-from django.contrib.auth.models import User
+"""
+from django.contrib.auth import get_user_model as User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+"""
 from django.core.mail import send_mail
 from manageyourclub.settings import EMAIL_HOST_USER
 
@@ -20,12 +19,13 @@ from manageyourclub.settings import EMAIL_HOST_USER
 class Profile(models.Model):
     user = models.OneToOneField(CostumUser, on_delete=models.CASCADE)
     email_confirmed = models.BooleanField(default=False)
-"""
-@receiver(post_save, sender=User)
+
+@receiver(post_save, sender=User())
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
         instance.profile.save()
+"""
 
 #Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
@@ -111,3 +111,5 @@ class CustomUser(AbstractBaseUser):
             [self.email],
             fail_silently=False,
         )
+
+

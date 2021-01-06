@@ -9,7 +9,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
-    <a href='{% url "select_club" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+    <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
     {% block form %}
         <form method='POST'>
             {{ form.as_p }}

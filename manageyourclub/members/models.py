@@ -42,3 +42,27 @@ class Membership(models.Model):
     class Meta:
         unique_together = ('member', 'club',)
 
+def club_has_member(club, member):
+    return Membership.objects.filter(club=club, member=member).exists()
+
+def club_has_user_as_member(club, user):
+    member = Member.objects.filter(user=user).first()
+    if member is None:
+        return False
+    return club_has_member(club, member)
+
+# Quelle genutzt: https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
+def get_membership(user, club=None):
+    """Gibt die Mitlgiedschaft beim angegebenen Verein aus. 
+    Wenn kein Verein angegeben wurde, wird die erste Mitgliedschaft 
+    des Benutzers ausgegeben, welche gefunden wird.
+    Wenn keine Mitgliedschaft mit den entsprechenden Eigenschaften 
+    gefunden wurde wird None zurückgegeben."""
+    if not Member.objects.filter(user=user).exists():
+        return None
+    member = Member.objects.get(user=user)
+
+    if club is None:
+        return Membership.objects.filter(member=member).first()
+
+    return Membership.objects.filter(member=member, club=club).first()

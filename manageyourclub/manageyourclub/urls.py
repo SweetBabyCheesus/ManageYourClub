@@ -20,7 +20,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from clubs.views import selectClub
 from users.views import home_view
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
@@ -32,7 +31,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('clubs/', include('clubs.urls')),
     path('users/', include('users.urls')),
-    path('select_club', selectClub, name='select_club'),
     path('', home_view, name='home'),
     path('<int:club>/', home_view, name='home'),
     path('members/', include('members.urls')),

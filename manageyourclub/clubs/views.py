@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
 from members.forms import addMember
+from members.models import club_has_user_as_member
 
 def allClubs(request):
     context = {
@@ -13,24 +14,21 @@ def allClubs(request):
         return redirect('addclub')
     return render(request, 'all_clubs.html', context)
 
-def selectClub(request):
-    context = {
-        'club_list': ClubModel.objects.all(),
-        'to':'home'
-    }
-    if not ClubModel.objects.all().exists():
-        return redirect('addclub')
-    return render(request, 'select_club.html', context)
-
 # Tutorial genutzt: https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (2:58:24)
 def clubViewOrAdd(request, club):
     if not ClubModel.objects.filter(pk=club).exists():
         return redirect('addclub')
     
     club = ClubModel.objects.get(pk=club)
+    club_list = filter(
+                lambda c: 
+                    club_has_user_as_member(c, request.user), 
+                ClubModel.objects.all()
+            )
+    
     context = {
         'club'     : club,
-        'club_list': ClubModel.objects.all(),
+        'club_list': club_list,
         'to'         : 'myclub',
     }
     return render(request, 'my_club.html', context)

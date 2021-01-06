@@ -1,12 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic.base import TemplateView
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth import login
 from django.contrib.auth.views import PasswordChangeView
-from django.views.generic import View, UpdateView
+from django.views.generic import View
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
@@ -15,8 +11,9 @@ from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
+
 from clubs.models import ClubModel
-from clubs.views import selectClub
+from members.models import get_membership, club_has_user_as_member
 
 from users.tokens import account_activation_token
 from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
@@ -109,13 +106,22 @@ class SignUpView(View):
 def home_view(request, club=None):
     if not request.user.is_authenticated:
         return redirect('login')
-    
-    if club is None:
-        return selectClub(request)
-        
+
+    membership = get_membership(request.user, club)
+
+    if membership is None:
+        return redirect('addclub')
+
+    club = membership.club # für den Fall das club vorher None war
+    club_list = filter(
+                lambda c: 
+                    club_has_user_as_member(c, request.user), 
+                ClubModel.objects.all()
+            )
+
     context = {
-        'club': ClubModel.objects.get(pk=club),
-        'club_list': ClubModel.objects.all(),
+        'club': club,
+        'club_list': club_list,
         'to': 'home',
     }
 
