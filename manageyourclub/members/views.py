@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from clubs.models import ClubModel
-from members.forms import AddClubMemberForm
+from members.forms import AddClubMemberForm, editMemberForm
 from members.models import Membership
 
 # Create your views here.
@@ -9,7 +9,7 @@ from members.models import Membership
 def clubMembersView(request, club):
     club = ClubModel.objects.get(pk=club)
 
-    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+    if request.method == 'POST': # Wird nach klicken auf Mitglied Löschen ausgeführt
         form = AddClubMemberForm(request.POST)
         if form.is_valid():
             form.addMember(club)
@@ -31,5 +31,27 @@ def clubMembersView(request, club):
     }
     return render(request, 'club_members.html', context)
 
-def editMemberView(request, memship):
-    return render(request, 'edit_member.html')
+# Tutorial genutzt: https://www.geeksforgeeks.org/initial-form-data-django-forms/
+def editMemberView(request, club, memship):
+    club = ClubModel.objects.get(pk=club)
+    memship = Membership.objects.get(pk=memship)
+    
+    initial = {
+        'memberFunction':memship.memberFunction,
+    }
+
+    form = editMemberForm(initial=initial)
+
+    context = {
+        'form': form,
+        'club': club,
+        'membership': memship,
+    }
+
+    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+        form = editMemberForm(request.POST)
+        if form.is_valid():
+            form.saveChanges(memship)
+        return redirect('club_members', club.pk)
+
+    return render(request, 'edit_member.html', context)

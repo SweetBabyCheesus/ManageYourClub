@@ -1,5 +1,5 @@
 from django import forms
-from members.models import Membership
+from members.models import Membership, MemberFunction
 from users.models import CustomUser
 from datetime import datetime
 
@@ -21,11 +21,14 @@ def addMember(eMail, club, commit=True):
     return membership
 
 class editMemberForm(forms.Form):
-    memFunction = forms.CharField(max_length=30)
+    memberFunction = forms.ModelChoiceField(label='Funktion', queryset=MemberFunction.objects.all(), required=False)
 
-    #def saveChanges(self, memship, commit=True):
-    #    memFunction = self.cleaned_data['memFunction']
-        # return saved object
+    def saveChanges(self, memship, commit=True):
+        memFunction = self.cleaned_data['memberFunction']
+        memship.memberFunction = memFunction
+        if commit:
+            memship.save()
+        return memship
 
 """
 # Seite genutzt: https://docs.djangoproject.com/en/3.1/ref/forms/widgets/

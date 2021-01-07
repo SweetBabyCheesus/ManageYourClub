@@ -22,7 +22,7 @@
                 <td>{{ membership.member.Nachname }}</td>
                 <td>{{ membership.member.email }}</td>
                 <td>{{ membership.memberFunction.function }}</td>
-                <td><a href='{% url "edit_member" memship=membership.pk %}'>Bearbeiten</a></td>
+                <td><a href='{% url "edit_member" club=club.id memship=membership.pk %}'>Bearbeiten</a></td>
             </tr>
         {% endfor %}
     </table>

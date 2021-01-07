@@ -10,16 +10,25 @@ class PaymentMethod(models.Model):
     """Die verschiedenen Bezahlmethoden sind hier als Strings abgespeichert."""
     paymentMethodID = models.SmallIntegerField(primary_key=True, unique=True)
     paymentMethod   = models.CharField(max_length=15)
+    
+    def __str__(self):
+        return self.paymentMethod
 
 class MemberFunction(models.Model):
     """Die verschiedenen Funktionen von Mitgliedern sind hier als Strings abgespeichert."""
     functionID  = models.SmallIntegerField(primary_key=True, unique=True)
     function    = models.CharField(max_length=15)
+    
+    def __str__(self):
+        return self.function
 
 class MemberState(models.Model):
     """Die Statusmöglichkeiten von Mitgliedern sind hier als Strings abgespeichert."""
     stateID = models.SmallIntegerField(primary_key=True, unique=True)
     state   = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.state
 
 class Membership(models.Model):
     """Model für das Verbindungsstück zwischen Vereinen und Mitgliedern"""
@@ -31,7 +40,6 @@ class Membership(models.Model):
     memberState     = models.ForeignKey(to=MemberState, on_delete=models.PROTECT, blank=True, null=True)
     member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
     memberSince     = models.IntegerField()
-    number          = models.IntegerField(blank=True, null=True)
     phone           = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
