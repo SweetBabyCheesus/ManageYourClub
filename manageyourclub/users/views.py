@@ -16,7 +16,7 @@ from clubs.models import ClubModel
 from members.models import get_membership, club_has_member
 
 from users.tokens import account_activation_token
-from users.forms import CreateCustomUserForm, CustomPasswordChangeForm
+from users.forms import CreateCustomUserForm, CustomPasswordChangeForm, EditProfileForm
 from users.models import CustomUser
 
 from .forms import UserDeleteForm
@@ -29,7 +29,7 @@ def deleteuser(request):
         delete_form = UserDeleteForm(request.POST, instance=request.user)
         user = request.user
         user.delete()
-        messages.info(request, 'Your account has been deleted.')
+        messages.error(request, 'Dein Account wurde unwiederruflich gelöscht.')
         return redirect('home')
     else:
         delete_form = UserDeleteForm(instance=request.user)
@@ -56,19 +56,19 @@ class ActivateAccount(View):
             user.email_confirmed = True
             user.save()
             login(request, user)
-            messages.success(request, ('Your account have been confirmed.'))
+            messages.success(request, ('Dein Account wurde aktiviert.'))
             return redirect('home')
         else:
-            messages.warning(request, ('The confirmation link was invalid, possibly because it has already been used.'))
+            messages.error(request, ('Dein Bestätigungslink ist ungültig oder wurde schon benutzt.'))
             return redirect('home')
 
 
 def showUserData(request):
     return render(request, 'userData.html')
 
-
 def login_view(request):
     return render(request, 'registration/login.html')
+    
 
 # Sign Up View
 class SignUpView(View):
@@ -129,4 +129,20 @@ def home_view(request, club=None):
 
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm
+    
     success_url = reverse_lazy('home')
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('Änderungen gespeichert!'))
+            return redirect('home')
+            messages.error(request, ('Änderungen konnten nicht gespeichert werden!'))
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        
+        return render(request, 'edit_profile.html', args)

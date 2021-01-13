@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html>
   <!-- Tutorial genutzt https://www.csestack.org/add-css-static-files-django/ -->
+  <style>
+    .success{
+      color:white;
+      background-color: rgb(3, 146, 3);
+      border-radius: 10px;
+    }
+    .error{
+      color:white;
+      background-color: rgb(255, 0, 0);
+      border-radius: 10px;
+    }
+    .info{
+      color:white;
+      background-color: rgb(0, 38, 255);
+      border-radius: 10px;
+    }
+  </style>
 <head>
   <meta charset="utf-8">
   <title>{% block title %}MYC{% endblock %}</title>
@@ -14,8 +31,20 @@
 <body>
   <div class="jumbotron text-center">
     <h1>ManageYourClub</h1>
-    <p>Verwalte deinen Verein!</p> 
+    <p>Verwalte deinen Verein!</p>
+    <div>
+      {% if messages %}
+          {% for message in messages %}
+          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              {{ message }}
+          </div>
+          {% endfor %}
+      {% endif %}
+    </div>
   </div>
+
+
+
   
   <main>
     {% block content %}

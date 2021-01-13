@@ -1,8 +1,15 @@
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
 from django import forms
 from users.models import CustomUser, Gender
 from clubs.models import AddressModel, PlaceModel
+
+class EditProfileForm(UserChangeForm):
+    template_name='/edit_profile'
+    
+    class Meta:
+        model = CustomUser
+        fields = ('Vorname', 'Nachname', 'email', 'Geschlecht')
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
