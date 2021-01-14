@@ -1,0 +1,67 @@
+<!--Author: Max-->
+
+
+{% extends 'base.html' %}
+
+{% block content%}
+<style type="text/css">
+    th { 
+        padding: 8px 30px;
+        border-collapse: separate;
+        text-align: left;
+    }
+
+    td { 
+        padding: 0px 30px;
+        border-collapse: separate;
+        text-align: left;
+    }
+
+</style>
+
+<p>
+    <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
+</p>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Nachname</th>
+            <th>Geburtstag</th>
+            <th>Ort</th>
+            <th>Details</th>
+            <th>Aktionen</th>
+        </tr>
+        {% for clubNot in clubNotifications %}
+            {% if clubNot.status == 1 %}
+                <tr>
+                    <td>{{ clubNot.user.Vorname }}</td>
+                    <td>{{ clubNot.user.Nachname }}</td>
+                    <td>{{ clubNot.user.Geburtstag }}</td>
+                    <td>{{ clubNot.user.Adresse.postcode.village }}</td>
+                    <td>Beitrittsanfrage</td>
+                    <td>
+                        <form action="{% url 'acceptRequestMembership' %}" method="post" id="acceptRequestMembershipForm">
+                            {% csrf_token %}
+
+                            <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
+                                value= {{ clubNot.id }} form="acceptRequestMembershipForm">Annehmen</Button>
+
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'declineRequestMembership' %}" method="post" id="declineRequestMembershipForm">
+                            {% csrf_token %}
+
+                            <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
+                                value= {{ clubNot.id }} form="declineRequestMembershipForm">Ablehnen</Button>
+
+                        </form>
+
+                    </td>
+                </tr>
+            {% endif %} 
+        {% endfor %}
+    </table>
+    
+{% endblock content%}

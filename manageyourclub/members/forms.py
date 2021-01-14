@@ -30,16 +30,3 @@ class editMemberForm(forms.Form):
             memship.save()
         return memship
 
-"""
-# Seite genutzt: https://docs.djangoproject.com/en/3.1/ref/forms/widgets/
-class DeleteClubMemberForm(forms.Form):
-    membershipID = forms.IntegerField(widget=forms.HiddenInput())
-
-    def deleteMember(self, commit=True):
-        membership = self.cleaned_data['membershipID']
-        membership = Membership.objects.get(membership)
-        if commit:
-            membership.delete()
-            return True
-        return False
-"""

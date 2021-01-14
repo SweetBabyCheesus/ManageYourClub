@@ -14,8 +14,9 @@
 
 <h3>Startseite</h3>
 {% include 'select_club_dropdown.html' %}
-<p><a href="{% url 'myclub' club=club.id%}">Mein Verein</a></p>
+<p><a href="{% url 'myclub' club=club.id %}">Mein Verein</a></p>
 <p><a href="{% url 'allclubs' %}">Übersicht aller Vereine</a></p>
 <p><a href="{% url 'showAllTeams' club=club.id %}">Mannschaftsübersicht</a></p>
 <p><a href="{% url 'club_members' club=club.id %}">Mitgliederübersicht</a></p>
+<p><a href='{% url "requestNotifications" club=club.id %}'>Mitteilungen</a></p>
 {% endblock %}

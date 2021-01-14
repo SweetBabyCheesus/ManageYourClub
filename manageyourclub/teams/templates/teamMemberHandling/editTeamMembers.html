@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+
+<style type="text/css">
+    th { 
+        padding: 8px 30px;
+        border-collapse: separate;
+        text-align: left;
+    }
+
+    td { 
+        padding: 0px 30px;
+        border-collapse: separate;
+        text-align: left;
+    }
+
+</style>
+
+{% include 'teamMemberHandling\addTeamMemberPopup.html' %}
+
+<a href="{% url 'showAllTeams' club=club.id %}"><button class="btn btn-default">zur Mannschaftsübersicht</button></a>
+<table>
+    <tr>
+        <th>Vorname</th>
+        <th>Nachname</th>
+    </tr>
+    {% for member in teamMembers %}
+        <tr>
+            <td>{{ member.member.Vorname }}</td>
+            <td>{{ member.member.Nachname }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock content%}

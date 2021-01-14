@@ -1,6 +1,8 @@
 from django import forms
 from teams.models import SportModel, TeamModel
 from clubs.models import ClubModel
+from users.models import CustomUser
+from members.models import Membership
 
 
 class SportForm(forms.ModelForm):
@@ -73,3 +75,23 @@ class TeamForm(forms.ModelForm):
                 if pk is not None and not TeamModel.objects.filter(sportId=oldSport).exists(): # gegebenenfalls nicht mehr gebrauchte Adresse löschen
                     oldSport.delete()
             return instance
+    
+
+
+
+class AddTeamMemberForm(forms.Form):
+    #Autor: Max
+    #Mailadresse wird genutzt, um Nutzer zu identifizieren. 
+    eMail = forms.CharField(max_length=50, label='E-Mail-Adresse')
+
+    def addMember(self, club, team, commit=True):
+
+        eMail = self.cleaned_data['eMail']
+        #Bughandling: nur Mitglieder des Vereins sind zu Mannschaften hinzufügbar
+        if CustomUser.objects.filter(email=eMail).exists():
+            user = CustomUser.objects.get(email=eMail)
+            member = Membership.objects.get(member = user )
+            if member.club == club:
+                team.members.add(member) 
+
+

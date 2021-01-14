@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 from clubs.models import ClubModel
+from datetime import datetime
 # Vorgabe der Architekten https://vereinsmanagement.atlassian.net/wiki/spaces/VEREINSMAN/pages/33062915/ERM+f+r+Datenbank+mit+Datentypen
 
 
@@ -44,6 +45,19 @@ class Membership(models.Model):
 
     class Meta:
         unique_together = ('member', 'club',)
+
+    def addMember(club,user):
+        #Autor: Max
+        #Methode zum hinzufügen von Mitgliedern zu vereinen. Kann mit Membership.addMember(club=...,user=...) angesprochen werden
+        if not Membership.objects.filter(member=user, club=club).exists():
+            newMember  = Membership.objects.create(member=user, club=club, memberSince=datetime.today().year)
+            newMember.save()
+
+    def club_has_member(self, member):
+        #Autor Max
+        #in Klasse kopiert, damit die Methode besser ansprechbar wird
+        user = CustomUser.objects.get(email=member)
+        return Membership.objects.filter(club=self, member=member).exists()
 
 def club_has_member(club, member):
     return Membership.objects.filter(club=club, member=member).exists()

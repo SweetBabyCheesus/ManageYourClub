@@ -4,14 +4,28 @@ from django.shortcuts import render, redirect
 from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
 from members.forms import addMember
-from members.models import club_has_member
+from members.models import club_has_member, Membership
+from notifications.models import MembershipRequest
 
 def allClubs(request):
+    user = request.user
+
+    #myClubs Liste von Max hinzugefügt um Beziehung zu den Vereinen im Template darzustellen
+    Memberships = Membership.objects.filter(member=user)
+    myClubs = []
+    for membership in Memberships:
+        myClubs.append(membership.club)
+
+
     context = {
+        'Memberships':Memberships,
         'clubs': ClubModel.objects.all(),
+        'myClubs':myClubs,
     }
+
     if not ClubModel.objects.all().exists():
         return redirect('addclub')
+
     return render(request, 'all_clubs.html', context)
 
 # Tutorial genutzt: https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (2:58:24)
@@ -83,3 +97,13 @@ def deleteClubView(request, club):
                 pc.delete()
         return redirect('/?Verein_wurde_gelöscht:_'+str(club))
     return redirect('/?Verein_wurde_NICHT_gelöscht:_'+str(club))
+
+def requestMembershipView(request):
+    context={}
+    if request.method == 'POST': 
+        clubId = request.POST.get('clubId', None)
+        club = ClubModel.objects.get(pk=clubId)
+        user = request.user
+        direction = 1
+        MembershipRequest.addRequest(user=user, club=club, direction=direction)
+    return redirect('allclubs')

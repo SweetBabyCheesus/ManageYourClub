@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from teams.models import SportModel, TeamModel
-from teams.forms import SportForm, TeamForm
+from teams.forms import SportForm, TeamForm, AddTeamMemberForm
 from clubs.models import ClubModel
+from members.models import Membership
 
 
 # Funktion teilweise übernommen von https://www.askpython.com/django/django-model-forms
@@ -78,10 +79,10 @@ def showAllTeams(request, club):
     teams = TeamModel.objects.filter(clubId=club)
 
     context = {
-        #'form': form, FIXME
         'teams': teams,
         'club': club,
     }
+
     return render(request, 'showAllTeams.html', context)
 
 
@@ -99,3 +100,33 @@ def deleteTeamView(request, team, club):
         return redirect('/?Mannschaft_wurde_gelöscht:_'+str(team))
 
     return redirect('/?Mannschaft_'+ +str(team)+'_wurde_NICHT_gelöscht.')
+
+
+
+def editTeamMembersView(request, team, club):
+    #Autor: Max
+    club = ClubModel.objects.get(pk=club)
+    team = TeamModel.objects.get(pk=team)
+
+    teamMembers = team.members.all()  
+    form = AddTeamMemberForm()
+
+    if request.method == 'POST': # Wird nach klicken auf Mitglied hinzufügen
+
+        form = AddTeamMemberForm(request.POST)
+
+        if form.is_valid():
+            form.addMember(club, team)
+
+    context = {
+        'form': form,
+        'team': team,
+        'club': club,
+        'teamMembers': teamMembers,
+    }
+
+
+
+    return render(request, 'teamMemberHandling\editTeamMembers.html', context)
+
+

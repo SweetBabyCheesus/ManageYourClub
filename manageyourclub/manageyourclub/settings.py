@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'members',
     'teams',
     'static',
+    'notifications',
     'six',
 ]
 
@@ -76,7 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'manageyourclub.wsgi.application'
 
-
+"""
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
@@ -98,7 +99,6 @@ DATABASES = {
     }
 } 
 
-"""
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
 # Password validation

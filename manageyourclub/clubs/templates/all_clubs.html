@@ -9,12 +9,31 @@
             <th>Name</th>
             <th>Gründungsjahr</th>
             <th>Adresse</th>
+            <th>Mitgliedschaft</th>
         </tr>
         {% for club in clubs %}
             <tr>
                 <td>{{ club.clubname }}</td>
                 <td>{{ club.yearOfFoundation }}</td>
                 <td>{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
+                <td>
+
+                    {% if club not in myClubs %}
+                    
+                    <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm">
+                        {% csrf_token %}
+
+                        <Button type="submit" name="clubId" class="btn btn-default" style="background-color: #951525; color:white;" 
+                            value= {{ club.id }} form="requestMembershipForm">Beitreten</Button>
+
+                    </form>
+                    {% else %}
+                    
+                        du bist bereits Mitglied
+
+                    {% endif %}
+                    
+                </td>
             </tr>
         {% endfor %}
     </table>

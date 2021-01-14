@@ -21,6 +21,7 @@
 
 {% block submitButton %}
 <a href='{% url "editTeam" club=club.id team=team.id %}'><button class="btn btn-default">Bearbeiten</button></a>
+<a href="{% url 'editTeamMembers' club=club.id team=team.id %}"><button class="btn btn-default">Mitiglieder verwalten</button></a>
 {% include 'deleteTeamPopup.html' %}
 {% endblock submitButton %}
 
