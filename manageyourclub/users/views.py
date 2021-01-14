@@ -129,7 +129,6 @@ def home_view(request, club=None):
 
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm
-    
     success_url = reverse_lazy('home')
 
 def edit_profile(request):
