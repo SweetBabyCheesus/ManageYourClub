@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block title %}Benutzerdaten ändern{% endblock %}
+{% block content %}
+{% load static %}
+
+
+<div id="content-container" class="container p-none">
+    <div class="lgn-container ">          
+    <style type="text/css">
+
+        /*Styling für den Button
+        Quelle: https://webdeasy.de/top-css-buttons/ */
+        .submit {
+            width: 220px;
+            height: 50px;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+        }
+        .submit:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left:-2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .submit:active {
+            color: #000
+        }
+
+        .submit:active:after {
+            background: transparent;
+        }
+
+        .submit:hover:before {
+            opacity: 1;
+        }
+
+        .submit:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /*entfernt die Pfeile an Nummereingaben*/ 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+
+        #submit {
+ color: #fff;
+ 
+ width: 135px;
+ height: 60px;
+ border: none;
+ margin: 0;
+ padding: 0;
+ 
+}
+
+        body { 
+        background: url('{% static "img/userdata.jpg" %}') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+       
+        }
+        .signup-form {
+		        width: 250px;
+		        margin: 30px auto;
+		        text-align: center;
+                opacity: .9;
+            }
+            
+            .signup-form h2 {
+                margin: 10px 0 25px;
+            }
+            .signup-form form {
+		        color: #7a7a7a;
+		        border-radius: 10px;
+    	        margin-bottom: 15px;
+                background:rgb(54, 54, 54);
+                box-shadow: 0px 2px 2px rgba(63, 63, 63, 0.3);
+                padding: 30px;
+            }
+            .signup-form .btn {        
+                font-size: 16px;
+                font-weight: bold;
+		        background: #314653;
+		        border: none;
+                outline: none !important;
+            }
+            .signup-form .btn:hover, .signup-form .btn:focus {
+		        background: #128837;
+	        }
+	        .signup-form a {
+		        color: #fff;
+		        text-decoration: underline;
+	        }
+	        .signup-form a:hover {
+		        text-decoration: none;
+	        }
+	        .signup-form form a {
+		        color: #7a7a7a;
+		        text-decoration: none;
+	        }
+	        .signup-form form a:hover {
+		        text-decoration: underline;
+	        }    
+
+    </style>
+    <div class="signup-form">
+        <form  id="signup-form" style="color:white"  method="post" >
+            {% csrf_token %}
+            <table class="table">
+                {% for field in form %}
+                <p style="color:white">
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                </p>
+                {% endfor %}
+                
+            </table>
+            
+        <button type="submit" name="submit" class="submit" id="submit">Daten ändern</button>
+        <br><br>
+        <a style="color:white" href="{% url 'home' %}">Zurück zur Startseite</a>
+    </form>
+    </div>
+    </div>
+</div>
+{% endblock content %}

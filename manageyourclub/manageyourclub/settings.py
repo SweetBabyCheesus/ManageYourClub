@@ -99,6 +99,10 @@ DATABASES = {
     }
 } 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1b6b9f66d59f7efc8af7772df42f6306059f713
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
 # Password validation
