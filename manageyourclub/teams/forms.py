@@ -90,7 +90,7 @@ class AddTeamMemberForm(forms.Form):
         #Bughandling: nur Mitglieder des Vereins sind zu Mannschaften hinzufügbar
         if CustomUser.objects.filter(email=eMail).exists():
             user = CustomUser.objects.get(email=eMail)
-            member = Membership.objects.get(member = user )
+            member = Membership.objects.get(member = user, club=club )
             if member.club == club:
                 team.members.add(member) 
 
