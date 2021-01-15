@@ -9,7 +9,8 @@ def requestNotificationView(request, club):
     #https://www.youtube.com/watch?v=vmP1r6xiJog
     user = request.user
 
-    club = ClubModel.objects.get(pk=club)
+    if ClubModel.objects.filter(pk=club).exists():
+        club = ClubModel.objects.get(pk=club)
     clubNotifications = MembershipRequest.objects.filter(club=club)
 
     context = {
