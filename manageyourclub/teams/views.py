@@ -126,7 +126,6 @@ def editTeamMembersView(request, team, club):
     }
 
 
-
-    return render(request, 'teamMemberHandling\editTeamMembers.html', context)
+    return render(request, 'teamMemberHandling/editTeamMembers.html', context)
 
 
