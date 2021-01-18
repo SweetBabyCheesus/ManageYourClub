@@ -1,9 +1,8 @@
-# Diese Datei wurde von Tobias Wenzel erstellt
+# Author: Tobias
 
 from django.shortcuts import render, redirect
 from clubs.forms import AddClubForm
 from clubs.models import ClubModel, AddressModel
-from members.forms import addMember
 from members.models import club_has_member, Membership
 from notifications.models import MembershipRequest
 
@@ -47,33 +46,23 @@ def clubViewOrAdd(request, club):
     }
     return render(request, 'my_club.html', context)
 
-# Funktion teilweise übernommen von https://www.askpython.com/django/django-model-forms
-# Tutorial genutzt https://www.geeksforgeeks.org/initial-form-data-django-forms/
-def addClubView(request, club=None):
+
+def editClubView(request, club):
     if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
         form = AddClubForm(request.POST)
         if form.is_valid():
-            form.SetInstanceID(club)
-            created = club is None
-            club = form.save()
-            if created:
-                addMember(eMail=request.user.email, club=club)
-            return redirect('myclub', club.pk)
-  
+            form.edit(club)
+            return redirect('myclub', club)
     else:
-        if club is None:
-            instance = None
-            initial = {}
-        else: 
-            if not ClubModel.objects.filter(pk=club).exists():
-                return redirect('addclub')
-            instance = ClubModel.objects.get(pk=club)
-            initial = {
-                'streetAddress' : instance.address.streetAddress,
-                'houseNumber'   : instance.address.houseNumber,
-                'postcode'      : instance.address.postcode.postcode,
-                'village'       : instance.address.postcode.village
-            }
+        if not ClubModel.objects.filter(pk=club).exists():
+            return redirect('addclub')
+        instance = ClubModel.objects.get(pk=club)
+        initial = {
+            'streetAddress' : instance.address.streetAddress,
+            'houseNumber'   : instance.address.houseNumber,
+            'postcode'      : instance.address.postcode.postcode,
+            'village'       : instance.address.postcode.village
+        }
         form = AddClubForm(instance=instance, initial=initial)
         
         context = {
@@ -81,8 +70,24 @@ def addClubView(request, club=None):
             'club':instance,
         }
         
-        if club is not None:
-            return render(request, 'edit_club.html', context)
+        return render(request, 'edit_club.html', context)
+
+# Funktion teilweise übernommen von https://www.askpython.com/django/django-model-forms
+# Tutorial genutzt https://www.geeksforgeeks.org/initial-form-data-django-forms/
+def addClubView(request):
+    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+        form = AddClubForm(request.POST)
+        if form.is_valid():
+            club = form.create()
+            Membership.addMember(club=club, user=request.user)
+            return redirect('myclub', club.pk)
+    else:        
+        form = AddClubForm()
+        
+        context = {
+            'form':form,
+        }
+        
     return render(request, 'new_club.html', context)
 
 def deleteClubView(request, club):

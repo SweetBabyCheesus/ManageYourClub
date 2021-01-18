@@ -1,4 +1,3 @@
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
 from django import forms
 from users.models import CustomUser, Gender

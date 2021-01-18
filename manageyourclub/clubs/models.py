@@ -1,3 +1,4 @@
+# Author: Tobias
 from django.db import models
 
 # Vorgabe von den Architekten:
@@ -18,6 +19,37 @@ class AddressModel(models.Model):
     houseNumber = models.CharField(max_length=5)
     postcode = models.ForeignKey(to=PlaceModel, on_delete=models.PROTECT)
 
+    @staticmethod
+    def create(streetAddress, houseNumber, postcode, village):
+        """
+        Erstellt ein Adressen-Objekt. 
+        Wenn der entsprechende Ort noch nicht in der Datenbank existiert, wird dieser auch erstellt.
+        """
+        if village:
+            postcode = PlaceModel.objects.get_or_create(postcode=postcode, village=village)[0]
+            postcode.save()
+    
+        return AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber).save()
+
+    @staticmethod
+    def get_or_create(streetAddress, houseNumber, postcode, village):
+        """
+        Sucht ein Adressen-Objekt, auf das die übergebenen Parameter zutreffen.
+        Wenn das gesuchte Adressen-Objekt nicht gefunden wird, wird es erstellt.
+        Für den Parameter postcode soll eine Postleitzahl übergeben werden. Keine Instanz vom PlaceModel.
+        """
+        postcode, created = PlaceModel.objects.get_or_create(postcode=postcode, village=village)
+        if created:
+            postcode.save()
+        address, created = AddressModel.objects.get_or_create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber)
+        if created:
+            address.save()
+        return address
+
+    def isUsed(self):
+        "Prüft ob die Adresse genutzt wird, indem geschaut wird ob es eine Verlinkung zu dieser Adresse gibt."
+        return self.clubmodel_set.exists() or self.customuser_set.exists()
+
 class ClubModel(models.Model):
     """
     Model für Vereine. Der primary key ist eine id, die von Django automatisch generiert werden sollte. 
@@ -26,3 +58,44 @@ class ClubModel(models.Model):
     clubname = models.CharField(max_length=30)
     yearOfFoundation = models.CharField(max_length=4)
     address = models.ForeignKey(to=AddressModel, on_delete=models.PROTECT)
+
+    @staticmethod
+    def create(clubname, yearOfFoundation, streetAddress, houseNumber, postcode, village):
+        """
+        Erstellt ein Vereins-Objekt. 
+        Wenn die entsprechende Adresse noch nicht in der Datenbank existiert, wird diese auch erstellt.
+        """
+        address = AddressModel.get_or_create(streetAddress, houseNumber, postcode, village)
+            
+        club = ClubModel.objects.create(address=address, clubname=clubname, yearOfFoundation=yearOfFoundation)
+        club.save()
+        return club
+
+    @staticmethod
+    def get_or_create(clubname, yearOfFoundation, streetAddress, houseNumber, postcode, village):
+        """
+        Sucht ein Vereins-Objekt, auf das die übergebenen Parameter zutreffen.
+        Wenn das gesuchte Vereins-Objekt nicht gefunden wird, wird es erstellt.
+        Für den Parameter postcode soll eine Postleitzahl übergeben werden. Keine Instanz vom PlaceModel.
+        """
+        address = AddressModel.get_or_create(streetAddress, houseNumber, postcode, village)
+            
+        club, created = ClubModel.objects.get_or_create(clubname=clubname, yearOfFoundation=yearOfFoundation, address=address)
+        if created:
+            club.save()
+        return club
+
+    def edit(self, clubname, yearOfFoundation, streetAddress, houseNumber, postcode, village):
+        """
+            Überschreibt die Daten des Objektes mit den übergebenen Parametern.
+            Wenn die vorherige Adresse nicht mehr gebraucht wird, wird sie gelöscht.
+        """
+        self.clubname = clubname
+        self.yearOfFoundation = yearOfFoundation
+        oldAdr = self.address
+        self.address = AddressModel.get_or_create(streetAddress, houseNumber, postcode, village)
+        self.save()
+        if not oldAdr.isUsed():
+            oldAdr.delete()
+        return self
+

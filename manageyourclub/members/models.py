@@ -46,6 +46,7 @@ class Membership(models.Model):
     class Meta:
         unique_together = ('member', 'club',)
 
+    @staticmethod
     def addMember(club,user):
         #Autor: Max
         #Methode zum hinzufügen von Mitgliedern zu vereinen. Kann mit Membership.addMember(club=...,user=...) angesprochen werden
@@ -56,8 +57,7 @@ class Membership(models.Model):
     def club_has_member(self, member):
         #Autor Max
         #in Klasse kopiert, damit die Methode besser ansprechbar wird
-        user = CustomUser.objects.get(email=member)
-        return Membership.objects.filter(club=self, member=member).exists()
+        return club_has_member(self, member)
 
 def club_has_member(club, member):
     return Membership.objects.filter(club=club, member=member).exists()

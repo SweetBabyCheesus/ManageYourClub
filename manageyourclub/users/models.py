@@ -31,26 +31,38 @@ def update_user_profile(sender, instance, created, **kwargs):
 class CustomUserManager(BaseUserManager):
 
     #def create_user(self, email, username, password=None):
-    def create_user(self, email, password=None):
+    def create_user(self, email, Vorname, Nachname, Geburtstag, Geschlecht, Adresse, password=None):
         if not email:
             raise ValueError("Eine Emailadresse wird zur Accounterstellung benötigt")
 
         #if not username: -> Versuch Username zu entfernen
         #    raise ValueError("Ein Username wird zur Accounterstellung benötigt")   -> Versuch Username zu entfernen
 
+        Adresse = AddressModel.objects.get(pk=Adresse)
+        Geschlecht = Gender.objects.get(pk=Geschlecht)
+
         user = self.model(
             email=self.normalize_email(email),
-            #username=username -> Versuch Username zu entfernen
+            Vorname=Vorname,
+            Nachname=Nachname,
+            Geburtstag=Geburtstag,
+            Geschlecht=Geschlecht,
+            Adresse=Adresse
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     #def create_superuser(self, email, username, password): -> Versuch Username zu entfernen
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password, Vorname, Nachname, Geburtstag, Geschlecht, Adresse):
+
         user = self.create_user(
             email=self.normalize_email(email),
-            #username=username,
+            Vorname=Vorname,
+            Nachname=Nachname,
+            Geburtstag=Geburtstag,
+            Geschlecht=Geschlecht,
+            Adresse=Adresse,
             password=password
         )
         user.is_admin=True
@@ -60,7 +72,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-# Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles
+# Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles Author: Tobias
 class Gender(models.Model):
     gender = models.CharField(max_length=8)
 
@@ -92,7 +104,7 @@ class CustomUser(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     #REQUIRED_FIELDS = ['username', 'Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer'] -> versuch username zu entfernen
-    REQUIRED_FIELDS = ['Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer']
+    REQUIRED_FIELDS = ['Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Adresse']
 
     def __str__(self):
         return self.username
@@ -111,5 +123,4 @@ class CustomUser(AbstractBaseUser):
             [self.email],
             fail_silently=False,
         )
-
 

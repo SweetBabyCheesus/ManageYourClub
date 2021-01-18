@@ -1,24 +1,15 @@
 from django import forms
 from members.models import Membership, MemberFunction
 from users.models import CustomUser
-from datetime import datetime
 
 # Tutorial genutzt: https://www.tutorialspoint.com/python_data_science/python_date_and_time.htm
 class AddClubMemberForm(forms.Form):
     eMail = forms.CharField(max_length=30, label='E-Mail-Adresse')
 
-    def addMember(self, club, commit=True):
+    def addMember(self, club):
         eMail = self.cleaned_data['eMail']
-        return addMember(eMail, club, commit)
-
-def addMember(eMail, club, commit=True):
-    member = CustomUser.objects.get(email=eMail)
-    membership = Membership.objects.create(club=club, member=member, memberSince=datetime.today().year)
-
-    if commit:
-        membership.save()
-
-    return membership
+        user = CustomUser.objects.get(email=eMail)
+        return Membership.addMember(club, user)
 
 class editMemberForm(forms.Form):
     memberFunction = forms.ModelChoiceField(label='Funktion', queryset=MemberFunction.objects.all(), required=False)
