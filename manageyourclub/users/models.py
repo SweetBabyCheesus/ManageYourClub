@@ -124,3 +124,23 @@ class CustomUser(AbstractBaseUser):
             fail_silently=False,
         )
 
+    def editAddress(self, streetAddress, houseNumber, postcode, village): # Author: Tobias
+        """
+            Überschreibt die Daten des Objektes mit den übergebenen Parametern.
+            Wenn die vorherige Adresse nicht mehr gebraucht wird, wird sie gelöscht.
+        """
+        oldAdr = self.Adresse
+        self.saveAddress(streetAddress, houseNumber, postcode, village)
+        if not oldAdr.isUsed():
+            oldAdr.delete()
+        return self
+
+    def saveAddress(self, streetAddress, houseNumber, postcode, village): # Author: Tobias
+        """
+            Beschreibt die Daten des Objektes mit den übergebenen Parametern.
+            Diese Funktion sollte nur Dann benutzt werden, wenn das Objekt noch keine Adresse gespeichert hat.
+            Ansonsten sollte editAddress genutzt werden.
+        """
+        self.Adresse = AddressModel.get_or_create(streetAddress, houseNumber, postcode, village)
+        self.save()
+        return self

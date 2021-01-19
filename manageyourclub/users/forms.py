@@ -15,43 +15,19 @@ class EditProfileForm(UserChangeForm):
         model = CustomUser
         fields = ('Vorname', 'Nachname', 'email', 'Geschlecht')
 
-    #Kopie und angepasst aus Forms von Clubs
-    def save(self, commit=True):
-        """speichert die vom Nutzer eingegebenen Daten"""
-        instance = super().save(commit=False)
+    def save(self, commit=True): # Author: Tobias
+        """
+            Findet den Benutzer mit dem übergebenen initial und 
+            überschreibt dessen Daten mit den Daten aus dem Formular.
+        """
+        instance = super().save(commit=False) 
 
-        oldAdr = instance.Adresse # wird zum Aufräumen benötigt.
-
-        strtAddr = self.cleaned_data['streetAddress'] 
-        hN = self.cleaned_data['houseNumber']
-        pc = self.cleaned_data['postcode']
-        vil = self.cleaned_data['village']
-        place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
-        if created and commit:
-            place.save()
-            
-        adr, created = AddressModel.objects.get_or_create(
-            postcode=place, 
-            streetAddress=strtAddr, 
-            houseNumber=hN
+        return instance.editAddress(
+            self.cleaned_data['streetAddress'],
+            self.cleaned_data['houseNumber'],
+            self.cleaned_data['postcode'],
+            self.cleaned_data['village'],
         )
-        if created and commit:
-            adr.save()
-
-        # Jetzt existiert die Adresse in der Datenbank.
-        # speichere die Adresse im Feld address vom ClubModel ab.
-        #instance.address = AddressModel.objects.get(postcode=place, streetAddress=strtAddr, houseNumber=hN)
-        instance.Adresse = adr
-        if commit:
-            instance.save()
-            # gegebenenfalls aufräumen
-            if not CustomUser.objects.filter(Adresse=oldAdr).exists(): # gegebenenfalls nicht mehr gebrauchte Adresse löschen
-                oldPc = oldAdr.postcode
-                oldAdr.delete()
-                if not AddressModel.objects.filter(postcode=oldPc).exists(): # gegebenenfalls nicht mehr gebrauchten Ort löschen
-                    oldPc.delete()
-
-        return instance
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
@@ -74,36 +50,16 @@ class CreateCustomUserForm(UserCreationForm):
         #fields = ['username','email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
         fields = ['email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
 
-    def save(self, commit=True):
+    def save(self, commit=True): # Author: Tobias
         "speichert die vom Nutzer eingegebenen Daten"
-        instance = super().save(commit=False) # Objekt erstellen
+        instance = super().save(commit=False) 
 
-        strtAddr = self.cleaned_data['Straße'] 
-        hN = self.cleaned_data['Hausnummer']
-        pc = self.cleaned_data['Postleitzahl']
-        vil = self.cleaned_data['Ort']
-
-        place, created = PlaceModel.objects.get_or_create(postcode=pc, village=vil)
-        if created and commit:
-            place.save()
-            
-        adr, created = AddressModel.objects.get_or_create(
-            postcode=place, 
-            streetAddress=strtAddr, 
-            houseNumber=hN
+        return instance.saveAddress(
+            self.cleaned_data['Straße'],
+            self.cleaned_data['Hausnummer'],
+            self.cleaned_data['Postleitzahl'],
+            self.cleaned_data['Ort'],
         )
-        if created and commit:
-            adr.save()
-
-        # Jetzt existiert die Adresse in der Datenbank.
-        # speichere die Adresse im Feld Adresse vom CustomUser ab.
-        # instance.Adresse = AddressModel.objects.get(postcode=place, streetAddress=strtAddr, houseNumber=hN)
-        instance.Adresse = adr
-        if commit:
-            instance.save()
-
-        return instance
-
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
