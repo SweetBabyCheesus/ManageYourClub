@@ -30,13 +30,9 @@ def update_user_profile(sender, instance, created, **kwargs):
 #Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
 
-    #def create_user(self, email, username, password=None):
     def create_user(self, email, Vorname, Nachname, Geburtstag, Geschlecht, Adresse, password=None):
         if not email:
             raise ValueError("Eine Emailadresse wird zur Accounterstellung benötigt")
-
-        #if not username: -> Versuch Username zu entfernen
-        #    raise ValueError("Ein Username wird zur Accounterstellung benötigt")   -> Versuch Username zu entfernen
 
         Adresse = AddressModel.objects.get(pk=Adresse)
         Geschlecht = Gender.objects.get(pk=Geschlecht)
@@ -53,7 +49,6 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    #def create_superuser(self, email, username, password): -> Versuch Username zu entfernen
     def create_superuser(self, email, password, Vorname, Nachname, Geburtstag, Geschlecht, Adresse):
 
         user = self.create_user(
@@ -82,8 +77,8 @@ class Gender(models.Model):
 # Erstellung Customuser
 # Email muss unique sein, damit Login mit mail möglich ist
 class CustomUser(AbstractBaseUser):
+    #Max
     email = models.EmailField(verbose_name='email', max_length = 60, unique=True)
-    #username = models.CharField(max_length=30, unique=True) -> versuch Username zu entfernen
     date_joined = models.DateField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateField(verbose_name='last login', auto_now=True)
     is_admin = models.BooleanField(default=False)
@@ -103,7 +98,6 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    #REQUIRED_FIELDS = ['username', 'Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Postleitzahl', 'Ort', 'Straße', 'Hausnummer'] -> versuch username zu entfernen
     REQUIRED_FIELDS = ['Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Adresse']
 
     def __str__(self):

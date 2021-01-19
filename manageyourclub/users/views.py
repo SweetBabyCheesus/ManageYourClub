@@ -25,11 +25,12 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def deleteuser(request):
+    #Jonas
     if request.method == 'POST':
         delete_form = UserDeleteForm(request.POST, instance=request.user)
         user = request.user
         user.delete()
-        messages.error(request, 'Dein Account wurde unwiederruflich gelöscht.')
+        messages.error(request, 'Dein Account wurde unwiderruflich gelöscht.')
         return redirect('home')
     else:
         delete_form = UserDeleteForm(instance=request.user)
@@ -42,7 +43,7 @@ def deleteuser(request):
 
 
 class ActivateAccount(View):
-
+    #Jonas
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -64,14 +65,17 @@ class ActivateAccount(View):
 
 
 def showUserData(request):
+    #Jonas
     return render(request, 'userData.html')
 
 def login_view(request):
+    #Jonas
     return render(request, 'registration/login.html')
     
 
 # Sign Up View
 class SignUpView(View):
+    #Jonas
     form_class = CreateCustomUserForm
     template_name = 'registration/signup.html'
  
@@ -104,6 +108,7 @@ class SignUpView(View):
         return render(request, self.template_name, {'form': form})
         
 def home_view(request, club=None):
+    #alle
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -128,10 +133,12 @@ def home_view(request, club=None):
     return render(request, 'home.html', context)
 
 class CustomPasswordChangeView(PasswordChangeView):
+    #Max
     form_class = CustomPasswordChangeForm
     success_url = reverse_lazy('home')
 
 def edit_profile(request):
+    #Jonas
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
 

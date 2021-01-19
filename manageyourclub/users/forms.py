@@ -4,6 +4,7 @@ from users.models import CustomUser, Gender
 from clubs.models import AddressModel, PlaceModel
 
 class EditProfileForm(UserChangeForm):
+    #Jonas
     template_name='/edit_profile'
     
     streetAddress = forms.CharField(max_length=20, label='Straße')
@@ -31,6 +32,7 @@ class EditProfileForm(UserChangeForm):
 
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
+    #Max
     email = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
@@ -47,7 +49,6 @@ class CreateCustomUserForm(UserCreationForm):
     password2.label="Passwort bestätigen"
     class Meta:
         model = CustomUser 
-        #fields = ['username','email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
         fields = ['email','password1','password2', 'Vorname', 'Nachname','Geburtstag','Geschlecht','Postleitzahl','Ort','Straße','Hausnummer']
 
     def save(self, commit=True): # Author: Tobias
@@ -62,6 +63,7 @@ class CreateCustomUserForm(UserCreationForm):
         )
 
 class CustomPasswordChangeForm(PasswordChangeForm):
+    #Max
     old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
@@ -74,16 +76,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     fields = ['old_password','new_password1','new_password2']
 
 class UserDeleteForm(forms.ModelForm):
+    #Jonas
     class Meta:
         model = CustomUser
         fields = []
-
-"""
-warscheinlich durch heutigen fix nicht mehr nötig (10.12.2020)
-    # Profile Form
-class ProfileForm(forms.ModelForm):
-
-    class Meta:
-        model = CustomUser
-        fields = ['username','email']
-"""
