@@ -4,6 +4,7 @@ from clubs.models import ClubModel, AddressModel, PlaceModel
 from users.models import CustomUser, Gender
 
 def logTestClientIn(client, email='testuser@email.de', password='12345'):
+    "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
     place = PlaceModel.objects.create(
         postcode = 12345,
         village = "München"
@@ -28,27 +29,38 @@ def logTestClientIn(client, email='testuser@email.de', password='12345'):
     user.save()
     return client.login(email=email, password=password)
 
+def createTestClub(
+    clubname = 'fcbayern',
+    yearOfFoundation = '1900',
+    streetAddress = 'Teststraße',
+    houseNumber = '95b',
+    postcode = 12345,
+    village = "München"
+):
+    "Gibt einen Test-Verein zurück"
+    place = PlaceModel.objects.create(
+        postcode = postcode,
+        village = village
+    )
+    address = AddressModel.objects.create(
+        streetAddress = streetAddress,
+        houseNumber = houseNumber,
+        postcode = place
+    )
+    return ClubModel.objects.create(
+        clubname = clubname,
+        yearOfFoundation = yearOfFoundation,
+        address = address
+    )
+
+
 class TestViews(TestCase):
 
     def setUp(self):
         self.client = Client()
         
-        
         #Ein Testclub muss mithilfe der Modelle erstellt werden um z.B clubViewOrAdd zu testen
-        self.place1 = PlaceModel.objects.create(
-            postcode = 12345,
-            village = "München"
-        )
-        self.address1 = AddressModel.objects.create(
-            streetAddress = 'Teststraße',
-            houseNumber = '95b',
-            postcode = self.place1
-        )
-        self.club1 = ClubModel.objects.create(
-            clubname = 'fcbayern',
-            yearOfFoundation = '1900',
-            address = self.address1
-        )
+        self.club1 = createTestClub()
 
         logTestClientIn(self.client)
 
