@@ -8,24 +8,24 @@ class TestUrls(SimpleTestCase):
 
     def test_addclub_url_is_resolved(self):
         url = reverse('addclub')
-        self.assertEquals(resolve(url).func, addClubView)
+        self.assertEqual(resolve(url).func, addClubView)
 
     def test_myclub_url_is_resolved(self):
         url = reverse('myclub', args=['1'])
-        self.assertEquals(resolve(url).func, clubViewOrAdd)
+        self.assertEqual(resolve(url).func, clubViewOrAdd)
 
     def test_editclub_url_is_resolved(self):
         url = reverse('editclub', args=['1'])
-        self.assertEquals(resolve(url).func, editClubView)
+        self.assertEqual(resolve(url).func, editClubView)
 
     def test_deleteclub_url_is_resolved(self):
         url = reverse('deleteclub', args=['1'])
-        self.assertEquals(resolve(url).func, deleteClubView)      
+        self.assertEqual(resolve(url).func, deleteClubView)      
 
     def test_allclubs_url_is_resolved(self):
         url = reverse('allclubs')
-        self.assertEquals(resolve(url).func, allClubs)
+        self.assertEqual(resolve(url).func, allClubs)
 
     def test_requestMembership_url_is_resolved(self):
         url = reverse('requestMembership')
-        self.assertEquals(resolve(url).func, requestMembershipView)   
+        self.assertEqual(resolve(url).func, requestMembershipView)   

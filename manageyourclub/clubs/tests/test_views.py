@@ -2,7 +2,31 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from clubs.models import ClubModel, AddressModel, PlaceModel
 from users.models import CustomUser, Gender
-import json
+
+def logTestClientIn(client, email='testuser@email.de', password='12345'):
+    place = PlaceModel.objects.create(
+        postcode = 12345,
+        village = "München"
+    )
+
+    address = AddressModel.objects.create(
+        streetAddress = 'Teststraße',
+        houseNumber = '95b',
+        postcode = place
+    )
+
+    user = CustomUser.objects.create(
+        email=email,
+        Vorname='Vorname',
+        Nachname='Nachname',
+        Geburtstag='1997-01-01',
+        Geschlecht=Gender.objects.create(gender = 'männlich'),
+        Adresse=address
+    ) 
+
+    user.set_password(password)
+    user.save()
+    return client.login(email=email, password=password)
 
 class TestViews(TestCase):
 
@@ -26,16 +50,7 @@ class TestViews(TestCase):
             address = self.address1
         )
 
-        user = CustomUser.objects.create(
-            email='testuser@email.de',
-            Vorname='Vorname',
-            Nachname='Nachname',
-            Geburtstag='1997-01-01',
-            Geschlecht=Gender.objects.create(gender = 'männlich'),
-            Adresse=self.address1) 
-        user.set_password('12345')
-        user.save()
-        logged_in = self.client.login(email='testuser@email.de', password='12345')
+        logTestClientIn(self.client)
 
         self.addClubView_url = reverse('addclub')
         self.clubViewOrAdd_url = reverse('myclub', kwargs={'club':self.club1.pk})
@@ -46,30 +61,30 @@ class TestViews(TestCase):
 
     def test_addClubView_GET(self):
         response = self.client.get(self.addClubView_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'new_club.html')
 
     def test_clubViewOrAdd_GET(self):
         response = self.client.get(self.clubViewOrAdd_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'new_club.html')
 
     def test_editClubView_GET(self):
         response = self.client.get(self.editClubView_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'edit_club.html')
 
     def test_allClubs_GET(self):
         response = self.client.get(self.allClubs_url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'all_clubs.html')
         
    #status 302??
    #def test_deleteClubView_GET(self):
    #    response = self.client.get(self.deleteClubView_url)
-   #    self.assertEquals(response.status_code, 200)
+   #    self.assertEqual(response.status_code, 200)
 
    #def test_requestMembershipView_GET(self):
    #    response = self.client.get(self.requestMembershipView_url)
-   #    self.assertEquals(response.status_code, 200)
+   #    self.assertEqual(response.status_code, 200)
    #    self.assertTemplateUsed(response, 'all_clubs.html')
