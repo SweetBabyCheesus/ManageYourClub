@@ -2,7 +2,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from users.models import CustomUser, Gender
-from clubs.models import AddressModel, PlaceModel
+from clubs.models import AddressModel, PlaceModel, ClubModel
+from members.models import Membership
 
 
 def logTestClientIn(client, email='testuser@email.de', password='12345'):
@@ -32,6 +33,9 @@ def logTestClientIn(client, email='testuser@email.de', password='12345'):
     user.save()
     return client.login(email=email, password=password)
 
+def getUser():
+    return CustomUser.objects.get(pk=1)
+
 def createGenders():
     Gender.objects.create(gender='männlich')
     Gender.objects.create(gender='weiblich')
@@ -39,12 +43,12 @@ def createGenders():
     
 
 def createTestClub(
-    clubname = 'fcbayern',
-    yearOfFoundation = '1900',
-    streetAddress = 'Teststraße',
-    houseNumber = '95b',
-    postcode = 12345,
-    village = "München"
+    clubname = 'Wehen',
+    yearOfFoundation = '2000',
+    streetAddress = 'Testerstraße',
+    houseNumber = '94b',
+    postcode = 65199,
+    village = "Wiesbaden"
 ):
     "Gibt einen Test-Verein zurück"
     place = PlaceModel.objects.create(
@@ -56,11 +60,17 @@ def createTestClub(
         houseNumber = houseNumber,
         postcode = place
     )
-    return ClubModel.objects.create(
+    club = ClubModel.objects.create(
         clubname = clubname,
         yearOfFoundation = yearOfFoundation,
         address = address
     )
+
+    club.save()
+
+def createTestMembership(user):
+    club                            = ClubModel.objects.get(clubname='Wehen')
+    mem                             = Membership.addMember(club=club,user=user)
 
 
 class TestUsersViews(TestCase):
@@ -210,5 +220,44 @@ class TestUsersViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, self.login_template)
 
+    
+    def test_edit_profile_view_logged_in_no_Data_change(self):
+        #Autor: Max
+        #Seite Profil Ändern nur Aufrufbar, wenn eingeloggt
+        self.edit_profile           = reverse('edit_profile')
+        logTestClientIn(self.client)
+        response                    = self.client.get(self.edit_profile, follow = True)
+        self.edit_profile_template         = 'edit_profile.html'
+        self.home_template                 = 'home.hmtl'
 
+        #Test Aufbau der Seite
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, self.edit_profile_template)
+
+
+
+    def test_edit_profile_view_logged_in_no_Data_change(self):
+        #Autor: Max
+        #Test änderung von Daten
+
+        self.edit_profile                  = reverse('edit_profile')
+        self.edit_profile_template         = 'edit_profile.html'
+        self.home_template                 = 'home.html'
+
+        logTestClientIn(self.client)
+        createTestClub()
+        createTestMembership(getUser())
+
+        response                    = self.client.post(self.edit_profile, 
+        data={"email":"testuser@email.de",
+        "Vorname":"Test", 
+        "Nachname":"User",
+        "Geschlecht":"1",
+        "postcode":"12345",
+        "village":"München",
+        "streetAddress":"Teststraße",
+        "houseNumber":"95b"}, follow = True)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, self.home_template)
 
