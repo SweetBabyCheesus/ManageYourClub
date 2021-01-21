@@ -26,20 +26,23 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def deleteuser(request):
     #Jonas
-    if request.method == 'POST':
-        delete_form = UserDeleteForm(request.POST, instance=request.user)
-        user = request.user
-        user.delete()
-        messages.error(request, 'Dein Account wurde unwiderruflich gelöscht.')
-        return redirect('home')
-    else:
-        delete_form = UserDeleteForm(instance=request.user)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            delete_form = UserDeleteForm(request.POST, instance=request.user)
+            user = request.user
+            user.delete()
+            messages.error(request, 'Dein Account wurde unwiderruflich gelöscht.')
+            return redirect('home')
+        else:
+            delete_form = UserDeleteForm(instance=request.user)
 
-    context = {
-        'delete_form': delete_form
-    }
+        context = {
+            'delete_form': delete_form
+        }
 
-    return render(request, 'delete_account.html', context)
+        return render(request, 'delete_account.html', context)
+    
+    return redirect('login')
 
 
 class ActivateAccount(View):
@@ -61,12 +64,14 @@ class ActivateAccount(View):
             return redirect('home')
         else:
             messages.error(request, ('Dein Bestätigungslink ist ungültig oder wurde schon benutzt.'))
-            return redirect('home')
+            return redirect('login')
 
 
 def showUserData(request):
     #Jonas
-    return render(request, 'userData.html')
+    if request.user.is_authenticated:
+        return render(request, 'userData.html')
+    return redirect('login')
 
 def login_view(request):
     #Jonas
@@ -85,10 +90,12 @@ class SignUpView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        
         if form.is_valid():
 
             user = form.save(commit=False)
-            user.is_active = False # Deactivate account till it is confirmed
+            #Angepasst (Max): is_active in Model Default=False gesetzt
+            #user.is_active = False # Deactivate account till it is confirmed
             user.save()
 
             current_site = get_current_site(request)
@@ -139,16 +146,20 @@ class CustomPasswordChangeView(PasswordChangeView):
 
 def edit_profile(request):
     #Jonas
-    if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, ('Änderungen gespeichert!'))
-            return redirect('home')
-            messages.error(request, ('Änderungen konnten nicht gespeichert werden!'))
-    else:
-        form = EditProfileForm(instance=request.user)
-        args = {'form': form}
+    if request.user.is_authenticated:
         
-        return render(request, 'edit_profile.html', args)
+        if request.method == 'POST':
+            form = EditProfileForm(request.POST, instance=request.user)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, ('Änderungen gespeichert!'))
+                return redirect('home')
+                messages.error(request, ('Änderungen konnten nicht gespeichert werden!'))
+        else:
+            form = EditProfileForm(instance=request.user)
+            args = {'form': form}
+            
+            return render(request, 'edit_profile.html', args)
+
+    return redirect('login')
