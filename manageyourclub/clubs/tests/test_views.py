@@ -91,12 +91,11 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'all_clubs.html')
         
-   #status 302??
-   #def test_deleteClubView_GET(self):
-   #    response = self.client.get(self.deleteClubView_url)
-   #    self.assertEqual(response.status_code, 200)
+    def test_deleteClubView_GET(self):
+        response = self.client.get(self.deleteClubView_url)
+        self.assertEqual(response.status_code, 302) #statuscode 302 bei redirect
 
-   #def test_requestMembershipView_GET(self):
-   #    response = self.client.get(self.requestMembershipView_url)
-   #    self.assertEqual(response.status_code, 200)
-   #    self.assertTemplateUsed(response, 'all_clubs.html')
+    def test_requestMembershipView_GET(self):
+        response = self.client.get(self.requestMembershipView_url)
+        self.assertEqual(response.status_code, 302) #statuscode 302 bei redirect
+       # self.assertTemplateUsed(response, 'all_clubs')
