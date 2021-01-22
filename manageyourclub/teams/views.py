@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from teams.models import SportModel, TeamModel
-from teams.forms import SportForm, TeamForm, AddTeamMemberForm
+from teams.models import TeamModel
+from teams.forms import TeamForm, AddTeamMemberForm
 from clubs.models import ClubModel
-from members.models import Membership
 
 
 # Funktion teilweise übernommen von https://www.askpython.com/django/django-model-forms
@@ -10,13 +9,15 @@ from members.models import Membership
 def addTeamView(request, club, team=None):
     #Author: Max
 
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     club = ClubModel.objects.get(pk=club)
 
     if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
         form = TeamForm(request.POST)
         if  form.is_valid():
             form.SetInstanceID(team)
-            created = team is None
             team = form.save(club)
             return redirect('showTeam', team=team.pk, club=club.pk)
 
@@ -25,9 +26,8 @@ def addTeamView(request, club, team=None):
             return render(request, 'addTeam.html')  
   
     else:
-
-    #if Team is None -> Hinzufügen 
-    #else: Falls der user einen nicht existierenden Verein bearbeiten möchte
+        #if Team is None -> Hinzufügen 
+        #else: Falls der user einen nicht existierenden Verein bearbeiten möchte
         if team is None:
             instance = None
             initial = {}
@@ -54,9 +54,11 @@ def addTeamView(request, club, team=None):
             return render(request, 'editTeam.html', context) 
     return render(request, 'addTeam.html', context)
 
-
 def showTeamView(request, team, club):
     #Author: Max
+
+    if not request.user.is_authenticated:
+        return redirect('login')
 
     team = TeamModel.objects.get(pk=team)
     club = ClubModel.objects.get(pk=club)
@@ -74,6 +76,9 @@ def showTeamView(request, team, club):
 def showAllTeams(request, club):
     #Author: Max
 
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     club = ClubModel.objects.get(pk=club)
 
     teams = TeamModel.objects.filter(clubId=club)
@@ -85,9 +90,10 @@ def showAllTeams(request, club):
 
     return render(request, 'showAllTeams.html', context)
 
-
-def deleteTeamView(request, team, club):
+def deleteTeamView(request, team):
     #Author: Max
+    if not request.user.is_authenticated:
+        return redirect('login')
 
     team = TeamModel.objects.get(pk=team)
 
@@ -99,20 +105,20 @@ def deleteTeamView(request, team, club):
 
         return redirect('/?Mannschaft_wurde_gelöscht:_'+str(team))
 
-    return redirect('/?Mannschaft_'+ +str(team)+'_wurde_NICHT_gelöscht.')
+    return redirect('/?Mannschaft_'+str(team)+'_wurde_NICHT_gelöscht.')
 
-
-
-def editTeamMembersView(request, team, club):
+def addTeamMemberView(request, team, club):
     #Autor: Max
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     club = ClubModel.objects.get(pk=club)
     team = TeamModel.objects.get(pk=team)
 
     teamMembers = team.members.all()  
     form = AddTeamMemberForm()
 
-    if request.method == 'POST': # Wird nach klicken auf Mitglied hinzufügen
-
+    if request.method == 'POST': 
         form = AddTeamMemberForm(request.POST)
 
         if form.is_valid():
@@ -126,6 +132,6 @@ def editTeamMembersView(request, team, club):
     }
 
 
-    return render(request, 'teamMemberHandling/editTeamMembers.html', context)
+    return render(request, 'teamMemberHandling/addTeamMember.html', context)
 
 

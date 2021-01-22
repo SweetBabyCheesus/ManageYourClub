@@ -2,7 +2,7 @@
 # Tutorial genutzt: https://www.youtube.com/watch?v=0MrgsYswT1c&list=PLbpAWbHbi5rMF2j5n6imm0enrSD9eQUaM&index=2
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from teams.views import addTeamView, showTeamView, showAllTeams, deleteTeamView, editTeamMembersView
+from teams.views import addTeamView, showTeamView, showAllTeams, deleteTeamView, addTeamMemberView
 
 class TestUrls(SimpleTestCase):
 
@@ -14,9 +14,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('showTeam', args=[1, 1])
         self.assertEqual(resolve(url).func, showTeamView)
 
-    def test_editTeamMembers_url_is_resolved(self):
-        url = reverse('editTeamMembers', args=[1, 1])
-        self.assertEqual(resolve(url).func, editTeamMembersView)
+    def test_addTeamMember_url_is_resolved(self):
+        url = reverse('addTeamMember', args=[1, 1])
+        self.assertEqual(resolve(url).func, addTeamMemberView)
 
     def test_editTeam_url_is_resolved(self):
         url = reverse('editTeam', args=[1, 1])
@@ -27,5 +27,5 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolve(url).func, showAllTeams)
 
     def test_deleteTeam_url_is_resolved(self):
-        url = reverse('deleteTeam', args=[1, 1])
+        url = reverse('deleteTeam', args=[1])
         self.assertEqual(resolve(url).func, deleteTeamView)   

@@ -1,20 +1,12 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from clubs.models import ClubModel, AddressModel, PlaceModel
+from clubs.models import ClubModel, AddressModel
 from users.models import CustomUser, Gender
 
 def logTestClientIn(client, email='testuser@email.de', password='12345'):
     "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
-    place = PlaceModel.objects.create(
-        postcode = 12345,
-        village = "München"
-    )
 
-    address = AddressModel.objects.create(
-        streetAddress = 'Teststraße',
-        houseNumber = '95b',
-        postcode = place
-    )
+    address = AddressModel.get_or_create('Teststraße', '95b', 12345, "München")
 
     user = CustomUser.objects.create(
         email=email,
@@ -27,6 +19,7 @@ def logTestClientIn(client, email='testuser@email.de', password='12345'):
 
     user.set_password(password)
     user.save()
+    client.user=user
     return client.login(email=email, password=password)
 
 def createTestClub(
@@ -38,20 +31,7 @@ def createTestClub(
     village = "München"
 ):
     "Gibt einen Test-Verein zurück"
-    place = PlaceModel.objects.create(
-        postcode = postcode,
-        village = village
-    )
-    address = AddressModel.objects.create(
-        streetAddress = streetAddress,
-        houseNumber = houseNumber,
-        postcode = place
-    )
-    return ClubModel.objects.create(
-        clubname = clubname,
-        yearOfFoundation = yearOfFoundation,
-        address = address
-    )
+    return ClubModel.create(clubname, yearOfFoundation, streetAddress, houseNumber, postcode, village)
 
 
 class TestViews(TestCase):
