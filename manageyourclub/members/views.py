@@ -1,3 +1,4 @@
+# Author: Tobias
 from django.shortcuts import render, redirect
 from clubs.models import ClubModel
 from members.forms import AddClubMemberForm, editMemberForm

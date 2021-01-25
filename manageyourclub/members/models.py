@@ -1,3 +1,4 @@
+# Author: Tobias
 from django.db import models
 from users.models import CustomUser
 from clubs.models import ClubModel
@@ -53,11 +54,8 @@ class Membership(models.Model):
         if not Membership.objects.filter(member=user, club=club).exists():
             newMember  = Membership.objects.create(member=user, club=club, memberSince=datetime.today().year)
             newMember.save()
-
-    def club_has_member(self, member):
-        #Autor Max
-        #in Klasse kopiert, damit die Methode besser ansprechbar wird
-        return club_has_member(self, member)
+            return newMember
+        return None
 
 def club_has_member(club, member):
     return Membership.objects.filter(club=club, member=member).exists()

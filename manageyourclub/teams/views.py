@@ -64,7 +64,7 @@ def showTeamView(request, team, club):
     club = ClubModel.objects.get(pk=club)
 
     if not TeamModel.objects.filter(pk=team.pk).exists():
-            return redirect('addTeam')
+        return redirect('addTeam')
     
     context = {
     'team':team,

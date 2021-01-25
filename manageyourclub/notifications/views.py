@@ -29,11 +29,11 @@ def acceptRequestMembership(request):
         userId = clubNotification.user.email
         user = CustomUser.objects.get(email=userId)
 
-        Membership.addMember(club=club, user=user)       
+        Membership.addMember(club=club, user=user)
 
         clubNotification.setStatusAccepted()
-    
-    return redirect(requestNotificationView, club=club.pk)
+        return redirect(requestNotificationView, club=club.pk)
+    return redirect('home')
     
 
 
@@ -42,8 +42,8 @@ def declineRequestMembership(request):
         clubNotId = request.POST.get('clubNotId', None)
         clubNotification = MembershipRequest.objects.get(pk=clubNotId)
         club = clubNotification.club
-        userId = clubNotification.user
        
         clubNotification.setStatusDeclined()
     
-    return redirect(requestNotificationView, club=club.pk)
+        return redirect(requestNotificationView, club=club.pk)
+    return redirect('home')

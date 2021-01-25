@@ -3,8 +3,8 @@ from django.urls import reverse
 from clubs.models import ClubModel, AddressModel
 from users.models import CustomUser, Gender
 
-def logTestClientIn(client, email='testuser@email.de', password='12345'):
-    "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
+def createTestUser(email='testuser@email.de', password='12345'):
+    "Erstellt einen Testnutzer."
 
     address = AddressModel.get_or_create('Teststraße', '95b', 12345, "München")
 
@@ -13,12 +13,18 @@ def logTestClientIn(client, email='testuser@email.de', password='12345'):
         Vorname='Vorname',
         Nachname='Nachname',
         Geburtstag='1997-01-01',
-        Geschlecht=Gender.objects.create(gender = 'männlich'),
+        Geschlecht=Gender.objects.get_or_create(gender = 'männlich')[0],
         Adresse=address
     ) 
 
     user.set_password(password)
     user.save()
+    return user
+
+def logTestClientIn(client, email='testuser@email.de', password='12345'):
+    "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
+
+    user = createTestUser(email=email, password=password)
     client.user=user
     return client.login(email=email, password=password)
 

@@ -66,9 +66,11 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
-# Auswahlmöglichleiten für Geschlechteigenschaft des Userprofiles Author: Tobias
-class Gender(models.Model):
+class Gender(models.Model): # Author: Tobias
+    """
+        Tabelle in welcher die Geschlechts-Auswahlmöglichkeiten gespeichert werden.
+        Die Instanzen werden mithilfe der Datei static/standardValues.sql erstellt.
+    """
     gender = models.CharField(max_length=8)
 
     def __str__(self):

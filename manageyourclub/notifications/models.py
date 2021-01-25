@@ -21,6 +21,7 @@ class MembershipRequest(models.Model):
     def __str__(self):
         return "user: " + self.user.email + ", club: " + self.club.clubname
 
+    @staticmethod
     def addRequest(user,club,direction):
         #Autor: Max
         #Methode zur Erstellung von Beitrittsanfragen
@@ -28,6 +29,8 @@ class MembershipRequest(models.Model):
             if not Membership.objects.filter(member=user, club=club).exists():
                 newRequest  = MembershipRequest.objects.create(user=user, club=club, direction=direction)
                 newRequest.save()
+                return newRequest
+        return None
 
     def setStatusAccepted(self):
         #Autor: Max
