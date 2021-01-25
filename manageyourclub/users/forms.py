@@ -33,7 +33,9 @@ class EditProfileForm(UserChangeForm):
 #https://stackoverflow.com/questions/53461410/make-user-email-unique-django/53461823
 class CreateCustomUserForm(UserCreationForm):
     #Max
-    email = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
+
+    #Declarierung der Benötigten Datenfelder zur Erstellung eines CustomUsers
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     Vorname = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
@@ -44,7 +46,8 @@ class CreateCustomUserForm(UserCreationForm):
     Ort = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Straße = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Hausnummer = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
-      
+
+    #Anpassung der Passwort Feldnamen für die Anzeige im Formular  
     password1.label="Passwort"
     password2.label="Passwort bestätigen"
     class Meta:
@@ -64,10 +67,13 @@ class CreateCustomUserForm(UserCreationForm):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     #Max
+
+    #benötige Felder für die Änderung eines Passwortes
     old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
 
+    #Anpassung der Passwort Feldnamen für die Anzeige im Formular  
     old_password.label="altes Passwort"
     new_password1.label="neues Passwort"
     new_password2.label="neues Passwort bestätigen"

@@ -141,6 +141,7 @@ def home_view(request, club=None):
 
 class CustomPasswordChangeView(PasswordChangeView):
     #Max
+    #Überschreibung des Django PasswortChangeView's
     form_class = CustomPasswordChangeForm
     success_url = reverse_lazy('home')
 

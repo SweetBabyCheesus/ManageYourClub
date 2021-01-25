@@ -9,6 +9,7 @@ def requestNotificationView(request, club):
     #https://www.youtube.com/watch?v=vmP1r6xiJog
     user = request.user
 
+    #Zur anzeige der Vereinsbezogenen Anfragen: Filterung
     if ClubModel.objects.filter(pk=club).exists():
         club = ClubModel.objects.get(pk=club)
     clubNotifications = MembershipRequest.objects.filter(club=club)
@@ -22,6 +23,9 @@ def requestNotificationView(request, club):
     return render(request, 'showNotifications.html', context)
 
 def acceptRequestMembership(request):
+    #Autor: Max
+    #Funktion um Mitgliedsanfragen von Usern an Vereine anzunehmen
+
     if request.method == 'POST': 
         clubNotId = request.POST.get('clubNotId', None)
         clubNotification = MembershipRequest.objects.get(pk=clubNotId)
@@ -29,8 +33,10 @@ def acceptRequestMembership(request):
         userId = clubNotification.user.email
         user = CustomUser.objects.get(email=userId)
 
+        #Erstellung der Mitgliedschaft mit den übergebenen Daten
         Membership.addMember(club=club, user=user)
 
+        #Anpassung des Mitteilungsstatus auf angenommen
         clubNotification.setStatusAccepted()
         return redirect(requestNotificationView, club=club.pk)
     return redirect('home')
@@ -38,11 +44,15 @@ def acceptRequestMembership(request):
 
 
 def declineRequestMembership(request):
+    #Autor: Max
+    #Funktion um Mitgliedsanfragen von Usern an Vereine abzulehnen
+
     if request.method == 'POST': 
         clubNotId = request.POST.get('clubNotId', None)
         clubNotification = MembershipRequest.objects.get(pk=clubNotId)
         club = clubNotification.club
        
+        #Anpassung des Mitteilungsstatus auf abgelehnt
         clubNotification.setStatusDeclined()
     
         return redirect(requestNotificationView, club=club.pk)

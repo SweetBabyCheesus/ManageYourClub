@@ -17,7 +17,7 @@
                 <td>{{ club.yearOfFoundation }}</td>
                 <td>{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
                 <td>
-
+<!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
                     {% if club not in myClubs %}
                     
                     <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm">

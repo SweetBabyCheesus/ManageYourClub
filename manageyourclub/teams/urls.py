@@ -4,7 +4,6 @@ from teams.views import addTeamView, showTeamView, showAllTeams, deleteTeamView,
 # Tutorial genutzt: https://dev-yakuza.posstree.com/en/django/form/
 
 urlpatterns = [
-    #wichtig: übergabe der Club/ Team Variable mit Get Methode
     path('<int:club>/addTeam/', addTeamView, name='addTeam'),
     path('<int:club>/<int:team>/showTeam', showTeamView, name='showTeam'),
     path('<int:club>/<int:team>/addTeamMember/', addTeamMemberView, name='addTeamMember'),

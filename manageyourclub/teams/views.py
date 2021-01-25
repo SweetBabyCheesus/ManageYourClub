@@ -9,6 +9,7 @@ from clubs.models import ClubModel
 def addTeamView(request, club, team=None):
     #Author: Max
 
+    #Handling falls nicht eingeloggt
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -57,12 +58,14 @@ def addTeamView(request, club, team=None):
 def showTeamView(request, team, club):
     #Author: Max
 
+    #Handling falls nicht eingeloggt
     if not request.user.is_authenticated:
         return redirect('login')
 
     team = TeamModel.objects.get(pk=team)
     club = ClubModel.objects.get(pk=club)
 
+    #Handlich: Nur bestehende Teams können angezeigt werden. 
     if not TeamModel.objects.filter(pk=team.pk).exists():
         return redirect('addTeam')
     
@@ -76,6 +79,7 @@ def showTeamView(request, team, club):
 def showAllTeams(request, club):
     #Author: Max
 
+    #Handling falls nicht eingeloggt
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -118,6 +122,7 @@ def addTeamMemberView(request, team, club):
     teamMembers = team.members.all()  
     form = AddTeamMemberForm()
 
+    #Übergabe der Daten per JSON Format
     if request.method == 'POST': 
         form = AddTeamMemberForm(request.POST)
 

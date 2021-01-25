@@ -103,12 +103,20 @@ def deleteClubView(request, club):
         return redirect('/?Verein_wurde_gelöscht:_'+str(club))
     return redirect('/?Verein_wurde_NICHT_gelöscht:_'+str(club))
 
+    
+
 def requestMembershipView(request):
+    #Autor Max
+    #Funktion um als User die Mitgliedschaft in einem Verein anzufrageen
     context={}
+
     if request.method == 'POST': 
         clubId = request.POST.get('clubId', None)
         club = ClubModel.objects.get(pk=clubId)
         user = request.user
         direction = 1
+
+        #Erstellung eines MembershipRequest objectes, damit der Verein annehmen oder ablehnen kann
         MembershipRequest.addRequest(user=user, club=club, direction=direction)
+
     return redirect('allclubs')

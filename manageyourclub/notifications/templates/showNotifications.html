@@ -1,4 +1,6 @@
-<!--Author: Max-->
+<!--Author: Max
+Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten vereins
+-->
 
 
 {% extends 'base.html' %}
@@ -43,7 +45,7 @@
                     <td>
                         <form action="{% url 'acceptRequestMembership' %}" method="post" id="acceptRequestMembershipForm">
                             {% csrf_token %}
-
+<!--Erstellung des annehmen Buttons für Beitrittsanfragen-->
                             <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
                                 value= {{ clubNot.id }} form="acceptRequestMembershipForm">Annehmen</Button>
 
@@ -52,7 +54,7 @@
                     <td>
                         <form action="{% url 'declineRequestMembership' %}" method="post" id="declineRequestMembershipForm">
                             {% csrf_token %}
-
+<!--Erstellung des ablehnen Buttons für Beitrittsanfragen-->
                             <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
                                 value= {{ clubNot.id }} form="declineRequestMembershipForm">Ablehnen</Button>
 

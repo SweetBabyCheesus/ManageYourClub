@@ -29,14 +29,20 @@ def update_user_profile(sender, instance, created, **kwargs):
 
 #Custom User Manager um Custom User zu erstellen
 class CustomUserManager(BaseUserManager):
+    #Autor: Max
+    #Manager zum Handeln des Angepassten Usermodels
 
     def create_user(self, email, Vorname, Nachname, Geburtstag, Geschlecht, Adresse, password=None):
+        #Überschreibung der create_user Methode, damit  die neuen Felder bei einer Nutzererstellung korrekt gespeichert werden
+
+        #Emailadresse= Username, Dater unbedingt Nötig zur Erstellung eines Accounts
         if not email:
             raise ValueError("Eine Emailadresse wird zur Accounterstellung benötigt")
 
         Adresse = AddressModel.objects.get(pk=Adresse)
         Geschlecht = Gender.objects.get(pk=Geschlecht)
 
+        #Erstellung eines CustomUser Objects
         user = self.model(
             email=self.normalize_email(email),
             Vorname=Vorname,
@@ -46,11 +52,17 @@ class CustomUserManager(BaseUserManager):
             Adresse=Adresse
         )
         user.set_password(password)
+
+        #speicherung des Objects in der DB
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password, Vorname, Nachname, Geburtstag, Geschlecht, Adresse):
 
+
+    def create_superuser(self, email, password, Vorname, Nachname, Geburtstag, Geschlecht, Adresse):
+        #Überschreibung der create_superuser Methode, damit Superuser mit allen Datenfeldern korret angelegt werden
+
+        #Erstellung eines CustomUser Objects
         user = self.create_user(
             email=self.normalize_email(email),
             Vorname=Vorname,
@@ -60,9 +72,13 @@ class CustomUserManager(BaseUserManager):
             Adresse=Adresse,
             password=password
         )
+
+        #Anpassung der Berechtigungen
         user.is_admin=True
         user.is_staff=True
         user.is_superuser=True
+
+        #speicherung des Objects in der DB
         user.save(using=self._db)
         return user
 
@@ -80,6 +96,9 @@ class Gender(models.Model): # Author: Tobias
 # Email muss unique sein, damit Login mit mail möglich ist
 class CustomUser(AbstractBaseUser):
     #Max
+
+    #Erstellung der benötigten Datenfelder
+    #Emailfeld fungiert als Username. Daher muss sie Unique sein
     email = models.EmailField(verbose_name='email', max_length = 60, unique=True)
     date_joined = models.DateField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateField(verbose_name='last login', auto_now=True)
@@ -99,6 +118,7 @@ class CustomUser(AbstractBaseUser):
     # damit der Custom Manager genutzt wird
     objects = CustomUserManager()
 
+    #Festlegung: Email als Usernamefeld nutzten
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['Vorname', 'Nachname', 'Geburtstag', 'Geschlecht', 'Adresse']
 

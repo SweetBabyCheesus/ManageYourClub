@@ -6,7 +6,7 @@ from members.models import Membership
 
 
 class SportForm(forms.ModelForm):
-    #ModelForm für Adressen
+    #ModelForm für die Sportarten
     #Author: Max
     sportName = forms.CharField(max_length=30, label='Sportart')
 
@@ -15,14 +15,21 @@ class SportForm(forms.ModelForm):
         fields=[]
 
     def save(self, commit=True):
-        """speichert die vom Nutzer eingegebenen Daten"""
+        #speichert die vom Nutzer eingegebenen Daten
+
         instance = super().save(commit=False)
         valueSportName = self.cleaned_data['sportName']
+
+        #Falls die Sportart in der DB bereits angelegt ist, soll kein neuer Eintrag erstellt werden, sonder der bestehende genutzt werden.
+        #->Speicherplatz, Datenkonsistenz
         sport, created = SportModel.objects.get_or_create(sportName=valueSportName)
+
         if created and commit:
-            place.save()
+            sport.save()
+
         instance.sportName = sport
         instance.save(commit)
+
         return instance
 
 
