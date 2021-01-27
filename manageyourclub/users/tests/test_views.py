@@ -7,6 +7,7 @@ from members.models import Membership
 
 
 def logTestClientIn(client, email='testuser@email.de', password='12345'):
+    #Vorlage von Jonas
     "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
     createGenders()
     place = PlaceModel.objects.create(
@@ -34,15 +35,18 @@ def logTestClientIn(client, email='testuser@email.de', password='12345'):
     return client.login(email=email, password=password)
 
 def getUser():
+    #Max
     return CustomUser.objects.get(pk=1)
 
 def createGenders():
+    #Max
     Gender.objects.create(gender='männlich')
     Gender.objects.create(gender='weiblich')
     Gender.objects.create(gender='divers')
     
 
 def createTestClub(
+    #Vorlage von Tobias, angepasst von Max
     clubname = 'Wehen',
     yearOfFoundation = '2000',
     streetAddress = 'Testerstraße',
@@ -69,6 +73,7 @@ def createTestClub(
     club.save()
 
 def createTestMembership(user):
+    #Max
     club                            = ClubModel.objects.get(clubname='Wehen')
     mem                             = Membership.addMember(club=club,user=user)
 
