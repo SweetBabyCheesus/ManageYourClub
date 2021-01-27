@@ -3,36 +3,10 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from users.models import CustomUser, Gender
 from clubs.models import AddressModel, PlaceModel, ClubModel
+from clubs.tests.test_views import createTestUser, logTestClientIn,createTestClub
+from teams.tests.test_views import createTestTeam
 from members.models import Membership
 
-
-def logTestClientIn(client, email='testuser@email.de', password='12345'):
-    #Vorlage von Jonas
-    "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
-    createGenders()
-    place = PlaceModel.objects.create(
-        postcode = 12345,
-        village = "München"
-    )
-
-    address = AddressModel.objects.create(
-        streetAddress = 'Teststraße',
-        houseNumber = '95b',
-        postcode = place
-    )
-
-    user = CustomUser.objects.create(
-        email='testuser@email.de',
-        Vorname='Vorname',
-        Nachname='Nachname',
-        Geburtstag='1997-01-01',
-        Geschlecht=Gender.objects.get(pk=1),
-        Adresse=address,
-    ) 
-
-    user.set_password(password)
-    user.save()
-    return client.login(email=email, password=password)
 
 def getUser():
     #Max
@@ -43,38 +17,10 @@ def createGenders():
     Gender.objects.create(gender='männlich')
     Gender.objects.create(gender='weiblich')
     Gender.objects.create(gender='divers')
-    
-
-def createTestClub(
-    #Vorlage von Tobias, angepasst von Max
-    clubname = 'Wehen',
-    yearOfFoundation = '2000',
-    streetAddress = 'Testerstraße',
-    houseNumber = '94b',
-    postcode = 65199,
-    village = "Wiesbaden"
-):
-    "Gibt einen Test-Verein zurück"
-    place = PlaceModel.objects.create(
-        postcode = postcode,
-        village = village
-    )
-    address = AddressModel.objects.create(
-        streetAddress = streetAddress,
-        houseNumber = houseNumber,
-        postcode = place
-    )
-    club = ClubModel.objects.create(
-        clubname = clubname,
-        yearOfFoundation = yearOfFoundation,
-        address = address
-    )
-
-    club.save()
 
 def createTestMembership(user):
     #Max
-    club                            = ClubModel.objects.get(clubname='Wehen')
+    club                            = ClubModel.objects.get(clubname='fcbayern')
     mem                             = Membership.addMember(club=club,user=user)
 
 
