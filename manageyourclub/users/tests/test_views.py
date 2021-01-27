@@ -211,4 +211,3 @@ class TestUsersViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, self.home_template)
-
