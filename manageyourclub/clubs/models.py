@@ -29,7 +29,10 @@ class AddressModel(models.Model):
             postcode = PlaceModel.objects.get_or_create(postcode=postcode, village=village)[0]
             postcode.save()
     
-        return AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber).save()
+        AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber).save()
+        address = AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber)
+        address.save()
+        return address
 
     @staticmethod
     def get_or_create(streetAddress, houseNumber, postcode, village):
