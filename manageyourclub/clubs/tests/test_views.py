@@ -23,28 +23,9 @@ def createTestUser(email='testuser@email.de', password='12345'):
 
 def logTestClientIn(client, email='testuser@email.de', password='12345'):
     "Erstellt einen Testnutzer und meldet den übergebenen client mit den Daten des Testnutzers an."
-    place = PlaceModel.objects.create(
-        postcode = 12345,
-        village = "München"
-    )
 
-    address = AddressModel.objects.create(
-        streetAddress = 'Teststraße',
-        houseNumber = '95b',
-        postcode = place
-    )
-
-    user = CustomUser.objects.create(
-        email=email,
-        Vorname='Vorname',
-        Nachname='Nachname',
-        Geburtstag='1997-01-01',
-        Geschlecht=Gender.objects.create(gender = 'männlich'),
-        Adresse=address
-    ) 
-
-    user.set_password(password)
-    user.save()
+    user = createTestUser(email=email, password=password)
+    client.user=user
     return client.login(email=email, password=password)
 
 def createTestClub(
@@ -56,20 +37,7 @@ def createTestClub(
     village = "München"
 ):
     "Gibt einen Test-Verein zurück"
-    place = PlaceModel.objects.create(
-        postcode = postcode,
-        village = village
-    )
-    address = AddressModel.objects.create(
-        streetAddress = streetAddress,
-        houseNumber = houseNumber,
-        postcode = place
-    )
-    return ClubModel.objects.create(
-        clubname = clubname,
-        yearOfFoundation = yearOfFoundation,
-        address = address
-    )
+    return ClubModel.create(clubname, yearOfFoundation, streetAddress, houseNumber, postcode, village)
 
 
 class TestViews(TestCase):
