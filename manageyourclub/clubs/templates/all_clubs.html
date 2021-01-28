@@ -20,11 +20,11 @@
 <!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
                     {% if club not in myClubs %}
                     
-                    <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm">
+                    <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
                         {% csrf_token %}
 
                         <Button type="submit" name="clubId" class="btn btn-default" style="background-color: #951525; color:white;" 
-                            value= {{ club.id }} form="requestMembershipForm">Beitreten</Button>
+                            value= {{ club.id }} form="requestMembershipForm" id="requestMembershipButton_{{ forloop.counter }}">Beitreten</Button>
 
                     </form>
                     {% else %}
