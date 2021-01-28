@@ -1,38 +1,7 @@
 from django import forms
 from teams.models import SportModel, TeamModel
-from clubs.models import ClubModel
 from users.models import CustomUser
 from members.models import Membership
-
-
-class SportForm(forms.ModelForm):
-    #ModelForm für die Sportarten
-    #Author: Max
-    sportName = forms.CharField(max_length=30, label='Sportart')
-
-    class Meta:
-        model = SportModel
-        fields=[]
-
-    def save(self, commit=True):
-        #speichert die vom Nutzer eingegebenen Daten
-
-        instance = super().save(commit=False)
-        valueSportName = self.cleaned_data['sportName']
-
-        #Falls die Sportart in der DB bereits angelegt ist, soll kein neuer Eintrag erstellt werden, sonder der bestehende genutzt werden.
-        #->Speicherplatz, Datenkonsistenz
-        sport, created = SportModel.objects.get_or_create(sportName=valueSportName)
-
-        if created and commit:
-            sport.save()
-
-        instance.sportName = sport
-        instance.save(commit)
-
-        return instance
-
-
 
 class TeamForm(forms.ModelForm):
     #Author: Max
@@ -83,8 +52,6 @@ class TeamForm(forms.ModelForm):
                     oldSport.delete()
             return instance
     
-
-
 
 class AddTeamMemberForm(forms.Form):
     #Autor: Max
