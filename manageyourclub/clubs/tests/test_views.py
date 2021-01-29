@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from clubs.models import ClubModel, AddressModel
+from clubs.models import ClubModel, AddressModel, PlaceModel
 from users.models import CustomUser, Gender
 
 def createTestUser(email='testuser@email.de', password='12345'):
