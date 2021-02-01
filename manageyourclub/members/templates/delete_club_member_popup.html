@@ -2,16 +2,16 @@
 
 <!-- Tutorial genutzt https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (ab 2:14:16) -->
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#membership{{ membership.pk }}">Mitglied {{ membership.member.user.Vorname }} Löschen</button>
+    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#{{membership.member.email|cut:'.'|cut:'@'}}{{ membership.club.pk }}">Mitglied {{ membership.member.user.Vorname }} Löschen</button>
 {% endblock modal-toggle %}
 
-{% block modalName %}membership{{ membership.pk }}{% endblock modalName %}
+{% block modalName %}{{membership.member.email|cut:'.'|cut:'@'}}{{ membership.club.pk }}{% endblock modalName %}
 
 {% block modal-headline %}Mitglied Löschen{% endblock modal-headline %}
 
 {% block modal-body %}
     <p>
-        Möchtest du wirklich {{ membership.member.user.Vorname }} {{ membership.member.user.Nachname }} aus dem Verein werfen?
+        Möchtest du wirklich {{ membership.member.Vorname }} {{ membership.member.Nachname }} aus dem Verein werfen?
     </p>
     <form method='POST'>
         {% csrf_token %}
