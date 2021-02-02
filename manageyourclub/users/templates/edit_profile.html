@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base loggedin.html' %}
 {% block title %}Benutzerdaten ändern{% endblock %}
 {% block content %}
 {% load static %}
-
-
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+{% block stylesheets %}{% endblock stylesheets %}
+<div class="right-div padding-t-small">
 <div id="content-container" class="container p-none">
     <div class="lgn-container ">          
     <style type="text/css">
@@ -159,10 +160,9 @@
             </table>
             
         <button type="submit" name="submit" class="submit" id="submit">Daten ändern</button>
-        <br><br>
-        <a style="color:white" href="{% url 'home' %}">Zurück zur Startseite</a>
     </form>
     </div>
     </div>
 </div>
 {% endblock content %}
+</div>

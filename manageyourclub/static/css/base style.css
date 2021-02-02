@@ -4911,11 +4911,10 @@ a.list-group-item.active > .badge,
   font-weight: 200;
   line-height: 2.1428571435;
   color: inherit;
-  background-color: #4873e9;
+  background-color: #eeeeee;
 }
 
 .jumbotron h1 {
-  font-size: 10px;
   line-height: 1;
   color: inherit;
 }
@@ -6791,64 +6790,4 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
-}
-
-/* Split the screen in half */
-.split {
-  height: 100%;
-  width: 15%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-/* Control the left side */
-.left {
-  left: 0;
-  
-}
-
-/* Control the right side */
-.right {
-  right: 0;
-  background-color: red;
-}
-
-/* If you want the content centered horizontally and vertically */
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* Style the image inside the centered container, if needed */
-.centered img {
-  width: 150px;
-  border-radius: 50%;
-}
-
-.right-div{
-  height: 100%;
-  width: 85%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  right: 0;
-  padding-top: 15%;
-}
-
-.padding-rl{
-  padding-left: 5%;
-  padding-right: 5%;
-}
-.padding-l{
-  padding-left: 10%;
-}
-.padding-t-small{
-  padding-top: 5%;
 }

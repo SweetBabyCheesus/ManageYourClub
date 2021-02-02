@@ -1,7 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base loggedin.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+{% block stylesheets %}{% endblock stylesheets %}
 <style type="text/css">
     body { 
     background: url('{% static "img/userdata.jpg" %}') no-repeat center center fixed; 
@@ -103,7 +105,8 @@
         100% { background-position: 0 0; }
     }
 </style>
-<div class="table" align="center">
+<div class="right-div">
+<div class="table" align="center" >
 <table id="table">
     <tr>
         <th>Vorname</th>
@@ -143,7 +146,8 @@
     </tr>
 </table>
 </div>
-</div>
+
 
 <a href="{% url 'edit_profile' %}" style="color: white;"><button name="submit" class="submit" id="submit">Daten ändern!</button></a>
 {% endblock content %}
+</div>

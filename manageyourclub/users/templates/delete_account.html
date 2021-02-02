@@ -1,7 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base loggedin.html' %}
 {% block title %}Registrieren{% endblock %}
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+{% block stylesheets %}{% endblock stylesheets %}
+<div class="right-div padding-rl">
 <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -15,4 +18,5 @@
                href="{% url 'home' %}">Zurück</a>
     </div>
 </form>
+</div>
 {% endblock content %}

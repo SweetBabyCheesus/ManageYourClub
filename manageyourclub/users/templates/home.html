@@ -1,18 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'base loggedin.html' %}
 {% block title %}Startseite{% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
+<div class="right-div padding-l">
+  <h3>Startseite</h3>
   Hey <a href="{% url 'userData' %}">{{ user.Vorname }} {{ user.Nachname }}</a>!
-  <p><a href="{% url 'logout' %}">Ausloggen</a></p>
   <p><a href="{% url 'password' %}">Passwort ändern</a></p>
   <p><a href="{% url 'deleteuser' %}">Konto löschen</a></p>
 {% else %}
   <h1 style="color:red">Fehler: Als nicht angemeldeter Nutzer solltest du nicht hier sein!</h1>
 {% endif %}
 
-<h3>Startseite</h3>
+
 {% include 'select_club_dropdown.html' %}
 <p><a href="{% url 'myclub' club=club.id %}">Mein Verein</a></p>
 <p><a href="{% url 'allclubs' %}">Übersicht aller Vereine</a></p>
@@ -20,3 +21,4 @@
 <p><a href="{% url 'club_members' club=club.id %}">Mitgliederübersicht</a></p>
 <p><a href='{% url "requestNotifications" club=club.id %}'>Mitteilungen</a></p>
 {% endblock %}
+</div>
