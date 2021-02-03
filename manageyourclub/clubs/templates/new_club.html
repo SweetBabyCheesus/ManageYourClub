@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base loggedin.html' %}
 <!-- form übernommen von https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s 
     (Sichtbar unter Anderem bei 2:28:01) -->
 {% block title %}Mein Verein{% endblock title %}
@@ -9,7 +9,6 @@
 {% endblock stylesheets %}
 
 {% block content %}
-    <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
     {% block form %}
         <form method='POST'>
             {{ form.as_p }}
