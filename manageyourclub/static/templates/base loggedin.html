@@ -1,51 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <!-- Tutorial genutzt https://www.csestack.org/add-css-static-files-django/ -->
-  <style>
-    .success{
-      color:white;
-      background-color: rgb(3, 146, 3);
-      border-radius: 10px;
-    }
-    .error{
-      color:white;
-      background-color: rgb(255, 0, 0);
-      border-radius: 10px;
-    }
-    .info{
-      color:white;
-      background-color: rgb(0, 38, 255);
-      border-radius: 10px;
-    }
-  </style>
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}MYC{% endblock %}</title>
-
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  
-  {% block stylesheets %}{% endblock stylesheets %}
-
-</head>
-<body>
-  <div class="jumbotron text-center split left">
-    <h2 style="color: white;">VEMA</h2>
-    <a style="position: absolute; bottom: 60px; left: 0; right: 0; color: white;" href="{% url 'home' %}">Zurück zur Startseite</a>
-    <a href="{% url 'logout' %}" style="position: absolute; bottom: 20px; left: 0; right: 0; color: white;">Ausloggen</a>
-    <div>
-      {% if messages %}
-          {% for message in messages %}
-          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-              {{ message }}
-          </div>
-          {% endfor %}
-      {% endif %}
-    </div>
-  </div>
-  <main class="right-div" style="padding:3%">
-      {% block content %}
-      {% endblock %}
-  </main>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block leiste %}
+<div class="base text-center split left">
+<a style="position: absolute; bottom: 60px; left: 0; right: 0; color: white;" href="{% url 'home' %}">Zurück zur Startseite</a>
+<a href="{% url 'logout' %}" style="position: absolute; bottom: 20px; left: 0; right: 0; color: white;">Ausloggen</a>  
+{% endblock leiste %}
+{% block right %}
+<main class="right-div" style="padding:3%">
+{% endblock right %}

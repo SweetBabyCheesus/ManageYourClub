@@ -1,58 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <!-- Tutorial genutzt https://www.csestack.org/add-css-static-files-django/ -->
-  <style>
-    .success{
-      color:white;
-      background-color: rgb(3, 146, 3);
-      border-radius: 10px;
-    }
-    .error{
-      color:white;
-      background-color: rgb(255, 0, 0);
-      border-radius: 10px;
-    }
-    .info{
-      color:white;
-      background-color: rgb(0, 38, 255);
-      border-radius: 10px;
-    }
-  </style>
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}MYC{% endblock %}</title>
-
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  
-  {% block stylesheets %}{% endblock stylesheets %}
-
-</head>
-<body>
-  <div>
-  
-  <div class="jumbotron">
-    <h2 style="color: white;" class="text-center">VEMA - Dein Vereinsmanagement</h2> 
-    <div class="text-right">
-    <a style="position: absolute; right: 60px; top: 62px; color: white;" href="{% url 'login' %}">Login</a>
-    </div>
-    <div>
-      {% if messages %}
-          {% for message in messages %}
-          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-              {{ message }}
-          </div>
-          {% endfor %}
-      {% endif %}
-      
-    </div>
-  </div>
-</div>
-
-  
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block leiste %}
+<div class="base text-center">
+<a style="position: absolute; right: 60px; top: 62px; color: white;" href="{% url 'login' %}">Login</a>
+{% endblock leiste %}
+{% block right %}
+<main style="padding:3%">
+{% endblock right %}

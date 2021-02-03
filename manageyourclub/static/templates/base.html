@@ -24,14 +24,14 @@
 
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 <body>
-  <div class="jumbotron text-center">
-    <h1>ManageYourClub</h1>
-    <p>Verwalte deinen Verein!</p>
+  {% block leiste %}
+    {% endblock leiste %}
+    <h2 style="color: white;">VEMA</h2>
     <div>
       {% if messages %}
           {% for message in messages %}
@@ -42,13 +42,11 @@
       {% endif %}
     </div>
   </div>
-
-
-
+  {% block right %}
   
-  <main>
-    {% block content %}
-    {% endblock %}
+    {% endblock right %}
+      {% block content %}
+      {% endblock %}
   </main>
 </body>
 </html>
