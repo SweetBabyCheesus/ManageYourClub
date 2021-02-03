@@ -1,0 +1,38 @@
+{% extends 'base loggedin.html' %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        th {
+            padding: 8px 30px;
+            border-collapse: separate;
+            text-align: left;
+        }
+
+        td {
+            padding: 0px 30px;
+            border-collapse: separate;
+            text-align: left;
+        }
+    </style>
+{% endblock stylesheets %}
+
+
+{% block content%}
+
+    {% block aboveTable %}
+    {% endblock aboveTable %}
+
+    <table class="table">
+        <tr>
+            {% block tablehead %}
+            {% endblock tablehead %}
+        </tr>
+        {% block tablerows %}
+        {% endblock tablerows %}
+    </table>
+
+    
+    {% block underTable %}
+    {% endblock underTable %}
+    
+{% endblock content%}

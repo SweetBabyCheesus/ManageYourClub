@@ -1,25 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'table.html' %}
 
-{% block content%}
+{% block aboveTable %}
+    <h1 style="color: rgb(0, 0, 0); text-align: center;">Übersicht aller Vereine</h1>
+{% endblock aboveTable %}
 
-<h1 style="color: rgb(0, 0, 0); text-align: center;">Übersicht aller Vereine</h1>
-<br>
-    <table class="table" >
+{% block tablehead %}
+    <th>Name</th>
+    <th>Gründungsjahr</th>
+    <th>Adresse</th>
+    <th>Mitgliedschaft</th>
+{% endblock tablehead %}
+
+{% block tablerows %}
+    {% for club in clubs %}
         <tr>
-            <th>Name</th>
-            <th>Gründungsjahr</th>
-            <th>Adresse</th>
-            <th>Mitgliedschaft</th>
-        </tr>
-        {% for club in clubs %}
-            <tr>
-                <td>{{ club.clubname }}</td>
-                <td>{{ club.yearOfFoundation }}</td>
-                <td>{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
-                <td>
-<!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
-                    {% if club not in myClubs %}
-                    
+            <td>{{ club.clubname }}</td>
+            <td>{{ club.yearOfFoundation }}</td>
+            <td>{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
+            <td>
+                <!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
+                {% if club not in myClubs %}
                     <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
                         {% csrf_token %}
 
@@ -27,18 +27,10 @@
                             value= {{ club.id }} form="requestMembershipForm" id="requestMembershipButton_{{ forloop.counter }}">Beitreten</Button>
 
                     </form>
-                    {% else %}
-                    
-                        du bist bereits Mitglied
-
-                    {% endif %}
-                    
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-
-    <p>
-        <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
-    </p>
-{% endblock content%}
+                {% else %}
+                    du bist bereits Mitglied
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock tablerows %}

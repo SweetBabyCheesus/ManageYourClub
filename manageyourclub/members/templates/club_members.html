@@ -1,30 +1,28 @@
-{% extends 'base.html' %}
+<!--Author: Tobias-->
+{% extends 'table.html' %}
 
-{% block content%}
-    <p>
-        <a href='{% url "home" club=club.id %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
-    </p>
-
+{% block aboveTable %}
     {% include 'add_club_member_popup.html' %}
+{% endblock aboveTable %}
 
-    <table>
+{% block tablehead %}
+    <th></th>
+    <th>Vorname</th>
+    <th>Nachname</th>
+    <th>E-Mail-Adresse</th>
+    <th>Funktion</th>
+{% endblock tablehead %}
+
+{% block tablerows %}
+    {% for membership in memberships %}
         <tr>
-            <th></th>
-            <th>Vorname</th>
-            <th>Nachname</th>
-            <th>E-Mail-Adresse</th>
-            <th>Funktion</th>
+            <td>{% include 'delete_club_member_popup.html' %}</td>
+            <td>{{ membership.member.Vorname }}</td>
+            <td>{{ membership.member.Nachname }}</td>
+            <td>{{ membership.member.email }}</td>
+            <td>{{ membership.memberFunction.function }}</td>
+            <td><a href='{% url "edit_member" club=club.id memship=membership.pk %}'>Bearbeiten</a></td>
         </tr>
-        {% for membership in memberships %}
-            <tr>
-                <td>{% include 'delete_club_member_popup.html' %}</td>
-                <td>{{ membership.member.Vorname }}</td>
-                <td>{{ membership.member.Nachname }}</td>
-                <td>{{ membership.member.email }}</td>
-                <td>{{ membership.memberFunction.function }}</td>
-                <td><a href='{% url "edit_member" club=club.id memship=membership.pk %}'>Bearbeiten</a></td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
+{% endblock tablerows %}
     
-{% endblock content%}

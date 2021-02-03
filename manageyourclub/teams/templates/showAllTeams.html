@@ -1,45 +1,27 @@
-<!--Author: Max
+<!--Author: Max, Zur Umsetzung des Designs von Tobias angepasst.
 Übersicht aller Mannschaften des ausgewählten Vereins-->
+{% extends 'table.html' %}
 
+{% block aboveTable %}
+    <p>
+        <p><a href="{% url 'addTeam' club=club.id%}"><button class="btn btn-default">Mannschaft erstellen</button></a></p>
+    </p>
+{% endblock aboveTable %}
 
-{% extends 'base.html' %}
+{% block tablehead %}
+    <th>Mannschaftsname</th>
+    <th>Sportart</th>
+    <th>Bearbeiten?</th>
+    <th>Mitglieder verwalten</th>
+{% endblock tablehead %}
 
-{% block content%}
-<style type="text/css">
-    th { 
-        padding: 8px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
-
-    td { 
-        padding: 0px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
-
-</style>
-
-<p>
-    <a href='{% url "home" club=club.id %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
-    <p><a href="{% url 'addTeam' club=club.id%}"><button class="btn btn-default">Mannschaft erstellen</button></a></p>
-</p>
-
-    <table>
+{% block tablerows %}
+    {% for team in teams %}
         <tr>
-            <th>Mannschaftsname</th>
-            <th>Sportart</th>
-            <th>Bearbeiten?</th>
-            <th>Mitglieder verwalten</th>
+            <td>{{ team.teamName }}</td>
+            <td>{{ team.sportId.sportName }}</td>
+            <td><a href="{% url 'showTeam' club=club.id team=team.id %}">Anzeigen/ Bearbeiten</a></td>
+            <td><a href="{% url 'addTeamMember' club=club.id team=team.id %}">Mitiglieder verwalten</a></td> 
         </tr>
-        {% for team in teams %}
-            <tr>
-                <td>{{ team.teamName }}</td>
-                <td>{{ team.sportId.sportName }}</td>
-                <td><a href="{% url 'showTeam' club=club.id team=team.id %}">Anzeigen/ Bearbeiten</a></td>
-                <td><a href="{% url 'addTeamMember' club=club.id team=team.id %}">Mitiglieder verwalten</a></td> 
-            </tr>
-        {% endfor %}
-    </table>
-    
-{% endblock content%}
+    {% endfor %}
+{% endblock tablerows %}
