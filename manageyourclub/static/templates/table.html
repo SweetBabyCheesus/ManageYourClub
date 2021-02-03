@@ -1,21 +1,10 @@
+<!--Author: Tobias-->
 {% extends 'base loggedin.html' %}
 
+{% load static %}
 {% block stylesheets %}
-    <style type="text/css">
-        th {
-            padding: 8px 30px;
-            border-collapse: separate;
-            text-align: left;
-        }
-
-        td {
-            padding: 0px 30px;
-            border-collapse: separate;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/tables.css' %}">
 {% endblock stylesheets %}
-
 
 {% block content%}
 
@@ -30,7 +19,6 @@
         {% block tablerows %}
         {% endblock tablerows %}
     </table>
-
     
     {% block underTable %}
     {% endblock underTable %}
