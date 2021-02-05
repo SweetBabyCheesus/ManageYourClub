@@ -1,8 +1,23 @@
 {% extends 'popup.html' %}
 
-<!-- Tutorial genutzt https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (ab 2:14:16) -->
+<!-- 
+    Tutorials genutzt https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s (ab 2:14:16) 
+    https://stackoverflow.com/questions/16402390/bootstrap-control-with-multiple-data-toggle#28316762 
+-->
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#membership{{ forloop.counter }}">Mitglied {{ membership.member.user.Vorname }} Löschen</button>
+    <span data-toggle="modal" data-target="#membership{{ forloop.counter }}">
+        <Button 
+            type="button" 
+            name="clubId" 
+            data-toggle="tooltip"
+            class="btn btn-default icon-button" 
+            title="Mitglied {{ membership.member.user.Vorname }} Löschen" 
+            value="{{ club.id }}"
+            form="requestMembershipForm_{{ forloop.counter }}" id="requestMembershipButton_{{ forloop.counter }}"
+        >
+            <i class="fas fa-trash"></i>
+        </Button>
+    </span>
 {% endblock modal-toggle %}
 
 {% block modalName %}membership{{ forloop.counter }}{% endblock modalName %}
@@ -11,11 +26,13 @@
 
 {% block modal-body %}
     <p>
-        Möchtest du wirklich {{ membership.member.user.Vorname }} {{ membership.member.user.Nachname }} aus dem Verein werfen?
+        Möchtest du wirklich {{ membership.member.Vorname }} {{ membership.member.Nachname }} aus dem Verein werfen?
     </p>
     <form method='POST'>
         {% csrf_token %}
         <input type='hidden' name='membership' value='{{membership.pk}}'>
-        {% block submitButton %}<input type='submit' class="btn btn-default" value='Löschen'>{% endblock submitButton %}
+        {% block submitButton %}
+            <input type='submit' class="btn btn-default" style="background-color:#882222; color:var(--bg-color); border-color: transparent;" value='Löschen'>
+        {% endblock submitButton %}
     </form>
 {% endblock modal-body %}

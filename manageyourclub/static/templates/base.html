@@ -25,7 +25,21 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
   {% block stylesheets %}{% endblock stylesheets %}
+  
+  <!--Mit der folgenden Zeile werden Icons von https://fontawesome.com/ eingebunden.-->
+  <script src="https://kit.fontawesome.com/5649be77c1.js" crossorigin="anonymous"></script>
+
+  <!--Jquery und Bootstrap Skripte-->
+  <script src="{% static 'js/jquery.min.js' %}" crossorigin="anonymous"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+  <!--Tooltips aktivieren, Tutorial: https://getbootstrap.com/docs/4.1/components/tooltips/-->
+  <script>
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+      })
+  </script>
 
 </head>
 <body>

@@ -2,17 +2,11 @@
 Übersicht aller Mannschaften des ausgewählten Vereins-->
 {% extends 'table.html' %}
 
-{% block aboveTable %}
-    <p>
-        <p><a href="{% url 'addTeam' club=club.id%}"><button class="btn btn-default">Mannschaft erstellen</button></a></p>
-    </p>
-{% endblock aboveTable %}
+{% block headline %}Mannschaftsübersicht{% endblock headline %}
 
 {% block tablehead %}
     <th>Mannschaftsname</th>
     <th>Sportart</th>
-    <th>Bearbeiten?</th>
-    <th>Mitglieder verwalten</th>
 {% endblock tablehead %}
 
 {% block tablerows %}
@@ -20,8 +14,40 @@
         <tr>
             <td>{{ team.teamName }}</td>
             <td>{{ team.sportId.sportName }}</td>
-            <td><a href="{% url 'showTeam' club=club.id team=team.id %}">Anzeigen/ Bearbeiten</a></td>
-            <td><a href="{% url 'addTeamMember' club=club.id team=team.id %}">Mitiglieder verwalten</a></td> 
+            <td>
+                <a href="{% url 'addTeamMember' club=club.id team=team.id %}">
+                    <Button 
+                        type="button" 
+                        name="clubId" 
+                        class="btn btn-default icon-button" 
+                        data-toggle="tooltip"
+                        title="Mitiglieder von {{ team.teamName }} verwalten" 
+                    >
+                        <i class="fas fa-users-cog"></i>
+                    </Button>
+                </a> 
+                <a href="{% url 'showTeam' club=club.id team=team.id %}">
+                    <Button 
+                        type="button" 
+                        name="clubId" 
+                        class="btn btn-default icon-button" 
+                        data-toggle="tooltip"
+                        title="{{ team.teamName }} Anzeigen/ Bearbeiten" 
+                    >
+                        <i class="fas fa-cogs"></i>
+                    </Button>
+                </a>
+            </td>
         </tr>
     {% endfor %}
 {% endblock tablerows %}
+
+{% block underTable %}
+    <p>
+        <a href="{% url 'addTeam' club=club.id%}">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">
+                Mannschaft erstellen
+            </button>
+        </a>
+    </p>
+{% endblock underTable %}

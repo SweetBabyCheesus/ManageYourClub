@@ -5,7 +5,7 @@ from users.models import CustomUser
 
 # Tutorial genutzt: https://www.tutorialspoint.com/python_data_science/python_date_and_time.htm
 class AddClubMemberForm(forms.Form):
-    eMail = forms.CharField(max_length=30, label='E-Mail-Adresse')
+    eMail = forms.CharField(max_length=50, label='E-Mail-Adresse')
 
     def addMember(self, club):
         eMail = self.cleaned_data['eMail']

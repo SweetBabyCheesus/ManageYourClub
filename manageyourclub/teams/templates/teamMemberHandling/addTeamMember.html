@@ -1,38 +1,24 @@
-{% extends 'base loggedin.html' %}
+{% extends 'table.html' %}
 
-{% block content%}
+{% block headline %}Mitgliederverwaltung für {{team.teamName }}{% endblock headline %}
 
+{% block tablehead %}
+    <th>Vorname</th>
+    <th>Nachname</th>
+{% endblock tablehead %}
 
-<style type="text/css">
-    th { 
-        padding: 8px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
-
-    td { 
-        padding: 0px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
-
-</style>
-
-{% include 'teamMemberHandling/addTeamMemberPopup.html' %}
-
-<a href="{% url 'showAllTeams' club=club.id %}"><button class="btn btn-default">zur Mannschaftsübersicht</button></a>
-<table>
-    <tr>
-        <th>Vorname</th>
-        <th>Nachname</th>
-    </tr>
+{% block tablerows %}
     {% for member in teamMembers %}
         <tr>
             <td>{{ member.member.Vorname }}</td>
             <td>{{ member.member.Nachname }}</td>
         </tr>
     {% endfor %}
-</table>
+{% endblock tablerows %}
 
-
-{% endblock content%}
+{% block underTable %}
+    {% include 'teamMemberHandling/addTeamMemberPopup.html' %}
+    <a href="{% url 'showAllTeams' club=club.id %}">
+        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">zur Mannschaftsübersicht</button>
+    </a>
+{% endblock underTable %}

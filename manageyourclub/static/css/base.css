@@ -1,4 +1,30 @@
 :root {
-    --vema-blue: #50a4eb;
+    --vema-blue: #50A4Eb;
+    --grey: #ADB5BD;
+    --bg-color: white;
 }
 
+/*Author: Tobias*/
+    .icon-button, .icon-button:hover{
+        font-size: 28px;
+        background-color: var(--bg-color);
+        border-color: transparent;
+        color: var(--grey);
+        padding:0;
+    }
+
+    .icon-button:hover{
+        filter: brightness(0.8)
+    }
+
+
+    /* Tutorial genutzt: https://stackoverflow.com/questions/14099309/twitter-bootstrap-modal-is-dark#14192934 */
+        .modal-backdrop {
+            display: none;
+        }
+        
+        .modal {
+        background: rgba(0,0,0,0.5);
+        }
+    /* */
+/* */

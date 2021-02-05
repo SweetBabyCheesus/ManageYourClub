@@ -1,12 +1,9 @@
 <!--Author: Tobias-->
 {% extends 'table.html' %}
 
-{% block aboveTable %}
-    {% include 'add_club_member_popup.html' %}
-{% endblock aboveTable %}
+{% block headline %}Mitgliederübersicht{% endblock headline %}
 
 {% block tablehead %}
-    <td></td>
     <th>Vorname</th>
     <th>Nachname</th>
     <th>E-Mail-Adresse</th>
@@ -16,13 +13,30 @@
 {% block tablerows %}
     {% for membership in memberships %}
         <tr>
-            <td>{% include 'delete_club_member_popup.html' %}</td>
             <td>{{ membership.member.Vorname }}</td>
             <td>{{ membership.member.Nachname }}</td>
             <td>{{ membership.member.email }}</td>
             <td>{{ membership.memberFunction.function }}</td>
-            <td><a href='{% url "edit_member" club=club.id memship=membership.pk %}'>Bearbeiten</a></td>
+            <td>
+                <a href='{% url "edit_member" club=club.id memship=membership.pk %}'>
+                    <Button 
+                        type="button" 
+                        name="clubId" 
+                        class="btn btn-default icon-button" 
+                        data-toggle="tooltip"
+                        title="Mitglied {{ membership.member.user.Vorname }} Bearbeiten" 
+                    >
+                        <i class="fas fa-cogs"></i>
+                    </Button>
+                </a>
+                {% include 'delete_club_member_popup.html' %}
+            </td>
         </tr>
     {% endfor %}
 {% endblock tablerows %}
+
+
+{% block underTable %}
+    {% include 'add_club_member_popup.html' %}
+{% endblock underTable %}
     

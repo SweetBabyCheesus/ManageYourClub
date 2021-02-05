@@ -1,14 +1,11 @@
 <!-- Tutorial genutzt: https://getbootstrap.com/docs/4.0/components/modal/ -->
 <!-- Code     genutzt: https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
 
-{% load static %}
-<script src='{% static "js/jquery.min.js" %}'></script>
-<script src='{% static "js/bootstrap.min.js" %}'></script>
-
-
 <!-- Trigger the modal with a button -->
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">{% block modal-toggle-text %}toggle{% endblock modal-toggle-text %}</button>
+    <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" data-toggle="modal" data-target="#myModal">
+        {% block modal-toggle-text %}toggle{% endblock modal-toggle-text %}
+    </button>
 {% endblock modal-toggle %}
 
 <!-- Modal -->

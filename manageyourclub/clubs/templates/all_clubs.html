@@ -1,8 +1,6 @@
 {% extends 'table.html' %}
 
-{% block aboveTable %}
-    <h1 style="color: rgb(0, 0, 0); text-align: center;">Übersicht aller Vereine</h1>
-{% endblock aboveTable %}
+{% block headline %}Verein beitreten{% endblock headline %}
 
 {% block tablehead %}
     <th>Name</th>
@@ -22,11 +20,22 @@
                 {% if club not in myClubs %}
                     <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
                         {% csrf_token %}
-
-                        <Button type="submit" name="clubId" class="btn btn-default" style="background-color: #951525; color:white;" 
-                            value= {{ club.id }} form="requestMembershipForm" id="requestMembershipButton_{{ forloop.counter }}">Beitreten</Button>
-
+                        <Button 
+                            type="submit" 
+                            name="clubId" 
+                            class="btn btn-default icon-button" 
+                            data-toggle="tooltip"
+                            title="Beitrittsanfrage an {{ club.clubname }} senden" 
+                            value="{{ club.id }}"
+                            form="requestMembershipForm_{{ forloop.counter }}" id="requestMembershipButton_{{ forloop.counter }}"
+                        >
+                            <i class="fas fa-sign-in-alt"></i>
+                        </Button>
                     </form>
+                    
+
+
+                    
                 {% else %}
                     du bist bereits Mitglied
                 {% endif %}
@@ -34,3 +43,12 @@
         </tr>
     {% endfor %}
 {% endblock tablerows %}
+
+
+{% block underTable %}
+    <a href='{% url "addclub" %}'>
+        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">
+            {% block modal-toggle-text %}Verein erstellen{% endblock modal-toggle-text %}
+        </button>
+    </a>
+{% endblock underTable %}

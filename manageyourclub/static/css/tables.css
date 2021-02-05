@@ -10,3 +10,7 @@ th {
 .table th, .table td {
     vertical-align: middle;
 }
+
+td {
+    border-bottom: 1px solid var(--vema-blue);
+}

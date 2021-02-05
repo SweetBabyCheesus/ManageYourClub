@@ -3,67 +3,50 @@ Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten v
 -->
 
 
-{% extends 'base loggedin.html' %}
+{% extends 'table.html' %}
 
-{% block content%}
-<style type="text/css">
-    th { 
-        padding: 8px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
+{% block headline %}Mitteilungen{% endblock headline %}
 
-    td { 
-        padding: 0px 30px;
-        border-collapse: separate;
-        text-align: left;
-    }
 
-</style>
 
-<p>
-    <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
-</p>
+{% block tablehead %}
+    <th>Name</th>
+    <th>Nachname</th>
+    <th>Geburtstag</th>
+    <th>Ort</th>
+    <th>Details</th>
+    <th>Aktionen</th>
+{% endblock tablehead %}
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Nachname</th>
-            <th>Geburtstag</th>
-            <th>Ort</th>
-            <th>Details</th>
-            <th>Aktionen</th>
-        </tr>
-        {% for clubNot in clubNotifications %}
-            {% if clubNot.status == 1 %}
-                <tr>
-                    <td>{{ clubNot.user.Vorname }}</td>
-                    <td>{{ clubNot.user.Nachname }}</td>
-                    <td>{{ clubNot.user.Geburtstag }}</td>
-                    <td>{{ clubNot.user.Adresse.postcode.village }}</td>
-                    <td>Beitrittsanfrage</td>
-                    <td>
-                        <form action="{% url 'acceptRequestMembership' %}" method="post" id="acceptRequestMembershipForm">
-                            {% csrf_token %}
-<!--Erstellung des annehmen Buttons für Beitrittsanfragen-->
-                            <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
-                                value= {{ clubNot.id }} form="acceptRequestMembershipForm">Annehmen</Button>
+{% block tablerows %}
+    {% for clubNot in clubNotifications %}
+        {% if clubNot.status == 1 %}
+            <tr>
+                <td>{{ clubNot.user.Vorname }}</td>
+                <td>{{ clubNot.user.Nachname }}</td>
+                <td>{{ clubNot.user.Geburtstag }}</td>
+                <td>{{ clubNot.user.Adresse.postcode.village }}</td>
+                <td>Beitrittsanfrage</td>
+                <td>
+                    <form action="{% url 'acceptRequestMembership' %}" method="post" id="acceptRequestMembershipForm" style="display:inline;">
+                        {% csrf_token %}
+                        <!--Annahme-Button für Beitrittsanfragen-->
+                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="acceptRequestMembershipForm">
+                            Annehmen
+                        </button>
+                    </form>
+                    <form action="{% url 'declineRequestMembership' %}" method="post" id="declineRequestMembershipForm" style="display:inline;">
+                        {% csrf_token %}
+                        <!--Ablehnungsbuttons für Beitrittsanfragen-->
+                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="declineRequestMembershipForm">
+                            Ablehnen
+                        </button>
 
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{% url 'declineRequestMembership' %}" method="post" id="declineRequestMembershipForm">
-                            {% csrf_token %}
-<!--Erstellung des ablehnen Buttons für Beitrittsanfragen-->
-                            <Button type="submit" name="clubNotId" class="btn btn-default" style="background-color: #951525; color:white;" 
-                                value= {{ clubNot.id }} form="declineRequestMembershipForm">Ablehnen</Button>
+                    </form>
 
-                        </form>
-
-                    </td>
-                </tr>
-            {% endif %} 
-        {% endfor %}
-    </table>
+                </td>
+            </tr>
+        {% endif %} 
+    {% endfor %}
+{% endblock tablerows %}
     
-{% endblock content%}
