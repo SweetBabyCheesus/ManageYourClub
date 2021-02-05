@@ -1,14 +1,46 @@
-{% extends 'base loggedin.html' %}
-{% block title %}Startseite{% endblock %}
+<!--Author: Max
+Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten vereins
+-->
+{% extends 'table.html' %}
+{% block headline %}Benachrichtigungen{% endblock headline %}
+{% block tablehead %}
+    <th>Name</th>
+    <th>Nachname</th>
+    <th>Geburtstag</th>
+    <th>Ort</th>
+    <th>Details</th>
+    <th>Aktionen</th>
+{% endblock tablehead %}
 
-{% block content %}
-<h1>Neuigkeiten</h1>
-<br>
-    {% if user.is_authenticated %}
-        Hey {{ user.Vorname }} {{ user.Nachname }}, willkommen zurück!
-    {% else %}
-      <h1 style="color:red">Fehler: Als nicht angemeldeter Nutzer solltest du nicht hier sein!</h1>
-    {% endif %}
+{% block tablerows %}
+    {% for clubNot in clubNotifications %}
+        {% if clubNot.status == 1 %}
+            <tr>
+                <td>{{ clubNot.user.Vorname }}</td>
+                <td>{{ clubNot.user.Nachname }}</td>
+                <td>{{ clubNot.user.Geburtstag }}</td>
+                <td>{{ clubNot.user.Adresse.postcode.village }}</td>
+                <td>Beitrittsanfrage</td>
+                <td>
+                    <form action="{% url 'acceptRequestMembership' %}" method="post" id="acceptRequestMembershipForm" style="display:inline;">
+                        {% csrf_token %}
+                        <!--Annahme-Button für Beitrittsanfragen-->
+                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="acceptRequestMembershipForm">
+                            Annehmen
+                        </button>
+                    </form>
+                    <form action="{% url 'declineRequestMembership' %}" method="post" id="declineRequestMembershipForm" style="display:inline;">
+                        {% csrf_token %}
+                        <!--Ablehnungsbuttons für Beitrittsanfragen-->
+                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="declineRequestMembershipForm">
+                            Ablehnen
+                        </button>
 
+                    </form>
 
-{% endblock %}
+                </td>
+            </tr>
+        {% endif %} 
+    {% endfor %}
+{% endblock tablerows %}
+    
