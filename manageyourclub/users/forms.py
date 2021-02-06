@@ -40,7 +40,7 @@ class CreateCustomUserForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     Vorname = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Nachname = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
-    Geburtstag = forms.CharField(label='Geburtstag (mm/dd/yyyy)', widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
+    Geburtstag = forms.CharField(label='Geburtstag (yyyy-mm-dd)', widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
     Geschlecht = forms.ModelChoiceField(label='Geschlecht', queryset=Gender.objects.all())
     Postleitzahl = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
     Ort = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'text'}))
