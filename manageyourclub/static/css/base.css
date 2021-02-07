@@ -14,9 +14,35 @@
     }
 
     .icon-button:hover{
-        filter: brightness(0.8)
+        filter: brightness(0.8);
     }
 
+    .vema-navbar div {
+        padding:0 20px 0 20px;
+    }
+
+    .vema-navbar div:hover {
+        filter:brightness(0.8);
+        background-color:var(--vema-blue);
+    }
+
+    .vema-navbar a:hover, .vema-navbar a:active, .vema-navbar a:focus {
+        text-decoration: unset;
+    }
+
+    .vema-navbar div:active {
+        filter: brightness(0.6);
+    }
+
+    #bottom-stuff {
+        padding: 0;
+        width: 100%;
+        position: absolute;
+        bottom: 30px;
+    }
+    #bottom-stuff:hover {
+        filter: brightness(1);
+    }
 
     /* Tutorial genutzt: https://stackoverflow.com/questions/14099309/twitter-bootstrap-modal-is-dark#14192934 */
         .modal-backdrop {

@@ -1,6 +1,6 @@
 {% extends 'dropdown.html' %}
 
-{% block label-text %} Verein {% endblock label-text %}
+{% block label-text %} {{ club.clubname }} {% endblock label-text %}
 
 {% block list-elements %}
     {% for club in club_list %}

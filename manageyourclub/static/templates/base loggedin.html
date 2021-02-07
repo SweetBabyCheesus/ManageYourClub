@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 {% block leiste %}
-  <div class="base text-center split left" style="position: absolute; bottom: 60px; left: 0; right: 0; color: white;">
+  <div class="base text-center split left vema-navbar" style="color: white; height: 100%; width: 230px; padding:0">
     
-    <a style="position: absolute; left: 0; right: 0; color: white; top: 200px;" href="{% url 'allclubs' %}">Übersicht aller Vereine</a>
-    {% if club %}
-      <a style="position: absolute; left: 0; right: 0; color: white; top: 300px;" href="{% url 'myclub' club=club.id %}">Mein Verein</a>
-      <a style="position: absolute; left: 0; right: 0; color: white; top: 350px;" href="{% url 'showAllTeams' club=club.id %}">Mannschaftsübersicht</a>
-      <a style="position: absolute; left: 0; right: 0; color: white; top: 250px;" href="{% url 'club_members' club=club.id %}">Mitgliederübersicht</a>
-    {% endif %}
-    <a style="position: absolute; left: 0; right: 0; color: white; top: 150px;" href="{% url 'home' %}">Benachrichtigungen</a>
-    <a style="position: absolute; bottom: 120px; left: 0; right: 0; color: white;" href="{% url 'userData' %}">Einstellungen</a>
-    <a style="position: absolute; bottom: 60px; left: 0; right: 0; color: white;" href="{% url 'home' %}">&larr; Zurück</a>
-    <a href="{% url 'logout' %}" style="position: absolute; bottom: 20px; left: 0; right: 0; color: white;">Ausloggen</a>  
     <h2 style="color: white;">VEMA</h2>
+    <a style="color: white;" href="{% url 'home' %}"><div>Benachrichtigungen</div></a>
+    <a style="color: white;" href="{% url 'allclubs' %}"><div>Übersicht aller Vereine</div></a>
+    {% if club %}
+    <a style="color: white;" href="{% url 'club_members' club=club.id %}"><div>Mitgliederübersicht</div></a>
+      <a style="color: white;" href="{% url 'myclub' club=club.id %}"><div>Mein Verein</div></a>
+      <a style="color: white;" href="{% url 'showAllTeams' club=club.id %}"><div>Mannschaftsübersicht</div></a>
+    {% endif %}
+    <div id="bottom-stuff">
+      <a style="color: white;" href="{% url 'userData' %}"><div>Einstellungen</div></a>
+      <a style="color: white;" href="{% url 'home' %}"><div>&larr; Zurück</div></a>
+      <a href="{% url 'logout' %}" style="color: white;"><div>Ausloggen</div></a>
+    </div>
 {% endblock leiste %}
 
 {% block right %}
-<main class="right-div" style="padding:3%">
+<main class="right-div" style="padding:3%; width:calc(100% - 230px); left:230px;">
   <div style="font-size:21px; line-height:2.1428571435;"class="text-center">
     {% if messages %}
         {% for message in messages %}

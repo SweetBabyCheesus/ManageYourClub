@@ -17,5 +17,5 @@ td {
 
 .table-container {
     height:80%;
-    overflow-y: auto;
+    overflow: auto;
 }
