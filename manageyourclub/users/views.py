@@ -18,6 +18,7 @@ from members.models import get_membership, club_has_member
 from users.tokens import account_activation_token
 from users.forms import CreateCustomUserForm, CustomPasswordChangeForm, EditProfileForm
 from users.models import CustomUser
+from notifications.models import MembershipRequest
 
 from .forms import UserDeleteForm
 from django.contrib.auth.decorators import login_required
@@ -130,11 +131,14 @@ def home_view(request, club=None):
                     club_has_member(c, request.user), 
                 ClubModel.objects.all()
             )
+            
+    clubNotifications = MembershipRequest.objects.filter(club=club)
 
     context = {
         'club': club,
         'club_list': club_list,
         'to': 'home',
+        'clubNotifications':clubNotifications,
     }
 
     return render(request, 'home.html', context)
