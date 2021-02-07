@@ -150,7 +150,7 @@
    -1px  1px 1px black,
    -1px -1px 1px black;">Registrierung</h2>
     <div class="signup-form">
-        <form  id="signup-form" style="color:white"  method="post" >
+        <form  id="signup-form" style="color:white"  method="post" id="submit_user_form">
             {% csrf_token %}
             <table class="table">
                 {% for field in form %}

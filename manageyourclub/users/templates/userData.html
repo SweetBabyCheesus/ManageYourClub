@@ -110,46 +110,42 @@
 <table id="table">
     <tr>
         <th>Vorname</th>
-        <td>{{ user.Vorname }} </td>
+        <td id="vorname">{{ user.Vorname }}</td>
     </tr>
     <tr>
         <th>Nachname</th>
-        <td>{{ user.Nachname }} </td>
+        <td id="nachname">{{ user.Nachname }}</td>
     </tr>
     <tr>
         <th>Emailadresse</th>
-        <td>{{ user.email }} </td>
+        <td id="mail">{{ user.email }}</td>
     </tr>
     <tr>
         <th>Geburtstag</th>
-        <td>{{ user.Geburtstag }} </td>
+        <td id="bday">{{ user.Geburtstag }}</td>
     </tr>
     <tr>
         <th>Geschlecht</th>
-        <td> 
-
-            {{ user.Geschlecht }}
-            
-        </td>
+        <td id="gender">{{ user.Geschlecht }}</td>
     </tr>
     <tr>
         <th>Postleitzahl</th>
-        <td>{{ user.Adresse.postcode.postcode }} </td>
+        <td id="plz">{{ user.Adresse.postcode.postcode }}</td>
     </tr>
     <tr>
         <th>Ort</th>
-        <td>{{ user.Adresse.postcode.village }} </td>
+        <td id="village">{{ user.Adresse.postcode.village }}</td>
     </tr>
     <tr>
         <th>Straße / Hausnummer</th>
-        <td>{{ user.Adresse.streetAddress }} {{user.Adresse.houseNumber}} </td>
+        <td id="street_hsnr">{{ user.Adresse.streetAddress }} {{user.Adresse.houseNumber}}</td>
     </tr>
 </table>
 </div>
 
 
-<a href="{% url 'edit_profile' %}" style="color: white;"><button name="submit" class="submit" id="submit">Daten ändern</button></a>
-<a href="{% url 'deleteuser' %}" style="color: white;" class="submit" >Konto löschen</a>
-<a href="{% url 'password' %}" style="color: white;" class="submit" >Passwort ändern</a>
+<a href="{% url 'edit_profile' %}" style="color: white;" id="edit_profile_link"><button name="submit" class="submit" id="submit">Daten ändern</button></a>
+<a href="{% url 'deleteuser' %}" style="color: white;" class="submit" id="delete_user_link">Konto löschen</a>
+<a href="{% url 'password' %}" style="color: white;" class="submit" id="passwort_change_link">Passwort ändern</a>
 {% endblock content %}
 </div>

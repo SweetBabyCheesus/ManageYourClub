@@ -60,13 +60,12 @@
 	        }
         </style>
         <div class="login-form">
-            <form id="login-form" method="post">
+            <form id="login-form" method="post" id="login_form">
                 {% csrf_token %}
                 <table class="table">
                     <tr>
                         <td><label for="id_username" style="color: white;">E-Mail</label></td>
-                        <td><input id="id_username" name="username" 
-                                   type="text" class="form-control"></td>
+                        <td><input id="id_username" name="username" type="text" class="form-control"></td>
                     </tr>
                     <tr>
                         <td><label for="id_password" style="color: white;">Passwort</label></td>
@@ -75,18 +74,18 @@
                     </tr>
                 </table>
                 {% if form.errors %}
-                    <p class=" label label-danger">Deine E-Mail und Passwort stimmen nicht überein.</p>
-                    <p class=" label label-danger">Hast du dein Konto schon bestätigt?</p>
+                    <p class=" label label-danger" id="email_password_fail">Deine E-Mail und Passwort stimmen nicht überein.</p>
+                    <p class=" label label-danger" id="bestaetigt_fail">Hast du dein Konto schon bestätigt?</p>
                     
                 {% endif %}
                 <p style="color: white;">Du hast noch kein Konto? 
-                  <a href="{% url 'signup' %}"" style="color: white; text-decoration: underline white;">Hier registrieren</a>
+                  <a href="{% url 'signup' %}" style="color: white; text-decoration: underline white;" id="register_link">Hier registrieren</a>
                 </p>
                 <p style="color: white;">Passwort vergessen? 
-                    <a href="{% url 'password_reset' %}"" style="color: white; text-decoration: underline white;">Hier zurücksetzen</a>
+                    <a href="{% url 'password_reset' %}"" style="color: white; text-decoration: underline white;" id="reset_passwort_link">Hier zurücksetzen</a>
                   </p>
                 <input type="submit" value="Login" 
-                       class="btn btn-primary pull-right" />
+                       class="btn btn-primary pull-right" id="submit_login"/>
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
         </div>
