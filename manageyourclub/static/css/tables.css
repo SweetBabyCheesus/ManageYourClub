@@ -14,3 +14,8 @@ th {
 td {
     border-bottom: 1px solid var(--vema-blue);
 }
+
+.table-container {
+    height:80%;
+    overflow-y: auto;
+}

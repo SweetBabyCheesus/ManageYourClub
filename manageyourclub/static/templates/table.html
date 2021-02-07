@@ -12,16 +12,18 @@
         <h1 style="color: rgb(0, 0, 0); text-align: center;">{% block headline %}{% endblock headline %}</h1>
     {% endblock aboveTable %}
 
-    {% block table %}
-        <table class="table">
-            <tr>
-                {% block tablehead %}
-                {% endblock tablehead %}
-            </tr>
-            {% block tablerows %}
-            {% endblock tablerows %}
-        </table>
-    {% endblock table %}
+    <div class="table-container">
+        {% block table %}
+            <table class="table">
+                <tr>
+                    {% block tablehead %}
+                    {% endblock tablehead %}
+                </tr>
+                {% block tablerows %}
+                {% endblock tablerows %}
+            </table>
+        {% endblock table %}
+    </div>
     
     {% block underTable %}
     {% endblock underTable %}
