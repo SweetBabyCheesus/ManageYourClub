@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
 from django import forms
 from users.models import CustomUser, Gender
-from clubs.models import AddressModel, PlaceModel
+from clubs.models import PlaceModel
 
 class EditProfileForm(UserChangeForm):
     #Jonas

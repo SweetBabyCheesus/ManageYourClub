@@ -2,10 +2,12 @@
 from django import forms
 from members.models import Membership, MemberFunction
 from users.models import CustomUser
-
-# Tutorial genutzt: https://www.tutorialspoint.com/python_data_science/python_date_and_time.htm
+# Tutorials genutzt: https://www.tutorialspoint.com/python_data_science/python_date_and_time.htm
 class AddClubMemberForm(forms.Form):
     eMail = forms.CharField(max_length=50, label='E-Mail-Adresse')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def addMember(self, club):
         eMail = self.cleaned_data['eMail']

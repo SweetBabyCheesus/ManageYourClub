@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% block leiste %}
 <div class="base text-center">
-<a style="position: absolute; right: 60px; top: 62px; color: white;" href="{% url 'login' %}">Login</a>
+    <a style="position: absolute; right: 60px; top: 62px; color: white;" href="{% url 'login' %}">Login</a>
+    <h2 style="color: white;">VEMA</h2>
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
 {% endblock leiste %}
 {% block right %}
 <main style="padding:3%">

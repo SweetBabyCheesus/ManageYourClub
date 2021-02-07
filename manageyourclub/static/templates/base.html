@@ -45,16 +45,6 @@
 <body>
   {% block leiste %}
     {% endblock leiste %}
-    <h2 style="color: white;">VEMA</h2>
-    <div>
-      {% if messages %}
-          {% for message in messages %}
-          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-              {{ message }}
-          </div>
-          {% endfor %}
-      {% endif %}
-    </div>
   </div>
   {% block right %}
   
