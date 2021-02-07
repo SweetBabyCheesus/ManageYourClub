@@ -19,11 +19,11 @@ def clubMembersView(request, club):
         if form.is_valid():
             eMail = form.cleaned_data['eMail']
             if(CustomUser.objects.filter(email=eMail).exists()):
-                form.addMember(club=club)
-                member=CustomUser.objects.get(pk=eMail)
+                member=CustomUser.objects.get(email=eMail)
                 if(Membership.objects.filter(club=club, member=member).exists()):
                     messages.error(request, 'Der Benutzer mit der E-Mail-Adresse "'+member.email+'" ist bereits Mitglied des Vereins.')
                 else:
+                    form.addMember(club=club)
                     messages.success(request, 'Der Benutzer mit der E-Mail-Adresse "'+member.email+'" wurde zum Verein hinzugefügt.')
             else:
                 messages.error(request, 'Es existiert kein Benutzer mit der E-Mail-Adresse "'+eMail+'".')
