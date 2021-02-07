@@ -4,7 +4,7 @@
     
     <h2 style="color: white;">VEMA</h2>
     <a style="color: white;" href="{% url 'home' %}"><div>Benachrichtigungen</div></a>
-    <a style="color: white;" href="{% url 'allclubs' %}"><div>Übersicht aller Vereine</div></a>
+    <a style="color: white;" href="{% url 'allclubs' %}"><div>Alle Vereine</div></a>
     {% if club %}
     <a style="color: white;" href="{% url 'club_members' club=club.id %}"><div>Mitgliederübersicht</div></a>
       <a style="color: white;" href="{% url 'myclub' club=club.id %}"><div>Mein Verein</div></a>
