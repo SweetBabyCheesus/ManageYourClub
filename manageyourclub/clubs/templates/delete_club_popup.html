@@ -1,16 +1,16 @@
 {% extends 'popup.html' %}
 
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal">Verein löschen</button>
+    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal" id="deleteclub_button">Verein löschen</button>
 {% endblock modal-toggle %}
 
 {% block modal-headline %}Bist du sicher, dass du den Verein Löschen willst?{% endblock modal-headline %}
 
 {% block modal-body %}
-    <form action="{% url 'deleteclub' club=club.id %}" method="post">
+    <form action="{% url 'deleteclub' club=club.id %}" method="post" id="deleteclub_form">
         {% csrf_token %}
-        <input type="submit" class="btn btn-default" style="background-color: #951525; color:white;" value="Ja">
+        <input type="submit" class="btn btn-default" style="background-color: #951525; color:white;" value="Ja" id="deleteclub_bestaetigen_button">
         <!--<button type="button" class="btn btn-default" data-dismiss="modal">Ja</button>-->
-        <button type="button" class="btn btn-default" style="background-color: #535353; color:white;" data-dismiss="modal">Nein</button>
+        <button type="button" class="btn btn-default" style="background-color: #535353; color:white;" data-dismiss="modal" id="deleteclub_verwerfen_button">Nein</button>
     </form>
 {% endblock modal-body %}

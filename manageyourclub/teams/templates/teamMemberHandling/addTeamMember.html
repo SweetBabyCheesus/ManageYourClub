@@ -10,15 +10,15 @@
 {% block tablerows %}
     {% for member in teamMembers %}
         <tr>
-            <td>{{ member.member.Vorname }}</td>
-            <td>{{ member.member.Nachname }}</td>
+            <td id="member_vorname_{{ forloop.counter }}">{{ member.member.Vorname }}</td>
+            <td id="member_nachname_{{ forloop.counter }}">{{ member.member.Nachname }}</td>
         </tr>
     {% endfor %}
 {% endblock tablerows %}
 
 {% block underTable %}
     {% include 'teamMemberHandling/addTeamMemberPopup.html' %}
-    <a href="{% url 'showAllTeams' club=club.id %}">
-        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">zur Mannschaftsübersicht</button>
+    <a href="{% url 'showAllTeams' club=club.id %}" id="all_teams_link">
+        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="buttons">zur Mannschaftsübersicht</button>
     </a>
 {% endblock underTable %}

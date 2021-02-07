@@ -9,13 +9,13 @@
 {% block content %}
     <a href='{% url "home" %}'><button class="btn btn-default">Zurück zur Startseite</button></a>
         <div>
-            <p><label>Vorname:</label> <input type='text' value='{{ membership.member.Vorname }}' disabled='True'></p>
-            <p><label>Nachname:</label> <input type='text' value='{{ membership.member.Nachname }}' disabled='True'></p>
-            <form method='POST'>
+            <p><label>Vorname:</label> <input type='text' value='{{ membership.member.Vorname }}' disabled='True' id="member_vorname"></p>
+            <p><label>Nachname:</label> <input type='text' value='{{ membership.member.Nachname }}' disabled='True' id="member_nachname"></p>
+            <form method='POST' id="member_edit_form">
                 {{ form.as_p }}
                 {% csrf_token %}
-                <input type='submit' class="btn btn-default" value='Änderungen bestätigen'>
-                <a href='{% url "club_members" club=club.id %}'><button class="btn btn-default" style="background-color: #951525; color:white;">Abbrechen</button></a>
+                <input type='submit' class="btn btn-default" value='Änderungen bestätigen' id="edit_member_submit">
+                <a href='{% url "club_members" club=club.id %}' id="clubmembers_link"><button class="btn btn-default" style="background-color: #951525; color:white;" id="edit_member_decline">Abbrechen</button></a>
             </form>
         </div>
 {% endblock content %}

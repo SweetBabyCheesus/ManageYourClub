@@ -28,11 +28,11 @@
     <p>
         Möchtest du wirklich {{ membership.member.Vorname }} {{ membership.member.Nachname }} aus dem Verein werfen?
     </p>
-    <form method='POST'>
+    <form method='POST' id="delete_member_form"> 
         {% csrf_token %}
         <input type='hidden' name='membership' value='{{membership.pk}}'>
         {% block submitButton %}
-            <input type='submit' class="btn btn-default" style="background-color:#882222; color:var(--bg-color); border-color: transparent;" value='Löschen'>
+            <input type='submit' class="btn btn-default" style="background-color:#882222; color:var(--bg-color); border-color: transparent;" value='Löschen' id="delete_member_submit_button">
         {% endblock submitButton %}
     </form>
 {% endblock modal-body %}

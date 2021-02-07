@@ -13,18 +13,19 @@
 {% block tablerows %}
     {% for membership in memberships %}
         <tr>
-            <td>{{ membership.member.Vorname }}</td>
-            <td>{{ membership.member.Nachname }}</td>
-            <td>{{ membership.member.email }}</td>
-            <td>{{ membership.memberFunction.function }}</td>
+            <td id="vorname_{{ forloop.counter }}">{{ membership.member.Vorname }}</td>
+            <td id="nachname_{{ forloop.counter }}">{{ membership.member.Nachname }}</td>
+            <td id="mail_{{ forloop.counter }}">{{ membership.member.email }}</td>
+            <td id="funktion_{{ forloop.counter }}">{{ membership.memberFunction.function }}</td>
             <td>
-                <a href='{% url "edit_member" club=club.id memship=membership.pk %}'>
+                <a href='{% url "edit_member" club=club.id memship=membership.pk %}' id="edit_member_link_{{ forloop.counter }}">
                     <Button 
                         type="button" 
                         name="clubId" 
                         class="btn btn-default icon-button" 
                         data-toggle="tooltip"
                         title="Mitglied {{ membership.member.user.Vorname }} Bearbeiten" 
+                        id="edit_member_button_{{ forloop.counter }}"
                     >
                         <i class="fas fa-cogs"></i>
                     </Button>

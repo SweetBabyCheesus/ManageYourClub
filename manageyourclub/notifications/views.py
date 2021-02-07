@@ -4,9 +4,13 @@ from notifications.models import MembershipRequest
 from clubs.models import ClubModel
 from members.models import Membership
 
+
 def requestNotificationView(request, club):
     #Autor: Max
     #https://www.youtube.com/watch?v=vmP1r6xiJog
+    #Im Sprint 9 wurde das Design ueberarbeitet. Die Funktionalität wird daher aktuell in users.views abgebildet.
+    #Nach der Abgabe wollen wir unsere Startseite ggf nochmal überarbeiten. Um die Benachitigungen dan neu einzubinden, bleibt diese Methode vorerst erhalten.
+
     user = request.user
 
     #Zur anzeige der Vereinsbezogenen Anfragen: Filterung

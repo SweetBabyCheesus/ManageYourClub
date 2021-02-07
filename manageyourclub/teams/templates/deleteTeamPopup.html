@@ -6,15 +6,15 @@ Bestätigungspopup, ob die Mannschaft gelöscht werden soll
 {% extends 'popup.html' %}
 
 {% block modal-toggle %}
-    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal">Mannschaft löschen</button>
+    <button type="button" class="btn btn-default" style="background-color: #951525; color:white;" data-toggle="modal" data-target="#myModal" id="delete_team_button">Mannschaft löschen</button>
 {% endblock modal-toggle %}
 
 {% block modal-headline %}Bist du sicher, dass du deine Mannschaft Löschen willst?{% endblock modal-headline %}
 
 {% block modal-body %}
-    <form action="{% url 'deleteTeam' team=team.id %}" method="post">
+    <form action="{% url 'deleteTeam' team=team.id %}" method="post" id="delete_team_form">
         {% csrf_token %}
-        <input type="submit" class="btn btn-default" style="background-color: #951525; color:white;" value="Ja">
-        <button type="button" class="btn btn-default" style="background-color: #535353; color:white;" data-dismiss="modal">Nein</button>
+        <input type="submit" class="btn btn-default" style="background-color: #951525; color:white;" value="Ja" id="delete_team_accept_button">
+        <button type="button" class="btn btn-default" style="background-color: #535353; color:white;" data-dismiss="modal" id="delete_team_decline_button">Nein</button>
     </form>
 {% endblock modal-body %}

@@ -12,27 +12,29 @@
 {% block tablerows %}
     {% for team in teams %}
         <tr>
-            <td>{{ team.teamName }}</td>
-            <td>{{ team.sportId.sportName }}</td>
+            <td id="teamname_{{ forloop.counter }}">{{ team.teamName }}</td>
+            <td id="teamsport_{{ forloop.counter }}">{{ team.sportId.sportName }}</td>
             <td>
-                <a href="{% url 'addTeamMember' club=club.id team=team.id %}">
+                <a href="{% url 'addTeamMember' club=club.id team=team.id %}" id="add_team_member_link_{{ forloop.counter }}">
                     <Button 
                         type="button" 
                         name="clubId" 
                         class="btn btn-default icon-button" 
                         data-toggle="tooltip"
-                        title="Mitiglieder von {{ team.teamName }} verwalten" 
+                        title="Mitiglieder von {{ team.teamName }} verwalten"
+                        id="add_team_member_button_{{ forloop.counter }}" 
                     >
                         <i class="fas fa-users-cog"></i>
                     </Button>
                 </a> 
-                <a href="{% url 'showTeam' club=club.id team=team.id %}">
+                <a href="{% url 'showTeam' club=club.id team=team.id %}" id="team_anzeigen_link_{{ forloop.counter }}">
                     <Button 
                         type="button" 
                         name="clubId" 
                         class="btn btn-default icon-button" 
                         data-toggle="tooltip"
                         title="{{ team.teamName }} Anzeigen/ Bearbeiten" 
+                        id="team_anzeigen_button_{{ forloop.counter }}"
                     >
                         <i class="fas fa-cogs"></i>
                     </Button>
@@ -44,8 +46,8 @@
 
 {% block underTable %}
     <p>
-        <a href="{% url 'addTeam' club=club.id%}">
-            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">
+        <a href="{% url 'addTeam' club=club.id%}" id="team_anlegen_link">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="team_anlegen_button">
                 Mannschaft erstellen
             </button>
         </a>

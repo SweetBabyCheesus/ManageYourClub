@@ -6,9 +6,9 @@
 {% block modal-headline %}Mitglied hinzufügen{% endblock modal-headline %}
 
 {% block modal-body %}
-    <form method='POST'>
+    <form method='POST' id="add_team_member_form">
         {{ form.as_p }}
         {% csrf_token %}
-        {% block submitButton %}<input type='submit' class="btn btn-default" value='Senden'>{% endblock submitButton %}
+        {% block submitButton %}<input type='submit' class="btn btn-default" value='Senden' id="add_team_member_submit">{% endblock submitButton %}
     </form>
 {% endblock modal-body %}

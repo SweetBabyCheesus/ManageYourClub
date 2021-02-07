@@ -10,13 +10,14 @@
 {% endblock tablehead %}
 
 {% block tablerows %}
+
+    <!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
     {% for club in clubs %}
         <tr>
-            <td>{{ club.clubname }}</td>
-            <td>{{ club.yearOfFoundation }}</td>
-            <td>{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
+            <td id="clubname_{{ forloop.counter }}">{{ club.clubname }}</td>
+            <td id="clubyear_{{ forloop.counter }}">{{ club.yearOfFoundation }}</td>
+            <td id="clubadress_{{ forloop.counter }}">{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
             <td>
-                <!-- If else ergänzt von Max, damit Beitreten nur möglich, wenn der User nicht bereits Mitglied ist -->
                 {% if club not in myClubs %}
                     <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
                         {% csrf_token %}
@@ -46,8 +47,8 @@
 
 
 {% block underTable %}
-    <a href='{% url "addclub" %}'>
-        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);">
+    <a href='{% url "addclub" %}' id="addclub_link">
+        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="addclub_button">
             {% block modal-toggle-text %}Verein erstellen{% endblock modal-toggle-text %}
         </button>
     </a>

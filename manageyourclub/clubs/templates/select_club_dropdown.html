@@ -4,6 +4,6 @@
 
 {% block list-elements %}
     {% for club in club_list %}
-        <a href='{% url to club=club.id %}'>{{ club.clubname }}</a> 
+        <a href='{% url to club=club.id %}' id="select_club_{{ forloop.counter }}">{{ club.clubname }}</a> 
     {% endfor %}
 {% endblock list-elements %}
