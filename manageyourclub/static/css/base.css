@@ -13,7 +13,7 @@
         padding:0;
     }
 
-    .icon-button:hover{
+    .icon-button:hover, button:hover, .button:hover, .btn:hover{
         filter: brightness(0.8);
     }
 
