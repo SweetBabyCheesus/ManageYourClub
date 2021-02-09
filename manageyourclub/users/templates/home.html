@@ -3,7 +3,12 @@ Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten v
 aktuell nicht in nutzung
 -->
 {% extends 'table.html' %}
-{% block headline %}Benachrichtigungen{% endblock headline %}
+
+{% block aboveTable %}
+<h1 style="color: rgb(0, 0, 0); text-align: center;">Benachrichtigungen</h1>
+{% include 'select_club_dropdown.html' %}
+{% endblock aboveTable %}
+
 {% block tablehead %}
     <th>Name</th>
     <th>Nachname</th>
