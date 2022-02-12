@@ -26,8 +26,9 @@ class AddressModel(models.Model):
         Wenn der entsprechende Ort noch nicht in der Datenbank existiert, wird dieser auch erstellt.
         """
         if village:
-            postcode = PlaceModel.objects.get_or_create(postcode=postcode, village=village)[0]
-            postcode.save()
+            postcode, created = PlaceModel.objects.get_or_create(postcode=postcode, village=village)[0]
+            if created:
+                postcode.save()
     
         AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber).save()
         address = AddressModel.objects.create(postcode=postcode, streetAddress=streetAddress, houseNumber=houseNumber)

@@ -29,6 +29,9 @@ ALLOWED_HOSTS = ['manageYourClub.pythonanywhere.com', '127.0.0.1' ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+CAPTCHA_SECRET = bytes('your_secret', 'utf-8')
+CAPTCHA_SALT = bytes('your_salt', 'utf-8')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +48,9 @@ INSTALLED_APPS = [
     'static',
     'notifications',
     'six',
+    'django_form_builder',
+    'captcha',
+    'filesig',
 ]
 
 MIDDLEWARE = [
