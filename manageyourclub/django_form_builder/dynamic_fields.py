@@ -108,7 +108,7 @@ class CustomCharField(CharField, BaseCustomField):
     """
     CharField
     """
-    field_type = _("Testo")
+    field_type = _("Text")
 
 
 class CustomEmailField(EmailField, BaseCustomField):
@@ -129,20 +129,20 @@ class CustomIPField(GenericIPAddressField, BaseCustomField):
     """
     GenericIPAddressField
     """
-    field_type = _("Indirizzo IP")
+    field_type = _("IP Adresse")
 
 class CustomMACField(CustomCharField, BaseCustomField):
     """
     GenericIPAddressField
     """
-    field_type = _("MAC Address")
+    field_type = _("MAC Addresse")
 
     def raise_error(self, name, cleaned_data, **kwargs):
         if not cleaned_data: return []
 
         # Only valid sequences
         if not re.match('([0-9a-fA-F]:?){12}', str(cleaned_data)):
-            return [_("Formato non valido"),]
+            return [_("Ungültiges Format"),]
 
 class CustomChoiceField(ChoiceField, BaseCustomField):
     """
@@ -187,7 +187,7 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
     def raise_error(self, name, cleaned_data, **kwargs):
         errors = []
         if cleaned_data and self.max_permitted>0 and len(cleaned_data)>self.max_permitted:
-            errors.append(_("Numero massimo di scelte consentito: {}").format(self.max_permitted))
+            errors.append(_("Maximal zulässige Anzahl an Auswahlmöglichkeiten: {}").format(self.max_permitted))
         return errors
 
 
@@ -195,7 +195,7 @@ class CustomFileField(FileField, BaseCustomField):
     """
     FileField
     """
-    field_type = _("Allegato (generico)")
+    field_type = _("Anhang (allgemein)")
 
     def __init__(self, *args, **data_kwargs):
         super().__init__(*args, **data_kwargs)
@@ -231,7 +231,7 @@ class CustomImageField(CustomFileField):
     """
     FileField
     """
-    field_type = _("Allegato Immagine")
+    field_type = _("Anhang Bild")
 
     def __init__(self, *args, **data_kwargs):
         self.valid_extensions = IMG_FILETYPE
@@ -242,7 +242,7 @@ class CustomDataField(CustomFileField):
     """
     FileField
     """
-    field_type = _("Allegato file dati (JSON, CSV, Excel)")
+    field_type = _("Dateianhang (JSON, CSV, Excel)")
 
     def __init__(self, *args, **data_kwargs):
         self.valid_extensions = DATA_FILETYPE
@@ -253,7 +253,7 @@ class CustomPDFField(CustomFileField):
     """
     FileField
     """
-    field_type = _("Allegato PDF")
+    field_type = _("Anhang PDF")
 
     def __init__(self, *args, **data_kwargs):
         self.valid_extensions = PDF_FILETYPE
@@ -261,7 +261,7 @@ class CustomPDFField(CustomFileField):
 
 
 class CustomSignedFileField(CustomFileField):
-    validation_error = _('Errore di validazione della firma digitale')
+    validation_error = _('Fehler bei der Validierung der digitalen Signatur')
     fileformat = ''
     field_type = None
 
@@ -296,7 +296,7 @@ class CustomSignedFileField(CustomFileField):
 class CustomSignedPdfField(CustomSignedFileField):
     """
     """
-    field_type = _("Allegato PDF firmato")
+    field_type = _("Signierter PDF-Anhang")
     fileformat = 'pdf'
     valid_extensions = PDF_FILETYPE
 
@@ -304,7 +304,7 @@ class CustomSignedPdfField(CustomSignedFileField):
 class CustomSignedP7MField(CustomSignedFileField):
     """
     """
-    field_type = _("Allegato P7M firmato")
+    field_type = _("P7M-Anhang signiert")
     fileformat = 'p7m'
     valid_extensions = P7M_FILETYPE
 
@@ -313,7 +313,7 @@ class PositiveIntegerField(DecimalField, BaseCustomField):
     """
     Positive integer DecimalField
     """
-    field_type = _("Numero intero positivo")
+    field_type = _("Positive ganze Zahl")
     default_validators = [MinValueValidator(0)]
 
     def __init__(self, *args, **data_kwargs):
@@ -325,14 +325,14 @@ class PositiveIntegerField(DecimalField, BaseCustomField):
         if not cleaned_data: return []
         # Only numbers (expressions like 16e50 aren't permitted)
         if not re.match('^[0-9]+$', str(cleaned_data)):
-            return [_("Solo numeri ammessi"),]
+            return [_("Nur Zahlen erlaubt"),]
 
 
 class PositiveFloatField(DecimalField, BaseCustomField):
     """
     Positive float DecimalField
     """
-    field_type = _("Numero con virgola positivo")
+    field_type = _("positive Zahl mit Komma")
     default_validators = [MinValueValidator(0)]
 
     def __init__(self, *args, **data_kwargs):
@@ -344,14 +344,14 @@ class PositiveFloatField(DecimalField, BaseCustomField):
         if not cleaned_data: return []
         # Only numbers (expressions like 16e50 aren't permitted)
         if not re.match('^[0-9]+\.?[0-9]?$', str(cleaned_data)):
-            return [_("Solo numeri ammessi"),]
+            return [_("Nur Zahlen erlaubt"),]
 
 
 class TextAreaField(CharField, BaseCustomField):
     """
     TextArea
     """
-    field_type = _("Testo lungo")
+    field_type = _("Langer Text")
     widget = forms.Textarea
 
 
@@ -366,7 +366,7 @@ class MultiCheckBoxField(CustomMultiChoiceField):
     """
     BooleanField Checkbox multi-value
     """
-    field_type = _("Checkbox multi-valore")
+    field_type = _("Checkbox mit mehreren Werten")
     widget = forms.CheckboxSelectMultiple
 
 
@@ -374,18 +374,18 @@ class CustomSelectBoxField(CustomChoiceField):
     """
     SelectBox
     """
-    field_type = _("Lista di opzioni (tendina)")
+    field_type = _("Dropdown")
 
     def __init__(self, *args, **data_kwargs):
         super().__init__(*args, **data_kwargs)
-        self.choices = [('', _('Scegli una opzione')),]
+        self.choices = [('', _('Wähle eine Option')),]
 
 
 class CustomRadioBoxField(CustomChoiceField):
     """
     RadioBox
     """
-    field_type = _("Lista di opzioni (checkbox)")
+    field_type = _("Radio Select")
     widget = forms.RadioSelect
 
 
@@ -401,7 +401,7 @@ class BaseDateTimeSimpleField(DateTimeField, BaseCustomField):
     """
     DateTimeField
     """
-    field_type = _("Data e ora (campo singolo)")
+    field_type = _("Datum und Uhrzeit (ein Feld)")
     input_formats = settings.DATETIME_INPUT_FORMATS
 
 
@@ -409,19 +409,19 @@ class BaseDateTimeField(BaseCustomField):
     """
     DateTimeField
     """
-    field_type = _("Data e Ora (campi separati)")
+    field_type = _("Datum und Uhrzeit (getrennte Felder)")
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
         # Date DateField
         self.data = BaseDateField(*args, **data_kwargs)
-        self.data.label = _("{} (Data)").format(data_kwargs.get('label'))
+        self.data.label = _("{} (Datum)").format(data_kwargs.get('label'))
         self.data.name = "{}_dyn".format(format_field_name(self.data.label))
         self.data.parent = self
 
         # Hour SelectBox
         self.hour = CustomSelectBoxField(*args, **data_kwargs)
-        self.hour.label = _("{} (Ore)").format(data_kwargs.get('label'))
+        self.hour.label = _("{} (Student)").format(data_kwargs.get('label'))
         self.hour.name = "{}_dyn".format(format_field_name(self.hour.label))
         self.hour.choices = [(i,i) for i in range(24)]
         self.hour.initial = 0
@@ -429,7 +429,7 @@ class BaseDateTimeField(BaseCustomField):
 
         # Minutes SelectBox
         self.minute = CustomSelectBoxField(*args, **data_kwargs)
-        self.minute.label = _("{} (Minuti)").format(data_kwargs.get('label'))
+        self.minute.label = _("{} (Minuten)").format(data_kwargs.get('label'))
         self.minute.name = "{}_dyn".format(format_field_name(self.minute.label))
         self.minute.choices = [(i,i) for i in range(60)]
         self.minute.initial = 0
@@ -443,7 +443,7 @@ class DateStartEndComplexField(BaseCustomField):
     """
     Field composed by StartDate (DateField) and EndDate (DateField)
     """
-    field_type = _("Data inizio e Data fine")
+    field_type = _("Startdatum und Enddatum")
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
@@ -452,7 +452,7 @@ class DateStartEndComplexField(BaseCustomField):
         # Start date
         self.start = BaseDateField(*args, **data_kwargs)
         self.start.required = data_kwargs.get('required')
-        self.start.label = _("{} (Data inizio)").format(parent_label)
+        self.start.label = _("{} (Startdatum)").format(parent_label)
         self.start.name = "{}_dyn".format(format_field_name(self.start.label))
 
         # Set child parent
@@ -461,7 +461,7 @@ class DateStartEndComplexField(BaseCustomField):
         # End date
         self.end = BaseDateField(*args, **data_kwargs)
         self.end.required = data_kwargs.get('required')
-        self.end.label = _("{} (Data fine)").format(parent_label)
+        self.end.label = _("{} (Enddatum)").format(parent_label)
         self.end.name = "{}_dyn".format(format_field_name(self.end.label))
 
         # Set child parent
@@ -483,17 +483,17 @@ class DateStartEndComplexField(BaseCustomField):
         if name == self.start.name:
             # if start_date > end_date
             if end_value and start_value > end_value:
-                errors.append(_("La data di inizio non può "
-                                "essere successiva a quella di fine"))
+                errors.append(_("Das Startdatum kann nicht"
+                                "nach dem Ende sein"))
 
         return errors
 
 
 class ProtocolloField(BaseCustomField):
     """
-    Protocolo type, number and date (or another classification type)
+    Art, Nummer und Datum des Protokolls (oder eine andere Klassifizierungsart)
     """
-    field_type = "Protocollo (tipo/numero/data)"
+    field_type = "Protokoll (Art / Nummer / Datum)"
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
@@ -502,10 +502,10 @@ class ProtocolloField(BaseCustomField):
         # Procotol type (selectbox)
         self.tipo = CustomSelectBoxField(*args, **data_kwargs)
         self.tipo.required = data_kwargs.get('required')
-        self.tipo.label = _("{} (Tipo numerazione)").format(parent_label)
+        self.tipo.label = _("{} (Nummerierungstyp)").format(parent_label)
         self.tipo.name = "{}_dyn".format(format_field_name(self.tipo.label))
-        self.tipo.help_text = _("Scegli se protocollo/decreto/delibera, "
-                                "al/alla quale la numerazione è riferita")
+        self.tipo.help_text = _("Wähle, ob Protokoll / Dekret / Resolution"
+                                "worauf die sich die Nummerierung bezieht")
         self.tipo.choices += [(i[0].lower().replace(' ', '_'), i[1]) \
                              for i in CLASSIFICATION_LIST]
         self.tipo.parent = self
@@ -515,16 +515,16 @@ class ProtocolloField(BaseCustomField):
         self.numero.required = data_kwargs.get('required')
         self.numero.label = _("{} (Numero Protocollo/Delibera/Decreto)").format(parent_label)
         self.numero.name = "{}_dyn".format(format_field_name(self.numero.label))
-        self.numero.help_text = _("Indica il numero del "
-                                  "protocollo/decreto/delibera")
+        self.numero.help_text = _("Gibt die Nummer des Protokolls "
+                                "/ Dekrets / Beschlusses an")
         self.numero.parent = self
 
         # Protocol date (DateField)
         self.data = BaseDateField(*args, **data_kwargs)
         self.data.required = data_kwargs.get('required')
-        self.data.label = _("{} (Data Protocollo/Delibera/Decreto)").format(parent_label)
+        self.data.label = _("{} (Protokoll / Resolution / Dekretdatum)").format(parent_label)
         self.data.name = "{}_dyn".format(format_field_name(self.data.label))
-        self.data.help_text = _("Indica la data del protocollo/delibera/decreto")
+        self.data.help_text = _("Gibt das Datum des Protokolls / Beschlusses / Dekrets an")
         self.data.parent = self
 
     def get_fields(self):
@@ -536,15 +536,15 @@ class ProtocolloField(BaseCustomField):
     def raise_error(self, name, cleaned_data, **kwargs):
         value = cleaned_data.get(name)
 
-        if not value: return [_("Valore mancante")]
+        if not value: return [_("Fehlender Wert")]
 
         # Check protocol date
         if name == self.data.name:
             errors = []
             # If protocol_date > today
             if _successivo_ad_oggi(value):
-                errors.append(_("La data di protocollo non può essere"
-                                " successiva ad oggi"))
+                errors.append(_("Das Protokolldatum darf nicht"
+                                " nach heute sein"))
             return errors
 
 
@@ -552,7 +552,7 @@ class CustomHiddenField(CharField, BaseCustomField):
     """
     CharField Hidden
     """
-    field_type = _("Campo nascosto")
+    field_type = _("Verstecktes Feld")
     widget = forms.HiddenInput
 
     def define_value(self, custom_value, **kwargs):
@@ -689,8 +689,8 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
     Formset field
     """
     # error message if is_required and no forms are present
-    validation_error = _("Questo campo necessita di almeno una riga")
-    field_type = _("Inserimenti multipli")
+    validation_error = _("Dieses Feld benötigt mindestens eine Zeile")
+    field_type = _("Mehrfache Einträge")
     is_complex = True
     is_formset = True
     choices = None

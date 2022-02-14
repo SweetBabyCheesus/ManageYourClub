@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from .views import *
 
-app_name="form"
+app_name="Testform"
 
 urlpatterns = [
     path('', dynform, name='dynform'),

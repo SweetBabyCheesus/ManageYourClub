@@ -35,6 +35,11 @@ urlpatterns = [
     path('<int:club>/', home_view, name='home'),
     path('members/', include('members.urls')),
     path('notifications/', include('notifications.urls')),
-    path('form/', include('django_form_builder.urls')),
+    path('form_builder_example/', include('django_form_builder.urls')),
+    path('<int:club>/mebershiprequest/', include('membership_request.urls')),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('img/favicon.ico'))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_URL)

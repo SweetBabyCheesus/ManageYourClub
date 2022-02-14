@@ -386,11 +386,11 @@ class BaseDynamicForm(forms.Form):
         for field in fields:
             field_params = {'label': field.name,
                             'required' : field.is_required,
-                            'help_text' : field.aiuto,
+                            'help_text' : field.help_text,
                             'pre_text': getattr(field, 'pre_text', '')}
             constructor_dict[field.name] = (field.field_type,
                                             field_params,
-                                            field.valore)
+                                            field.value)
         return constructor_dict
 
     @classmethod

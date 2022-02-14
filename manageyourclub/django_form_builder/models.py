@@ -11,26 +11,26 @@ from . utils import get_as_dict
 class DynamicFieldMap(models.Model):
     """
     """
-    name = models.CharField(max_length=150,)
+    name = models.CharField(max_length=150,verbose_name=_('Feldbezeichnung'))
     field_type = models.CharField(max_length=100,
-                                  choices = get_fields_types())
-    valore = models.TextField(max_length=20000,
+                                  choices = get_fields_types(),verbose_name=_('Typ des Feldes'))
+    value = models.TextField(max_length=20000,
                               blank=True,
                               default='',
-                              verbose_name=_('Lista di Valori'),
-                              help_text=_("Viene considerato solo se si sceglie"
-                                          " 'Menu a tendina' oppure 'Serie di Opzioni'."
-                                          " (Es: valore1;valore2;valore3...)"))
-    is_required = models.BooleanField(default=True)
-    aiuto = models.CharField(max_length=254, blank=True, default='')
+                              verbose_name=_('Liste von Werten'),
+                              help_text=_("Inhalte für Dropdown Listen. "
+                                          "Beispiel zur Formatierung: "
+                                          "wert 1;wert 2;wert 3"))
+    is_required = models.BooleanField(default=True,verbose_name=_('Pflichtfeld (Ja/ Nein)'))
+    help_text = models.CharField(max_length=254, blank=True, default='',verbose_name=_('Hilfstext / Erklärung'))
     pre_text = models.TextField(blank=True, default='')
-    ordinamento = models.PositiveIntegerField(help_text=_("posizione nell'ordinamento"),
+    ordering = models.PositiveIntegerField(verbose_name=_('Sortierung (Stelle des Feldes im Formular)'),
                                               blank=True,
                                               default=0)
 
     class Meta:
         abstract = True
-        ordering = ('ordinamento',)
+        ordering = ('ordering',)
 
 
 class SavedFormContent(models.Model):

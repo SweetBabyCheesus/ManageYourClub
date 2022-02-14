@@ -1,5 +1,7 @@
 # Author: Tobias
+from tkinter import CASCADE
 from django.db import models
+from django_form_builder.models import DynamicFieldMap
 
 # Vorgabe von den Architekten:
 # https://vereinsmanagement.atlassian.net/wiki/spaces/VEREINSMAN/pages/33062915/ERM+f+r+Datenbank+mit+Datentypen 
@@ -103,3 +105,48 @@ class ClubModel(models.Model):
             oldAdr.delete()
         return self
 
+    def get_form(self,
+                  data=None,
+                  files=None,
+                  remove_filefields=False,
+                  remove_datafields=False,
+                  **kwargs):
+       """
+       Returns the form (empty if data=None)
+       if remove_filefields is not False, remove from form the passed FileFields
+       if remove_datafields is True, remove all fields different from FileFields
+       """
+       # retrieve all the fields (the model class is in 'Step 1')
+       form_fields_from_model = self.myfieldslistmodel.all().order_by('ordinamento')
+       if not form_fields_from_model: return None
+       # Static method of DynamicFieldMap that build the constructor dictionary
+       constructor_dict = DynamicFieldMap.build_constructor_dict(form_fields_from_model)
+
+       # more params to pass with 'data'
+       custom_params = {'extra_1': value_1,
+                        'extra_2': value_2}
+       # the form retrieved by calling get_form() static method
+       form = DynamicFieldMap.get_form(# define it only if you
+                                       # need your custom form:
+                                       # class_obj=MyDynamicForm,
+                                       constructor_dict=constructor_dict,
+                                       custom_params=custom_params,
+                                       data=data,
+                                       files=files,
+                                       remove_filefields=remove_filefields,
+                                       remove_datafields=remove_datafields)
+
+       return form
+
+
+class ClubDataModel(models.Model):
+    club = models.ForeignKey(to = ClubModel, on_delete=models.CASCADE)
+    file_type = models.SmallIntegerField(verbose_name='Art des Dokumentes')
+    #field_type 1 = Dokument für Antragsformular
+    #TODO: Modell für file_Types implementieren
+    data = models.FileField(upload_to='club_data')
+
+    def createMembershipRequestData(club,data):
+        #Speichert Daten die im Antragsformular zum Download bereit gestellt werden sollen
+        data = ClubDataModel.objects.create(club = club, file_type = 1, data = data)
+        return data

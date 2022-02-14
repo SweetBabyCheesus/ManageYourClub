@@ -1,5 +1,7 @@
 # Author: Tobias
 from django.db import models
+from clubs.models import AddressModel
+from users.models import Gender
 from users.models import CustomUser
 from clubs.models import ClubModel
 from datetime import datetime
@@ -40,9 +42,17 @@ class Membership(models.Model):
     paymentMethod   = models.ForeignKey(to=PaymentMethod, on_delete=models.PROTECT, blank=True, null=True)
     memberFunction  = models.ForeignKey(to=MemberFunction, on_delete=models.PROTECT, blank=True, null=True)
     memberState     = models.ForeignKey(to=MemberState, on_delete=models.PROTECT, blank=True, null=True)
-    member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
+    member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE, null=True)
     memberSince     = models.IntegerField()
     phone           = models.CharField(max_length=20, blank=True, null=True)
+    first_name      = models.CharField(max_length=30, blank=True, null=True, verbose_name="Vorname")
+    last_name       = models.CharField(max_length=30, blank=True, null=True, verbose_name="Nachname")
+    birthday        = models.DateField(blank=True, null=True, verbose_name="Geburtstag")
+    adresse         = models.ForeignKey(to=AddressModel, blank=True, null=True, on_delete=models.PROTECT)
+    gender          = models.ForeignKey(to=Gender, blank=True, null=True, on_delete=models.PROTECT)
+    iban            = models.CharField(max_length=34, blank=False, null=False)
+    bank_account_owner = models.CharField(max_length=60, blank=False, null=False)
+
 
     class Meta:
         unique_together = ('member', 'club',)
