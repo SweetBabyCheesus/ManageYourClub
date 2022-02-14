@@ -105,6 +105,10 @@ def deleteClubView(request, club):
 
     
 
+
+
+
+
 def requestMembershipView(request):
     #Autor Max
     #Funktion um als User die Mitgliedschaft in einem Verein anzufrageen
@@ -120,3 +124,31 @@ def requestMembershipView(request):
         MembershipRequest.addRequest(user=user, club=club, direction=direction)
 
     return redirect('allclubs')
+"""
+
+def requestMembershipView(request, club):
+    #Autor: Max
+    #Erstellt ein Mitgliedschaftsantragsformular 
+    #Zeigt dem Bewerber von Verein Hochgeladene Dateien
+    #Fragt Standartfelder ab
+    #Fragt Custom Felder ab
+
+    user = request.user
+    club = club.id
+
+    if user.is_authenticated:
+        #für registrierte User
+
+        if not ClubModel.objects.filter(pk=club).exists():
+            #falls der Club nicht existiert
+            return redirect('allclubs')
+
+        if Membership.objects.filter(club=club, member = user.id).exists():
+            #falls der User bereits Mitglied im Verein ist
+            return redirect('allclubs')
+
+        
+
+    else:
+        #für nicht registrierte User
+        """

@@ -137,8 +137,7 @@ def FileViewOrAdd(request, club):
 
     if not Membership.objects.filter(club=club, member = user.id).exists():
         return redirect('allclubs')
-
-    files = ClubDataModel.objects.get(club = club)    
+   
     club = ClubModel.objects.get(pk=club)
 
     if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
@@ -152,7 +151,6 @@ def FileViewOrAdd(request, club):
     context = {
         'form':form,
         'club':club,
-        'files':files,
     }
         
     return render(request, 'new_File.html', context)
