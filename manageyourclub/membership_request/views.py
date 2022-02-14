@@ -1,5 +1,6 @@
 from sre_constants import SUCCESS
 from django.shortcuts import render
+from django.utils.html import strip_tags
 from django_form_builder.forms import BaseDynamicForm
 from collections import OrderedDict
 from django.contrib import messages
