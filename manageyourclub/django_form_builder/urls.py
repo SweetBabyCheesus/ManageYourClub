@@ -6,5 +6,5 @@ from .views import *
 app_name="Testform"
 
 urlpatterns = [
-    path('', dynform, name='dynform'),
+
 ]

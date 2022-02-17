@@ -1,7 +1,9 @@
 # Author: Tobias
+from venv import create
 from django import forms
 from members.models import Membership, MemberFunction
 from users.models import CustomUser
+
 # Tutorials genutzt: https://www.tutorialspoint.com/python_data_science/python_date_and_time.htm
 class AddClubMemberForm(forms.Form):
     eMail = forms.CharField(max_length=50, label='E-Mail-Adresse')
@@ -23,4 +25,3 @@ class editMemberForm(forms.Form):
         if commit:
             memship.save()
         return memship
-

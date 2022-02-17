@@ -19,7 +19,7 @@
             <td id="clubadress_{{ forloop.counter }}">{{ club.address.streetAddress }} {{ club.address.houseNumber }}</td>
             <td>
                 {% if club not in myClubs %}
-                    <form action="{% url 'requestMembership' %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
+                    <a href="{% url 'RequestMembershipView'  club=club.id %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
                         {% csrf_token %}
                         <Button 
                             type="submit" 
@@ -28,17 +28,18 @@
                             data-toggle="tooltip"
                             title="Mitgliedschaftsantrag an {{ club.clubname }}" 
                             value="{{ club.id }}"
-                            form="requestMembershipForm_{{ forloop.counter }}" id="requestMembershipButton_{{ forloop.counter }}"
+                            form="requestMembershipForm_{{ forloop.counter }}" 
+                            id="requestMembershipButton_{{ forloop.counter }}"
                         >
                             <i class="fas fa-sign-in-alt"></i>
                         </Button>
-                    </form>
+                    </a>
                     
 
 
                     
                 {% else %}
-                    du bist bereits Mitglied
+                    bereits Mitglied oder Verein {{ club.clubname }} prüft derzeit deinen Antrag
                 {% endif %}
             </td>
         </tr>

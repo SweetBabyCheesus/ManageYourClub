@@ -2,6 +2,7 @@
 from tkinter import CASCADE
 from django.db import models
 from django_form_builder.models import DynamicFieldMap
+import os
 
 # Vorgabe von den Architekten:
 # https://vereinsmanagement.atlassian.net/wiki/spaces/VEREINSMAN/pages/33062915/ERM+f+r+Datenbank+mit+Datentypen 
@@ -150,3 +151,6 @@ class ClubDataModel(models.Model):
         #Speichert Daten die im Antragsformular zum Download bereit gestellt werden sollen
         data = ClubDataModel.objects.create(club = club, file_type = 1, data = data)
         return data
+
+    def filename(self):
+        return os.path.basename(self.file.name)
