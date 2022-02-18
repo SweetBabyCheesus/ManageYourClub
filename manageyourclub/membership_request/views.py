@@ -11,11 +11,8 @@ from django.http import HttpResponse
 import json
 
 from .utils import *
-from members.models import Membership
-from membership_request.forms import AddFieldForm
-from membership_request.forms import AddFileForm
-from membership_request.forms import *
-#from membership_request.forms import UnregisteredMembershipForm
+from members.models import Membership, MemberState
+from .forms import *
 from .models import *
 from clubs.models import ClubModel, ClubDataModel
 
@@ -233,7 +230,11 @@ def RequestMembershipView(request, club):
                 # if POST (form submitted)
             print(customForm)
             print(form)
-
+    
+        if request.user.is_authenticated: 
+            return redirect('allclubs')
+        else:
+            return redirect('login')
 
     else:
         #Für Membership Modell
@@ -269,15 +270,66 @@ def RequestMembershipView(request, club):
 
 
 
-"""
-https://stackoverflow.com/questions/18489393/django-submit-two-different-forms-with-one-submit-button
-if request.method == 'POST':
-        form1 = Form1( request.POST,prefix="form1")
-        form2 = Form2( request.POST,prefix="form2")
-        print(request.POST)
-        if form1.is_valid() or form2.is_valid(): 
-else:
-        form1 = Form1(prefix="form1")
-        form2 = Form2(prefix="form2")
+def acceptRequestMembershipView(request):
+    #Autor: Max
+    #Funktion um Mitgliedsanfragen von Usern an Vereine anzunehmen
+    #TODO: Anpassen für Thesis
 
-"""
+    if request.method == 'POST': 
+        clubRequId = request.POST.get('clubRequId', None)
+        membershipRequest = Membership.objects.get(pk=clubRequId)
+
+        #Anpassung der Antragsdaten auf angenommen
+        membershipRequest.setStatusAccepted()
+    return redirect('home')
+    
+
+
+def declineRequestMembershipView(request):
+    #Autor: Max
+    #Funktion um Mitgliedsanfragen von Usern an Vereine abzulehnen
+    #TODO: Anpassen für Thesis
+
+    if request.method == 'POST': 
+        clubRequId = request.POST.get('clubRequId', None)
+        membershipRequest = Membership.objects.get(pk=clubRequId)
+
+        #Anpassung der Antragsdaten auf abgelehnt
+        membershipRequest.setStatusDeclined()
+    return redirect('home')
+
+
+
+
+def showMembershipRequestToClubView(request, club, request_data):
+    #Autor: Max
+    #Diese Methode zeigt einem Vereinsadmin die Daten einer Beitrittsanfrage
+    #In dem Template kann er die Anfrage besttigen oder ablehnen 
+    user = request.user
+    
+    if Membership.objects.filter(club=club, member = user).exists():
+    #Nur Vereinsmitglieder können Beitrittsanfragen prüfen
+    #Derzeit kein Rollenkonzept innerhalb von Vereinen / muss in Zukunft noch ergänzt werden und die Berechtigungsprüfung muss angepasst werden
+
+        membership = Membership.objects.get(number=request_data)
+        memberState = membership.memberState
+
+        if memberState.stateID > 0:
+            return redirect('home')
+
+        Json_Data = ''
+
+        if CustomMembershipData.objects.filter(membership = membership.number).exists():
+            Json_Data = CustomMembershipData.objects.get(membership = membership.number)
+
+        context = {
+            'json': Json_Data,
+            'membership': membership,
+        }
+
+        return render(request,'membershipRequestAnswer.html' ,context)
+    
+    
+
+    #Falls User nicht Berechtigt um Anfrage zu prüfen:
+    return redirect('allclubs')

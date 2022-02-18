@@ -1,0 +1,38 @@
+<!--Author: Max
+Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten vereins
+aktuell nicht in nutzung-->
+{% extends 'table.html' %}
+
+{% block aboveTable %}
+<h1 style="color: rgb(0, 0, 0); text-align: center;">Mitgliedschaftsantrag</h1>
+{% endblock aboveTable %}
+
+{% block tablehead %}
+    <th>Feldname</th>
+    <th>Inhalt</th>
+{% endblock tablehead %}
+
+{% block tablerows %}
+    {% for clubRqu in membershipRequestNotifications %}
+       {% if clubRqu.member != null %}
+            <tr></tr>
+        {% elif clubRqu.member == null %}
+            <tr></tr>
+        {% endif %} 
+    {% endfor %} 
+{% endblock tablerows %}
+
+<form action="{% url 'acceptRequestMembership' club=club.id %}" method="post" style="display:inline;" id="accept_request_form_{{ forloop.counter }}">
+    {% csrf_token %}
+    <!--Annahme-Button für Beitrittsanfragen-->
+    <button type="submit" name="clubRquId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubRqu.id }}" form="accept_request_form_{{ forloop.counter }}" id="accept_request_button_{{ forloop.counter }}">
+        Annehmen
+    </button>
+</form>
+<form action="{% url 'declineRequestMembership' club=club.id %}" method="post" id="decline_request_form_{{ forloop.counter }}" style="display:inline;">
+    {% csrf_token %}
+    <!--Ablehnungsbuttons für Beitrittsanfragen-->
+    <button type="submit" name="clubRquId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubRqu.id }}" form="decline_request_form_{{ forloop.counter }}" id="decline_request_button_{{ forloop.counter }}">
+        Ablehnen
+    </button>
+</form>

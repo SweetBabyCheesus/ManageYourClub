@@ -1,7 +1,6 @@
 <!--Author: Max
 Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten vereins
-aktuell nicht in nutzung
--->
+aktuell nicht in nutzung-->
 {% extends 'table.html' %}
 
 {% block aboveTable %}
@@ -13,39 +12,43 @@ aktuell nicht in nutzung
     <th>Name</th>
     <th>Nachname</th>
     <th>Geburtstag</th>
-    <th>Ort</th>
-    <th>Details</th>
+    <th>Art</th>
     <th>Aktionen</th>
 {% endblock tablehead %}
 
 {% block tablerows %}
-    {% for clubNot in clubNotifications %}
-        {% if clubNot.status == 1 %}
-        <tr>
-            <td id="benachichtigung_vorname_{{ forloop.counter }}">{{ clubNot.user.Vorname }}</td>
-            <td id="benachichtigung_nachname_{{ forloop.counter }}">{{ clubNot.user.Nachname }}</td>
-            <td id="benachichtigung_gebtag_{{ forloop.counter }}">{{ clubNot.user.Geburtstag }}</td>
-            <td id="benachichtigung_city_{{ forloop.counter }}">{{ clubNot.user.Adresse.postcode.village }}</td>
-            <td>Beitrittsanfrage</td>
-            <td>
-                <form action="{% url 'acceptRequestMembership' %}" method="post" style="display:inline;" id="accept_request_form_{{ forloop.counter }}">
-                    {% csrf_token %}
-                    <!--Annahme-Button für Beitrittsanfragen-->
-                    <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="accept_request_form_{{ forloop.counter }}" id="accept_request_button_{{ forloop.counter }}">
-                        Annehmen
-                    </button>
-                </form>
-                <form action="{% url 'declineRequestMembership' %}" method="post" id="decline_request_form_{{ forloop.counter }}" style="display:inline;">
-                    {% csrf_token %}
-                    <!--Ablehnungsbuttons für Beitrittsanfragen-->
-                    <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="decline_request_form_{{ forloop.counter }}" id="decline_request_button_{{ forloop.counter }}">
-                        Ablehnen
-                    </button>
+    {% for clubRqu in membershipRequestNotifications %}
+       {% if clubRqu.member != null %}
+            <tr>
+                <td id="benachichtigung_vorname_{{ forloop.counter }}">{{ clubRqu.member.Vorname }}</td>
+                <td id="benachichtigung_nachname_{{ forloop.counter }}">{{ clubRqu.member.Nachname }}</td>
+                <td id="benachichtigung_gebtag_{{ forloop.counter }}">{{ clubRqu.member.Geburtstag }}</td>
+                <td>Beitrittsanfrage</td>
+                 <td>
 
-                </form>
-
-            </td>
-        </tr>
+                    <!--Prüfen-Button für Beitrittsanfragen-->                          
+                    <a href='{% url "showMembershipRequestToClubView" club=clubRqu.club.id request_data=clubRqu.number%}' id="check_request_link_{{ forloop.counter }}">
+                        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="check_request_button_{{ forloop.counter }}">
+                            Prüfen
+                        </button>
+                    </a>
+                </td> 
+            </tr>
+        {% elif clubRqu.member == null %}
+            <tr>
+                <td id="benachichtigung_vorname_{{ forloop.counter }}">{{ clubRqu.first_name }}</td>
+                <td id="benachichtigung_nachname_{{ forloop.counter }}">{{ clubRqu.last_name }}</td>
+                <td id="benachichtigung_gebtag_{{ forloop.counter }}">{{ clubRqu.birthday }}</td>
+                <td>Beitrittsanfrage</td>
+                 <td>
+                    <!--Prüfen-Button für Beitrittsanfragen-->                          
+                    <a href='{% url "showMembershipRequestToClubView" request_data=clubRqu.number club=clubRqu.club.id%}' id="check_request_link_{{ forloop.counter }}">
+                        <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="check_request_button_{{ forloop.counter }}">
+                            Prüfen
+                        </button>
+                    </a>
+                </td> 
+            </tr>
         {% endif %} 
     {% endfor %}
 {% endblock tablerows %}

@@ -58,6 +58,19 @@ class Membership(models.Model):
     class Meta:
         unique_together = ('member', 'club',)
 
+
+    def setStatusAccepted(self):
+        #Autor: Max
+        #Methode um den Status einer Mitgliedschaftsanfrage auf angenommen zusetzen. -> DRY Pattern
+        self.memberState = 1
+        self.save()
+
+    def setStatusDeclined(self):
+        #Autor: Max
+        #Methode um den Status einer Mitgliedschaftsanfrage auf abgelehnt zusetzen. -> DRY Pattern
+        self.memberState = 2
+        self.save()
+
     @staticmethod
     def addMember(club,user):
         #Autor: Max

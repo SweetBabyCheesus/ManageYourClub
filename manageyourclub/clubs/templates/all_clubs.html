@@ -20,9 +20,8 @@
             <td>
                 {% if club not in myClubs %}
                     <a href="{% url 'RequestMembershipView'  club=club.id %}" method="post" id="requestMembershipForm_{{ forloop.counter }}">
-                        {% csrf_token %}
                         <Button 
-                            type="submit" 
+                            type="button" 
                             name="clubId" 
                             class="btn btn-default icon-button" 
                             data-toggle="tooltip"
