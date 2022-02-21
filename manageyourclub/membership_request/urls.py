@@ -9,7 +9,7 @@ urlpatterns = [
     path('FileViewOrAdd/', FileViewOrAdd, name='FileViewOrAdd'), 
     path('showFormDataView/', showFormDataView, name='showFormDataView'),
     path('RequestMembershipView/', RequestMembershipView, name='RequestMembershipView'), 
-    path('acceptRequestClub/', acceptRequestMembershipView, name='acceptRequestMembership'),
-    path('declineRequestClub/', declineRequestMembershipView, name='declineRequestMembership'),
+    path('<int:request_data>/acceptRequestClub/', acceptRequestMembershipView, name='acceptRequestMembership'),
+    path('<int:request_data>/declineRequestClub/', declineRequestMembershipView, name='declineRequestMembership'),
     path('<int:request_data>/showMembershipRequestToClubView/', showMembershipRequestToClubView, name='showMembershipRequestToClubView'),
 ]

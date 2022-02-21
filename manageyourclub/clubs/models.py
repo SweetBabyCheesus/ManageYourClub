@@ -10,16 +10,16 @@ import os
 
 class PlaceModel(models.Model):
     """Model für Orte. Mit einer automatisch generierten ID als primary key"""
-    postcode = models.IntegerField()
-    village = models.CharField(max_length=20)
+    postcode = models.IntegerField(verbose_name='Postleitzahl')
+    village = models.CharField(max_length=20, verbose_name='Stadt')
 
 class AddressModel(models.Model):
     """
     Model für Adressen. Mit einer automatisch generierten ID als primary key. 
     postcode ist der foreign key zu PlaceModel
     """
-    streetAddress = models.CharField(max_length=20)
-    houseNumber = models.CharField(max_length=5)
+    streetAddress = models.CharField(max_length=20, verbose_name='Straße')
+    houseNumber = models.CharField(max_length=5, verbose_name='Hausnummer')
     postcode = models.ForeignKey(to=PlaceModel, on_delete=models.PROTECT)
 
     @staticmethod

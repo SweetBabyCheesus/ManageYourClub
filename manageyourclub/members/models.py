@@ -45,14 +45,14 @@ class Membership(models.Model):
     memberState     = models.ForeignKey(to=MemberState, on_delete=models.PROTECT, blank=True, null=True)
     member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE, null=True) #Status der Mitgliedschaft (Beantragt(0), aktiv (1), abgelehnt(2), abgemeldet(3)...)
     memberSince     = models.IntegerField(blank=True, null=True)
-    phone           = models.CharField(max_length=20, blank=False, null=True)
+    phone           = models.CharField(max_length=20, blank=False, null=True, verbose_name="Telefonnummer")
     first_name      = models.CharField(max_length=30, blank=False, null=True, verbose_name="Vorname")
     last_name       = models.CharField(max_length=30, blank=False, null=True, verbose_name="Nachname")
     birthday        = models.DateField(blank=True, null=True, verbose_name="Geburtstag")
     adresse         = models.ForeignKey(to=AddressModel, blank=True, null=True, on_delete=models.PROTECT)
     gender          = models.ForeignKey(to=Gender, blank=True, null=True, on_delete=models.PROTECT)
-    iban            = models.CharField(max_length=34, blank=True, null=True)
-    bank_account_owner = models.CharField(max_length=60, blank=True, null=True)
+    iban            = models.CharField(max_length=34, blank=True, null=True, verbose_name="IBAN")
+    bank_account_owner = models.CharField(max_length=60, blank=True, null=True, verbose_name="Kotoführer/-in")
 
 
     class Meta:
@@ -62,13 +62,13 @@ class Membership(models.Model):
     def setStatusAccepted(self):
         #Autor: Max
         #Methode um den Status einer Mitgliedschaftsanfrage auf angenommen zusetzen. -> DRY Pattern
-        self.memberState = 1
+        self.memberState = MemberState.objects.get(stateID=1)
         self.save()
 
     def setStatusDeclined(self):
         #Autor: Max
         #Methode um den Status einer Mitgliedschaftsanfrage auf abgelehnt zusetzen. -> DRY Pattern
-        self.memberState = 2
+        self.memberState = MemberState.objects.get(stateID=2)
         self.save()
 
     @staticmethod

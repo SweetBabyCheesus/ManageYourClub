@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from sre_constants import SUCCESS
 from django.shortcuts import render
 from django.utils.html import strip_tags
@@ -11,7 +12,7 @@ from django.http import HttpResponse
 import json
 
 from .utils import *
-from members.models import Membership, MemberState
+from members.models import Membership
 from .forms import *
 from .models import *
 from clubs.models import ClubModel, ClubDataModel
@@ -270,32 +271,43 @@ def RequestMembershipView(request, club):
 
 
 
-def acceptRequestMembershipView(request):
+def acceptRequestMembershipView(request, request_data, club):
     #Autor: Max
     #Funktion um Mitgliedsanfragen von Usern an Vereine anzunehmen
     #TODO: Anpassen für Thesis
+    user = request.user
 
-    if request.method == 'POST': 
-        clubRequId = request.POST.get('clubRequId', None)
-        membershipRequest = Membership.objects.get(pk=clubRequId)
+    if not Membership.objects.filter(member=user.id).exists():
+        #Berechtigungsprüfung
+        return redirect('home')
 
+    membership = Membership.objects.get(number=request_data)
+
+    if request.method == 'POST':
         #Anpassung der Antragsdaten auf angenommen
-        membershipRequest.setStatusAccepted()
+        print(membership)
+        membership.setStatusAccepted()
+
     return redirect('home')
     
 
 
-def declineRequestMembershipView(request):
+def declineRequestMembershipView(request,club, request_data):
     #Autor: Max
     #Funktion um Mitgliedsanfragen von Usern an Vereine abzulehnen
     #TODO: Anpassen für Thesis
+    user = request.user
+
+    if not Membership.objects.filter(member=user.id).exists():
+        #Berechtigungsprüfung
+        return redirect('home')
+
+    membership = Membership.objects.get(number=request_data)
 
     if request.method == 'POST': 
-        clubRequId = request.POST.get('clubRequId', None)
-        membershipRequest = Membership.objects.get(pk=clubRequId)
 
         #Anpassung der Antragsdaten auf abgelehnt
-        membershipRequest.setStatusDeclined()
+        membership.setStatusDeclined()
     return redirect('home')
 
 
@@ -312,23 +324,28 @@ def showMembershipRequestToClubView(request, club, request_data):
     #Derzeit kein Rollenkonzept innerhalb von Vereinen / muss in Zukunft noch ergänzt werden und die Berechtigungsprüfung muss angepasst werden
 
         membership = Membership.objects.get(number=request_data)
+
+        if membership.member is None:
+            membership_applicant_data = getApplicantData(membership,False)
+        else:
+            membership_applicant_data = getApplicantData(membership,True)
+        
         memberState = membership.memberState
 
         if memberState.stateID > 0:
             return redirect('home')
 
-        Json_Data = ''
-
         if CustomMembershipData.objects.filter(membership = membership.number).exists():
-            Json_Data = CustomMembershipData.objects.get(membership = membership.number)
+            Json_Data = CustomMembershipData.objects.get(membership = membership.number).json
 
         context = {
-            'json': Json_Data,
+            'json': json.loads(Json_Data),
             'membership': membership,
+            'membership_applicant_data': membership_applicant_data,
         }
 
+
         return render(request,'membershipRequestAnswer.html' ,context)
-    
     
 
     #Falls User nicht Berechtigt um Anfrage zu prüfen:
