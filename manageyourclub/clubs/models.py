@@ -113,6 +113,7 @@ class ClubModel(models.Model):
                   remove_datafields=False,
                   **kwargs):
        """
+       Von Django Form Builder, Doku: https://django-form-builder.readthedocs.io/en/latest/usage/dynamic-forms/configuration.html
        Returns the form (empty if data=None)
        if remove_filefields is not False, remove from form the passed FileFields
        if remove_datafields is True, remove all fields different from FileFields
