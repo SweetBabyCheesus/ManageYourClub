@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
+from members.models import MemberState
 from users.models import CustomUser
-from notifications.models import MembershipRequest
 from clubs.models import ClubModel
 from members.models import Membership
 
-
+"""
 def requestNotificationView(request, club):
     #Autor: Max
     #https://www.youtube.com/watch?v=vmP1r6xiJog
@@ -16,19 +16,22 @@ def requestNotificationView(request, club):
     #Zur anzeige der Vereinsbezogenen Anfragen: Filterung
     if ClubModel.objects.filter(pk=club).exists():
         club = ClubModel.objects.get(pk=club)
-    clubNotifications = MembershipRequest.objects.filter(club=club)
+    membershipRequestNotifications = Membership.objects.filter(club=club,MemberState=0)
 
     context = {
         'user':user,
         'club':club,
-        'clubNotifications':clubNotifications,
+        'membershipRequestNotifications':membershipRequestNotifications,
     }
     
     return render(request, 'showNotifications.html', context)
 
+
+
 def acceptRequestMembership(request):
     #Autor: Max
     #Funktion um Mitgliedsanfragen von Usern an Vereine anzunehmen
+    #TODO: Anpassen für Thesis
 
     if request.method == 'POST': 
         clubNotId = request.POST.get('clubNotId', None)
@@ -50,6 +53,7 @@ def acceptRequestMembership(request):
 def declineRequestMembership(request):
     #Autor: Max
     #Funktion um Mitgliedsanfragen von Usern an Vereine abzulehnen
+    #TODO: Anpassen für Thesis
 
     if request.method == 'POST': 
         clubNotId = request.POST.get('clubNotId', None)
@@ -61,3 +65,4 @@ def declineRequestMembership(request):
     
         return redirect(requestNotificationView, club=club.pk)
     return redirect('home')
+"""

@@ -29,6 +29,9 @@ ALLOWED_HOSTS = ['manageYourClub.pythonanywhere.com', '127.0.0.1' ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+CAPTCHA_SECRET = bytes('your_secret', 'utf-8')
+CAPTCHA_SALT = bytes('your_salt', 'utf-8')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +48,10 @@ INSTALLED_APPS = [
     'static',
     'notifications',
     'six',
+    'django_form_builder',
+    'captcha',
+    'filesig',
+    'membership_request',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +148,7 @@ STATIC_URL = '/static/'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = '/home/manageYourClub/manageyourclub/media'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/manageYourClub/manageyourclub/assets/'
 LOGIN_REDIRECT_URL = 'home'

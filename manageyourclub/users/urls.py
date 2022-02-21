@@ -7,7 +7,7 @@ from users.views import SignUpView, ActivateAccount, showUserData, deleteuser, e
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('', home_view, name='home'),
+    path('<int:club>/', home_view, name='home'),
     #Tutorial für Passwortändern: https://www.youtube.com/watch?v=P6QHswl2PqE
     #funktionalitäten stellt Django, in Views file und changePassword.html findet customizing statt
     path('password/', CustomPasswordChangeView.as_view(template_name='registration/changePassword.html'), name='password'),
