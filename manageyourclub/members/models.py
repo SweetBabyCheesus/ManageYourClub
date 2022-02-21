@@ -1,5 +1,8 @@
 # Author: Tobias
+from sre_parse import State
 from django.db import models
+from clubs.models import AddressModel
+from users.models import Gender
 from users.models import CustomUser
 from clubs.models import ClubModel
 from datetime import datetime
@@ -40,25 +43,78 @@ class Membership(models.Model):
     paymentMethod   = models.ForeignKey(to=PaymentMethod, on_delete=models.PROTECT, blank=True, null=True)
     memberFunction  = models.ForeignKey(to=MemberFunction, on_delete=models.PROTECT, blank=True, null=True)
     memberState     = models.ForeignKey(to=MemberState, on_delete=models.PROTECT, blank=True, null=True)
-    member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
-    memberSince     = models.IntegerField()
-    phone           = models.CharField(max_length=20, blank=True, null=True)
+    member          = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE, null=True) #Status der Mitgliedschaft (Beantragt(0), aktiv (1), abgelehnt(2), abgemeldet(3)...)
+    memberSince     = models.IntegerField(blank=True, null=True)
+    phone           = models.CharField(max_length=20, blank=False, null=True, verbose_name="Telefonnummer")
+    first_name      = models.CharField(max_length=30, blank=False, null=True, verbose_name="Vorname")
+    last_name       = models.CharField(max_length=30, blank=False, null=True, verbose_name="Nachname")
+    birthday        = models.DateField(blank=True, null=True, verbose_name="Geburtstag")
+    adresse         = models.ForeignKey(to=AddressModel, blank=True, null=True, on_delete=models.PROTECT)
+    gender          = models.ForeignKey(to=Gender, blank=True, null=True, on_delete=models.PROTECT)
+    iban            = models.CharField(max_length=34, blank=True, null=True, verbose_name="IBAN")
+    bank_account_owner = models.CharField(max_length=60, blank=True, null=True, verbose_name="Kotoführer/-in")
+
 
     class Meta:
         unique_together = ('member', 'club',)
+
+
+    def setStatusAccepted(self):
+        #Autor: Max
+        #Methode um den Status einer Mitgliedschaftsanfrage auf angenommen zusetzen. -> DRY Pattern
+        self.memberState = MemberState.objects.get(stateID=1)
+        self.save()
+
+    def setStatusDeclined(self):
+        #Autor: Max
+        #Methode um den Status einer Mitgliedschaftsanfrage auf abgelehnt zusetzen. -> DRY Pattern
+        self.memberState = MemberState.objects.get(stateID=2)
+        self.save()
 
     @staticmethod
     def addMember(club,user):
         #Autor: Max
         #Methode zum hinzufügen von Mitgliedern zu vereinen. Kann mit Membership.addMember(club=...,user=...) angesprochen werden
         if not Membership.objects.filter(member=user, club=club).exists():
-            newMember  = Membership.objects.create(member=user, club=club, memberSince=datetime.today().year)
+            memberState = MemberState.objects.get(stateID = 1)
+            newMember  = Membership.objects.create(member=user, club=club, memberSince=datetime.today().year, memberState = memberState)
             newMember.save()
             return newMember
         return None
 
+    @staticmethod
+    def addRegisteredMembershipRequestData(user, club, phone, iban, bank_account_owner):
+        #Autor: Max
+        #Fügt die Daten eines Antragsformulars in den Memberships Table ein
+        #Status ist auf 0, die Mitgliedschaft ist somit im Status 'Anfrage' und daher noch nicht aktiv
+        if not Membership.objects.filter(member=user, club=club).exists():
+            memberState = MemberState.objects.get(stateID = 0)
+            newMember  = Membership.objects.create(member=user, club=club, memberState = memberState, phone = phone, iban = iban, bank_account_owner=bank_account_owner )
+            newMember.save()
+            return newMember
+        return None
+
+
+    @staticmethod
+    def addUnregisteredMembershipRequestData(club, phone, first_name, last_name, birthday, gender, postcode_id, streetAddress, houseNumber, village, iban, bank_account_owner):
+        #Autor: Max
+        #Fügt die Daten eines Antragsformulars in den Memberships Table ein
+        #Status ist auf 0, die Mitgliedschaft ist somit im Status 'Anfrage' und daher noch nicht aktiv
+        if not Membership.objects.filter(first_name = first_name,last_name=last_name,birthday=birthday, club=club).exists():
+            memberState = MemberState.objects.get(stateID = 0)
+            adresse = AddressModel.get_or_create(streetAddress, houseNumber, postcode_id, village)
+            newMember  = Membership.objects.create(club=club, memberState = memberState, phone = phone, first_name= first_name, last_name = last_name, 
+            gender = gender, adresse = adresse, iban = iban, bank_account_owner=bank_account_owner, birthday=birthday)
+            newMember.save()
+            return newMember
+        return None
+
+
+
+
+
 def club_has_member(club, member):
-    return Membership.objects.filter(club=club, member=member).exists()
+    return Membership.objects.filter(club=club, member=member, memberState=1).exists()
 
 # Quelle genutzt: https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 def get_membership(member, club=None):

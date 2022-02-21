@@ -1,0 +1,28 @@
+<!--Author: Max
+Übersicht aller Mitgliedschafts AntragsDateien des ausgewählten Vereins-->
+
+{% extends 'table.html' %}
+
+{% block headline %}Dateien-Übersicht{% endblock headline %}
+
+
+
+{% block tablehead %}
+    <th>Dateiname</th>
+{% endblock tablehead %}
+
+{% block tablerows %}
+    {% for file in files %}
+        <tr>
+            <td id="file{{ forloop.counter }}">{{ file.data }}</td>
+        </tr>
+    {% endfor %}
+{% endblock tablerows %}
+
+{% block underTable %}
+<a href="{% url 'showFormFieldsView' club=club.id %}" id="zurück_link">
+    <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="zurück_button">
+        Zurück
+    </button>
+</a>
+{% endblock underTable %}

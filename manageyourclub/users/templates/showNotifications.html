@@ -18,39 +18,34 @@ Template zur Darstellung der Beitrittsanfragen/ Mitteilungen des Ausgewählten v
     <th>Name</th>
     <th>Nachname</th>
     <th>Geburtstag</th>
-    <th>Ort</th>
-    <th>Details</th>
     <th>Aktionen</th>
 {% endblock tablehead %}
 
 {% block tablerows %}
-    {% for clubNot in clubNotifications %}
-        {% if clubNot.status == 1 %}
+    {% for clubRqu in membershipRequestNotifications %}
+       <!-- {% if clubRqu.member != null %} -->
             <tr>
-                <td id="benachichtigung_vorname_{{ forloop.counter }}">{{ clubNot.user.Vorname }}</td>
-                <td id="benachichtigung_nachname_{{ forloop.counter }}">{{ clubNot.user.Nachname }}</td>
-                <td id="benachichtigung_gebtag_{{ forloop.counter }}">{{ clubNot.user.Geburtstag }}</td>
-                <td id="benachichtigung_city_{{ forloop.counter }}">{{ clubNot.user.Adresse.postcode.village }}</td>
+                <td id="benachichtigung_vorname_{{ forloop.counter }}">{{ clubRqu.member.Vorname }}</td>
+                <td id="benachichtigung_nachname_{{ forloop.counter }}">{{ clubRqu.member.Nachname }}</td>
+                <td id="benachichtigung_gebtag_{{ forloop.counter }}">{{ clubRqu.member.Geburtstag }}</td>
                 <td>Beitrittsanfrage</td>
                 <td>
                     <form action="{% url 'acceptRequestMembership' %}" method="post" style="display:inline;" id="accept_request_form_{{ forloop.counter }}">
                         {% csrf_token %}
                         <!--Annahme-Button für Beitrittsanfragen-->
-                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="accept_request_form_{{ forloop.counter }}" id="accept_request_button_{{ forloop.counter }}">
+                        <button type="submit" name="clubRquId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubRqu.id }}" form="accept_request_form_{{ forloop.counter }}" id="accept_request_button_{{ forloop.counter }}">
                             Annehmen
                         </button>
                     </form>
                     <form action="{% url 'declineRequestMembership' %}" method="post" id="decline_request_form_{{ forloop.counter }}" style="display:inline;">
                         {% csrf_token %}
                         <!--Ablehnungsbuttons für Beitrittsanfragen-->
-                        <button type="submit" name="clubNotId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubNot.id }}" form="decline_request_form_{{ forloop.counter }}" id="decline_request_button_{{ forloop.counter }}">
+                        <button type="submit" name="clubRquId" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" value="{{ clubRqu.id }}" form="decline_request_form_{{ forloop.counter }}" id="decline_request_button_{{ forloop.counter }}">
                             Ablehnen
                         </button>
-
                     </form>
-
                 </td>
             </tr>
-        {% endif %} 
+       <!-- {% endif %} -->
     {% endfor %}
 {% endblock tablerows %}

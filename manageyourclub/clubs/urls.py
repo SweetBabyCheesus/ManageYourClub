@@ -1,6 +1,6 @@
 # Author: Tobias
 from django.urls import path
-from clubs.views import addClubView, clubViewOrAdd, editClubView, deleteClubView, allClubs, requestMembershipView
+from clubs.views import addClubView, clubViewOrAdd, editClubView, deleteClubView, allClubs
 
 # Tutorial genutzt: https://dev-yakuza.posstree.com/en/django/form/
 
@@ -10,5 +10,4 @@ urlpatterns = [
     path('edit/<int:club>/', editClubView, name='editclub'),
     path('delete/<int:club>/', deleteClubView, name='deleteclub'),
     path('allclubs/', allClubs, name='allclubs'),
-    path('requestMembership/', requestMembershipView, name='requestMembership'),
 ]
