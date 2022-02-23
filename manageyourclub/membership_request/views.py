@@ -228,8 +228,7 @@ def RequestMembershipView(request, club):
                                             remove_filefields=False,
                                             remove_datafields=False)
                 # if POST (form submitted)
-            print(customForm)
-            print(form)
+        
     
         if request.user.is_authenticated: 
             return redirect('allclubs')
@@ -284,7 +283,6 @@ def acceptRequestMembershipView(request, request_data, club):
 
     if request.method == 'POST':
         #Anpassung der Antragsdaten auf angenommen
-        print(membership)
         membership.setStatusAccepted()
 
     return redirect('home')

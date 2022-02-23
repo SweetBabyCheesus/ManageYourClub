@@ -106,40 +106,6 @@ class ClubModel(models.Model):
             oldAdr.delete()
         return self
 
-    def get_form(self,
-                  data=None,
-                  files=None,
-                  remove_filefields=False,
-                  remove_datafields=False,
-                  **kwargs):
-       """
-       Von Django Form Builder, Doku: https://django-form-builder.readthedocs.io/en/latest/usage/dynamic-forms/configuration.html
-       Returns the form (empty if data=None)
-       if remove_filefields is not False, remove from form the passed FileFields
-       if remove_datafields is True, remove all fields different from FileFields
-       """
-       # retrieve all the fields (the model class is in 'Step 1')
-       form_fields_from_model = self.myfieldslistmodel.all().order_by('ordinamento')
-       if not form_fields_from_model: return None
-       # Static method of DynamicFieldMap that build the constructor dictionary
-       constructor_dict = DynamicFieldMap.build_constructor_dict(form_fields_from_model)
-
-       # more params to pass with 'data'
-       custom_params = {'extra_1': value_1,
-                        'extra_2': value_2}
-       # the form retrieved by calling get_form() static method
-       form = DynamicFieldMap.get_form(# define it only if you
-                                       # need your custom form:
-                                       # class_obj=MyDynamicForm,
-                                       constructor_dict=constructor_dict,
-                                       custom_params=custom_params,
-                                       data=data,
-                                       files=files,
-                                       remove_filefields=remove_filefields,
-                                       remove_datafields=remove_datafields)
-
-       return form
-
 
 class ClubDataModel(models.Model):
     club = models.ForeignKey(to = ClubModel, on_delete=models.CASCADE)
