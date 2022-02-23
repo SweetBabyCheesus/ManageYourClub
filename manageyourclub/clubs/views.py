@@ -8,7 +8,7 @@ from members.models import club_has_member, Membership
 def allClubs(request):
     user = request.user
 
-    if user.is_authenticated: 
+    if not user.is_authenticated: 
         return redirect('login')
 
     #myClubs Liste von Max hinzugefügt um Beziehung zu den Vereinen im Template darzustellen
