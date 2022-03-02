@@ -1,5 +1,4 @@
 # Author: Tobias
-from tkinter import CASCADE
 from django.db import models
 from django_form_builder.models import DynamicFieldMap
 import os
