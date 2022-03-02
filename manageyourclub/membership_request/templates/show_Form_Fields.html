@@ -1,0 +1,55 @@
+<!--Author: Max
+Übersicht aller Mitgliedschafts Antragsfelder des ausgewählten Vereins-->
+{% extends 'table.html' %}
+
+{% block headline %}Mitgliedschaftsantrags-Übersicht{% endblock headline %}
+
+
+{% block tablehead %}
+Grundsätzlich enthält jedes Antragsformular die Standartfelder Telefonnummer, Vorname, Nachname, Geburtstag, Adresse, Geschlecht, Iban und Kontoführer(-in)
+    <th>Feldname</th>
+    <th>Feldtyp</th>
+    <th>Pflichtfeld</th>
+    <th>Sortierung</th>
+{% endblock tablehead %}
+
+{% block tablerows %}
+    {% for field in fields|dictsort:"ordering" %}
+        <tr>
+            <td id="fieldname_{{ forloop.counter }}">{{ field.name }}</td>
+            <td id="fieldtype_{{ forloop.counter }}">{{ field.field_type }}</td>
+            <td id="fieldRequired_{{ forloop.counter }}">{{ field.is_required }}</td>
+            <td id="fieldordering_{{ forloop.counter }}">{{ field.ordering }}</td>
+        </tr>
+    {% endfor %}
+
+{% endblock tablerows %}
+
+
+
+{% block underTable %}
+    <p>
+        <a href="{% url 'FieldViewOrAdd' club=club.id %}" id="add_field_link">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="add_field_button">
+                Feld hinzufügen
+            </button>
+        </a>
+        <a href="{% url 'membershipFormView' club=club.id %}" id="Example_Form">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="Example_Form_Button">
+                Beispiel
+            </button>
+        </a>
+        <a href="{% url 'FileViewOrAdd' club=club.id %}" id="addDatei_link">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="addDatei_button">
+                Datei Hochladen
+            </button>
+        </a>
+
+        <a href="{% url 'showFormDataView' club=club.id %}" id="DateiZeigen_link">
+            <button type="button" class="btn btn-default" style="margin-left: 4px; border-color: transparent; background-color: var(--vema-blue); color:var(--bg-color);" id="DateiZeigen_button">
+                Hochgeladene Dateien
+            </button>
+        </a>
+    </p>
+{% endblock underTable %}
+
