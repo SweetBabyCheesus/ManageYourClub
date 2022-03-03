@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'captcha',
     'filesig',
     'membership_request',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
