@@ -38,7 +38,7 @@ class SavedFormContent(models.Model):
     """
     # libreria esterna oppure cambio client per JsonField
     # non serve gestirlo come JsonField perchè non vi facciamo ricerche al suo interno ;)
-    modulo_compilato = models.TextField()
+    json = models.TextField()
 
     @staticmethod
     def compiled_form(data_source=None,

@@ -63,6 +63,7 @@ class Membership(models.Model):
         #Autor: Max
         #Methode um den Status einer Mitgliedschaftsanfrage auf angenommen zusetzen. -> DRY Pattern
         self.memberState = MemberState.objects.get(stateID=1)
+        self.memberSince = datetime.today().year
         self.save()
 
     def setStatusDeclined(self):

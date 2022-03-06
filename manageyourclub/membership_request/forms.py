@@ -8,8 +8,7 @@ from clubs.models import ClubDataModel
 from members.models import Membership
 from users.models import Gender
 
-# Klasse übernommen und abgeändert von:
-# https://www.codesd.com/item/how-to-create-forms-for-the-foreign-key-django.html
+
 class AddFieldForm(forms.ModelForm):
     """ModelForm für Vereine"""
 
@@ -79,6 +78,14 @@ class UnregisteredMembershipForm(forms.ModelForm):
     postcode_id = forms.IntegerField(max_value=99999, min_value=0, label='PLZ')
     village = forms.CharField(max_length=20, label='Ort')
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True 
+        
+
     def create(self, club):
         return Membership.addUnregisteredMembershipRequestData(
                 club,
@@ -102,6 +109,12 @@ class UnregisteredMembershipForm(forms.ModelForm):
 
 
 class RegisteredMembershipForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True 
 
 
     def create(self,user, club):

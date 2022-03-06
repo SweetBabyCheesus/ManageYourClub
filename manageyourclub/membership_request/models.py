@@ -44,9 +44,6 @@ class FieldsListModel(DynamicFieldMap):
 
 class CustomMembershipData(SavedFormContent):
     membership = models.OneToOneField(Membership, on_delete=models.PROTECT)
-    json = models.TextField(max_length=1500, blank=True, null=false)
-
-
 
     @staticmethod
     def get_or_create(membership, json):
