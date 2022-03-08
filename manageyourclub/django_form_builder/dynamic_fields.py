@@ -190,129 +190,8 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
             errors.append(_("Maximal zulässige Anzahl an Auswahlmöglichkeiten: {}").format(self.max_permitted))
         return errors
 
-
-class CustomFileField(FileField, BaseCustomField):
-    """
-    FileField
-    """
-    field_type = _("Anhang (allgemein)")
-
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
-
-    def raise_error(self, name, cleaned_data, **kwargs):
-        data = cleaned_data
-        errors = []
-        if data:
-            msg = ''
-            self_valid_extensions = getattr(self, 'valid_extensions', None)
-            settings_upload_filetype = PERMITTED_UPLOAD_FILETYPE
-            permitted_upload_filetype = self_valid_extensions or settings_upload_filetype
-            max_upload_size = MAX_UPLOAD_SIZE
-            attach_max_len = ATTACH_NAME_MAX_LEN
-
-            if data.content_type not in permitted_upload_filetype:
-                msg_tmpl = WRONG_TYPE
-                msg = msg_tmpl.format(permitted_upload_filetype, data.content_type)
-            elif data.size > int(max_upload_size):
-                msg_tmpl = WRONG_SIZE
-                msg = msg_tmpl.format(filesizeformat(max_upload_size),
-                                      filesizeformat(data.size))
-            # elif len(data._name) > attach_max_len:
-            elif len(data.name) > attach_max_len:
-                msg_tmpl = WRONG_LENGTH
-                # msg = msg_tmpl.format(attach_max_len, len(data._name))
-                msg = msg_tmpl.format(attach_max_len, len(data.name))
-            if msg: errors.append(msg)
-        return errors
-
-
-class CustomImageField(CustomFileField):
-    """
-    FileField
-    """
-    field_type = _("Anhang Bild")
-
-    def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = IMG_FILETYPE
-        super().__init__(*args, **data_kwargs)
-
-
-class CustomDataField(CustomFileField):
-    """
-    FileField
-    """
-    field_type = _("Dateianhang (JSON, CSV, Excel)")
-
-    def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = DATA_FILETYPE
-        super().__init__(*args, **data_kwargs)
-
-
-class CustomPDFField(CustomFileField):
-    """
-    FileField
-    """
-    field_type = _("Anhang PDF")
-
-    def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = PDF_FILETYPE
-        super().__init__(*args, **data_kwargs)
-
-
-class CustomSignedFileField(CustomFileField):
-    validation_error = _('Fehler bei der Validierung der digitalen Signatur')
-    fileformat = ''
-    field_type = None
-
-    def get_signature_params(self, data):
-        """
-        """
-        if not data: return
-        res = get_signatures(data, type=self.fileformat, only_valids=True)
-        return res
-
-    def get_cleaned_signature_params(self, data):
-        res = self.get_signature_params(data)
-        details = {}
-        if res:
-            details['Signature Validation'] = res[-1].get('Signature Validation')
-            details['Signing Time'] = res[-1].get('Signing Time')
-            details['Signer full Distinguished Name'] = res[-1].get('Signer full Distinguished Name')
-        return details
-
-    def raise_error(self, name, cleaned_data, **kwargs):
-        data = cleaned_data
-        errors = []
-        if data:
-            simple_filefield_errors = super().raise_error(name, cleaned_data, **kwargs)
-            errors.extend(simple_filefield_errors)
-            res = self.get_signature_params(data)
-            if not res or 'is valid' not in res[-1].get('Signature Validation').lower():
-                errors.append(self.validation_error)
-        return errors
-
-
-class CustomSignedPdfField(CustomSignedFileField):
-    """
-    """
-    field_type = _("Signierter PDF-Anhang")
-    fileformat = 'pdf'
-    valid_extensions = PDF_FILETYPE
-
-
-class CustomSignedP7MField(CustomSignedFileField):
-    """
-    """
-    field_type = _("P7M-Anhang signiert")
-    fileformat = 'p7m'
-    valid_extensions = P7M_FILETYPE
-
-
 class PositiveIntegerField(DecimalField, BaseCustomField):
-    """
-    Positive integer DecimalField
-    """
+    #Positive integer DecimalField
     field_type = _("Positive ganze Zahl")
     default_validators = [MinValueValidator(0)]
 
@@ -393,7 +272,7 @@ class BaseDateField(DateField, BaseCustomField):
     """
     DateField
     """
-    field_type = _("Data")
+    field_type = _("Datum")
     input_formats = settings.DATE_INPUT_FORMATS
 
 
@@ -713,3 +592,111 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
         if custom_value:
             elements = _split_choices_in_list_canc(custom_value)
             self.choices = elements
+
+
+"""
+Muss für Erweiterung des Antragsprozesses mit Signierter Unterschrift auskommentiert werden
+class CustomFileField(FileField, BaseCustomField):
+    #FileField
+    field_type = _("Anhang (allgemein)")
+
+    def __init__(self, *args, **data_kwargs):
+        super().__init__(*args, **data_kwargs)
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        data = cleaned_data
+        errors = []
+        if data:
+            msg = ''
+            self_valid_extensions = getattr(self, 'valid_extensions', None)
+            settings_upload_filetype = PERMITTED_UPLOAD_FILETYPE
+            permitted_upload_filetype = self_valid_extensions or settings_upload_filetype
+            max_upload_size = MAX_UPLOAD_SIZE
+            attach_max_len = ATTACH_NAME_MAX_LEN
+
+            if data.content_type not in permitted_upload_filetype:
+                msg_tmpl = WRONG_TYPE
+                msg = msg_tmpl.format(permitted_upload_filetype, data.content_type)
+            elif data.size > int(max_upload_size):
+                msg_tmpl = WRONG_SIZE
+                msg = msg_tmpl.format(filesizeformat(max_upload_size),
+                                      filesizeformat(data.size))
+            # elif len(data._name) > attach_max_len:
+            elif len(data.name) > attach_max_len:
+                msg_tmpl = WRONG_LENGTH
+                # msg = msg_tmpl.format(attach_max_len, len(data._name))
+                msg = msg_tmpl.format(attach_max_len, len(data.name))
+            if msg: errors.append(msg)
+        return errors
+
+
+class CustomImageField(CustomFileField):
+    #FileField
+
+    field_type = _("Anhang Bild")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = IMG_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
+
+class CustomDataField(CustomFileField):
+    #FileField
+    field_type = _("Dateianhang (JSON, CSV, Excel)")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = DATA_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
+
+class CustomPDFField(CustomFileField):
+    #FileField
+    field_type = _("Anhang PDF")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = PDF_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
+
+class CustomSignedFileField(CustomFileField):
+    validation_error = _('Fehler bei der Validierung der digitalen Signatur')
+    fileformat = ''
+    field_type = None
+
+    def get_signature_params(self, data):
+        if not data: return
+        res = get_signatures(data, type=self.fileformat, only_valids=True)
+        return res
+
+    def get_cleaned_signature_params(self, data):
+        res = self.get_signature_params(data)
+        details = {}
+        if res:
+            details['Signature Validation'] = res[-1].get('Signature Validation')
+            details['Signing Time'] = res[-1].get('Signing Time')
+            details['Signer full Distinguished Name'] = res[-1].get('Signer full Distinguished Name')
+        return details
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        data = cleaned_data
+        errors = []
+        if data:
+            simple_filefield_errors = super().raise_error(name, cleaned_data, **kwargs)
+            errors.extend(simple_filefield_errors)
+            res = self.get_signature_params(data)
+            if not res or 'is valid' not in res[-1].get('Signature Validation').lower():
+                errors.append(self.validation_error)
+        return errors
+
+
+class CustomSignedPdfField(CustomSignedFileField):
+    field_type = _("Signierter PDF-Anhang")
+    fileformat = 'pdf'
+    valid_extensions = PDF_FILETYPE
+
+
+class CustomSignedP7MField(CustomSignedFileField):
+    field_type = _("P7M-Anhang signiert")
+    fileformat = 'p7m'
+    valid_extensions = P7M_FILETYPE
+"""

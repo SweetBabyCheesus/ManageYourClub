@@ -169,7 +169,7 @@ def RequestMembershipView(request, club):
     #Zeigt dem Bewerber von Verein Hochgeladene Dateien
     #Fragt Standartfelder ab
     #Fragt Custom Felder ab
-    #https://www.codegrepper.com/code-examples/python/Django+two+forms+one+submit
+    #https://www.codementor.io/@lakshminp/handling-multiple-forms-on-the-same-page-in-django-fv89t2s3j
 
     if not ClubModel.objects.filter(pk=club).exists():
             #falls der Club nicht existiert
