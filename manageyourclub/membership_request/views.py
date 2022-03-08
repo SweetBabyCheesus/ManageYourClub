@@ -163,18 +163,19 @@ def RequestMembershipView(request, club):
         else:
             form = UnregisteredMembershipForm(request.POST)
 
-            customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
-                        data=request.POST,
-                        files=request.FILES,
-                        remove_filefields=False,
-                        remove_datafields=False)
+        customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
+                                                data=request.POST,
+                                                files=request.FILES,
+                                                remove_filefields=False,
+                                                remove_datafields=False)
 
 
         if form.is_valid() and customForm.is_valid():
             #Speicherung der Formulardaten, falls die Eingaben korrekt sind
 
-            if form.membershipExist(club):
-                return redirect('login')
+            if not user.is_authenticated:
+                if form.membershipExist(club):
+                    return redirect('login')
 
             if user.is_authenticated: 
                 membership = form.create(user,club)
