@@ -1,4 +1,3 @@
-# Author: Tobias
 from cProfile import label
 from tabnanny import verbose
 from django import forms
@@ -10,14 +9,14 @@ from users.models import Gender
 
 
 class AddFieldForm(forms.ModelForm):
-    """ModelForm für Vereine"""
+    #Autor: Max Rosemeier
+    #Formular für die Eigenschaften eines neuen Formularfeldes
 
    
     def edit(self, pk):
-        """
-        Findet das Formular mit dem übergebenen Primary Key und 
-        überschreibt dessen Daten mit den Daten aus dem Formular.
-        """
+        #Findet das Formular mit dem übergebenen Primary Key und 
+        #überschreibt dessen Daten mit den Daten aus dem Formular.
+        
         instance = FieldsListModel.objects.get(pk=pk) # Objekt holen
 
         return instance.edit(
@@ -31,7 +30,7 @@ class AddFieldForm(forms.ModelForm):
         )
 
     def create(self,club):
-        """Speichert die vom Nutzer eingegebenen Daten"""
+        #Speichert die vom Nutzer eingegebenen Daten
         return FieldsListModel.create(
             club,
             self.cleaned_data['name'], 
@@ -52,6 +51,9 @@ class AddFieldForm(forms.ModelForm):
 
 
 class AddFileForm(forms.Form):
+    #Autor: Max Rosemeier
+    #Formular um Dateien von einem Sportverein für den Antragsprozess hochzuladen
+
     data = forms.FileField()
 
     def save(club, data):
@@ -72,6 +74,8 @@ class AddFileForm(forms.Form):
 
 
 class UnregisteredMembershipForm(forms.ModelForm):
+    #Autor: Max Rosemeier
+    #Formular für Standard Membership Formularfeldern bei nicht registrierten Bewerbern
     gender = forms.ModelChoiceField(label='Geschlecht', queryset=Gender.objects.all())
     streetAddress = forms.CharField(max_length=20, label='Straße')
     houseNumber = forms.CharField(max_length=5, label='Hausnummer')
@@ -83,10 +87,12 @@ class UnregisteredMembershipForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for key in self.fields:
+            #setzt alle Felder des Forms auf required, im Model sind diese als required=False angegeben aufgrund des Datenmodells
             self.fields[key].required = True 
         
 
     def create(self, club):
+        #Speicherung der Antragsdaten
         return Membership.addUnregisteredMembershipRequestData(
                 club,
                 self.cleaned_data['phone'], 
@@ -103,6 +109,7 @@ class UnregisteredMembershipForm(forms.ModelForm):
             )
 
     def membershipExist(self,club):
+        #Prüfung ob bereits ein Antrag/ eine Mitgliedschaft mit dem identischen Verein und der identischen Person existiert
         membership = Membership.objects.filter(club = club, first_name= self.cleaned_data['first_name'], last_name = self.cleaned_data['last_name'], birthday = self.cleaned_data['birthday'])
         return membership.exists()
 
@@ -113,15 +120,19 @@ class UnregisteredMembershipForm(forms.ModelForm):
 
 
 class RegisteredMembershipForm(forms.ModelForm):
+    #Autor: Max Rosemeier
+    #Formular für Standard Membership Formularfeldern bei registrierten Bewerbern
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         for key in self.fields:
+            #setzt alle Felder des Forms auf required, im Model sind diese als required=False angegeben aufgrund des Datenmodells
             self.fields[key].required = True 
 
 
     def create(self,user, club):
+        #Speicherung der Antragsdaten
         return Membership.addRegisteredMembershipRequestData(
             user,
             club,

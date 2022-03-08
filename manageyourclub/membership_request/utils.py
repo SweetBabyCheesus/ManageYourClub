@@ -9,7 +9,7 @@ from members.models import Membership
 from manageyourclub.settings import BASE_DIR
 
 def getCustomFormData(self, is_registered):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #schneidet aus den gesendeten Formulardaten die Custom Formulardaten
     #sodass keine redundante speicherung erfolgt
 
@@ -36,7 +36,7 @@ def getCustomFormData(self, is_registered):
 
 
 def saveToMedia(files, membershipId):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #https://stackoverflow.com/questions/26274021/simply-save-file-to-folder-in-django
 
     #  Saving POST'ed files to storage

@@ -107,10 +107,12 @@ class ClubModel(models.Model):
 
 
 class ClubDataModel(models.Model):
+    #Autor: Max Rosemeier 
+    #Speicherung von Dateien, die Vereine für den Mitgliedsschaftsantragsprozess hochgeladen haben
+
     club = models.ForeignKey(to = ClubModel, on_delete=models.CASCADE)
     file_type = models.SmallIntegerField(verbose_name='Art des Dokumentes')
     #field_type 1 = Dokument für Antragsformular
-    #TODO: Modell für file_Types implementieren
     data = models.FileField(upload_to='club_data')
 
     def createMembershipRequestData(club,data):
@@ -119,4 +121,5 @@ class ClubDataModel(models.Model):
         return data
 
     def filename(self):
+        #gibt den Namen der Datei zurück
         return os.path.basename(self.file.name)

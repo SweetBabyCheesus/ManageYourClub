@@ -10,9 +10,8 @@ from members.models import Membership
 from clubs.models import ClubModel
 
 class FieldsListModel(DynamicFieldMap):
-    """
-    This class represents every single form field, each one linked to a unique object
-    """
+    # Übernommen von Django-Form-Builder
+    # Angepasst von Max Rosemeier
 
     # if you want to integrate dynamic fields with your own,
     # define a new file that import all 'dynamic_fields' and defines others new and
@@ -43,11 +42,13 @@ class FieldsListModel(DynamicFieldMap):
 
 
 class CustomMembershipData(SavedFormContent):
+    #Autor: Max Rosemeier
+    #Speicherung der Custom Membership Daten
+
     membership = models.OneToOneField(Membership, on_delete=models.PROTECT)
 
     @staticmethod
     def get_or_create(membership, json):
-        #Autor: Max
 
         newCustomData, created = CustomMembershipData.objects.get_or_create(membership=membership, json=json)
         if created:

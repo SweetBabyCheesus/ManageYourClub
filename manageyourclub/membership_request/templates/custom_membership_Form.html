@@ -1,6 +1,4 @@
 {% extends 'base loggedin.html' %}
-<!-- form übernommen von https://www.youtube.com/watch?v=F5mRW0jo-U4&t=1358s  href="{% url 'DownloadView' path=file.data.path %}" method="post" id="file_link{{ forloop.counter }}"
-    (Sichtbar unter Anderem bei 2:28:01) -->
 
 {% block stylesheets %}
     {% load static %}
@@ -19,7 +17,6 @@
             {% endfor %}
             </ul>
         {% endif %}
-        <!--https://stackoverflow.com/questions/2010747/empty-request-files-with-django-upload-forms-->
             <form method='POST' enctype='multipart/form-data' id="addMembershipRequest_form">
                 {% include "membership_Data_Form.html" %}
                 {% include "membership_JSON_Form.html" %}

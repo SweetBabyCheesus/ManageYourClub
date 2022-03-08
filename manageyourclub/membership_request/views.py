@@ -16,19 +16,22 @@ from .models import *
 from clubs.models import ClubModel, ClubDataModel
 
 def FieldAdd(request, club):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #View um individuelle Beitrittsformulare pro Verein zu erstellen
     user = request.user
 
     if not ClubModel.objects.filter(pk=club).exists():
+        #Prüfung ob der Verein existiert
         return redirect('allclubs')
 
     if not Membership.objects.filter(club=club, member = user.id).exists():
+        #Berechtigungsprüfung des Users
         return redirect('allclubs')
         
     club = ClubModel.objects.get(pk=club)
 
-    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+    if request.method == 'POST': 
+        #Wird nach klicken auf Bestätigungsknopf ausgeführt
         form = AddFieldForm(request.POST)
         if form.is_valid():
             form.create(club)
@@ -45,13 +48,17 @@ def FieldAdd(request, club):
     
 
 def showFormFieldsView(request,club):
+    #Austor: Max Rosemeier
+    #Diese View Methode stellt die Custom Membership Formularfelder in einer Übersicht für den Verein bereit
     user = request.user
     club = ClubModel.objects.get(pk=club)
 
     if not ClubModel.objects.filter(pk=club.id).exists():
+        #Prüfung ob gewählter Verein existiert
         return redirect('allclubs')
 
     if not Membership.objects.filter(club=club, member = user.id).exists():
+        #Prüfung der Berechtigung vom User
         return redirect('allclubs')
   
     fields = FieldsListModel.objects.filter(club = club)
@@ -66,13 +73,17 @@ def showFormFieldsView(request,club):
 
 
 def showFormDataView(request,club):
+    #Autor: Max Rosemeier
+    #Dieser View stellt eine Übersicht für die Hochgeladenen Dateien für einen Mitgliedschaftsantrag bereit
     user = request.user
     club = ClubModel.objects.get(pk=club)
 
     if not ClubModel.objects.filter(pk=club.id).exists():
+        #Prüfung ob der Verein existiert
         return redirect('allclubs')
 
     if not Membership.objects.filter(club=club, member = user.id).exists():
+        #Prüfung der User Berechtigung im Verein
         return redirect('allclubs')
   
     files = ClubDataModel.objects.filter(club = club)
@@ -88,20 +99,23 @@ def showFormDataView(request,club):
 
 
 def FileAdd(request, club):
-    #Autor: Max
+    #Autor: Max Rosemeier Rosemeier
     #View um Dateien für Antragsformulare bereitzustellen
     #https://docs.djangoproject.com/en/4.0/topics/http/file-uploads/
     user = request.user
 
     if not ClubModel.objects.filter(pk=club).exists():
+        #prüfung ob gewählter Verein existiert
         return redirect('allclubs')
 
     if not Membership.objects.filter(club=club, member = user.id).exists():
+        #Berechtigungsprüfung
         return redirect('allclubs')
    
     club = ClubModel.objects.get(pk=club)
 
-    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+    if request.method == 'POST': 
+        # Wird nach klicken auf Bestätigungsknopf ausgeführt
         form = AddFileForm(request.POST, request.FILES)
         if form.is_valid():
             AddFileForm.save(club=club, data=request.FILES['data'])
@@ -122,7 +136,7 @@ def FileAdd(request, club):
 
 
 def RequestMembershipView(request, club):
-    #Autor: Max
+    #Autor: Max Rosemeier Rosemeier
     #Erstellt ein Mitgliedschaftsantragsformular 
     #Zeigt dem Bewerber von Verein Hochgeladene Dateien
     #Fragt Standartfelder ab
@@ -214,7 +228,7 @@ def RequestMembershipView(request, club):
 
 
 def acceptRequestMembershipView(request, request_data, club):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #Funktion um Mitgliedsanfragen von Usern an Vereine anzunehmen
     #TODO: Anpassen für Thesis
     user = request.user
@@ -234,7 +248,7 @@ def acceptRequestMembershipView(request, request_data, club):
 
 
 def declineRequestMembershipView(request,club, request_data):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #Funktion um Mitgliedsanfragen von Usern an Vereine abzulehnen
     #TODO: Anpassen für Thesis
     user = request.user
@@ -255,7 +269,7 @@ def declineRequestMembershipView(request,club, request_data):
 
 
 def showMembershipRequestToClubView(request, club, request_data):
-    #Autor: Max
+    #Autor: Max Rosemeier
     #Diese Methode zeigt einem Vereinsadmin die Daten einer Beitrittsanfrage
     #In dem Template kann er die Anfrage besttigen oder ablehnen 
     user = request.user
@@ -274,9 +288,11 @@ def showMembershipRequestToClubView(request, club, request_data):
         memberState = membership.memberState
 
         if memberState.stateID > 0:
+            #Falls der Antrag bereits geprüft wurde soll eine 2. Prüfung unterbunden werden
             return redirect('home')
 
         if CustomMembershipData.objects.filter(membership = membership.number).exists():
+            #laden der Custom Membership Daten, sofern diese existieren
             Json_Data = CustomMembershipData.objects.get(membership = membership.number).json
 
         context = {
