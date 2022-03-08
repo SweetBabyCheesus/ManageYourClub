@@ -60,6 +60,7 @@ DATA_FILETYPE = getattr(settings, 'DATA_FILETYPE', DATA_FILETYPE)
 PDF_FILETYPE = getattr(settings, 'PDF_FILETYPE', PDF_FILETYPE)
 P7M_FILETYPE = getattr(settings, 'P7M_FILETYPE', P7M_FILETYPE)
 CLASSIFICATION_LIST = getattr(settings, 'CLASSIFICATION_LIST', CLASSIFICATION_LIST)
+DEAKTIVATED_FIELDS = getattr(settings, 'DEAKTIVATED_FIELDS', DEAKTIVATED_FIELDS)
 
 
 def get_fields_types(class_name=sys.modules[__name__]):
@@ -67,7 +68,7 @@ def get_fields_types(class_name=sys.modules[__name__]):
     for m in inspect.getmembers(class_name, inspect.isclass):
         if hasattr(m[1],'field_type'):
             field_type = getattr(m[1], 'field_type')
-            if field_type is not 'Verstecktes Feld':
+            if not field_type in DEAKTIVATED_FIELDS:
                 fields_types.append(tuple((m[1].__name__, field_type)))
     fields_types.sort(key=lambda tup: tup[1])
     return fields_types
@@ -564,9 +565,9 @@ class CustomCaptchaComplexField(BaseCustomField):
 
 
 class CustomComplexTableField(ChoiceField, BaseCustomField):
-    """
-    Formset field
-    """
+   
+    #Formset field
+
     # error message if is_required and no forms are present
     validation_error = _("Dieses Feld benötigt mindestens eine Zeile")
     field_type = _("Mehrfache Einträge")
@@ -592,7 +593,6 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
         if custom_value:
             elements = _split_choices_in_list_canc(custom_value)
             self.choices = elements
-
 
 """
 Muss für Erweiterung des Antragsprozesses mit Signierter Unterschrift auskommentiert werden

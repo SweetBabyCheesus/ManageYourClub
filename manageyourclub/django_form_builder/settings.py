@@ -21,6 +21,21 @@ CLASSIFICATION_LIST = (('protocollo', _('Protocollo')),
 # 500MB - 429916160
 MAX_UPLOAD_SIZE = 10485760
 
+DEAKTIVATED_FIELDS = ('Mehrfache Einträge', 
+                        'Verstecktes Feld',
+                        'Anhang (allgemein)',
+                        'Anhang Bild',
+                        'Dateianhang (JSON, CSV, Excel)',
+                        'Anhang PDF',
+                        None,
+                        'Signierter PDF-Anhang',
+                        'P7M-Anhang signiert',
+                        'Datum und Uhrzeit (ein Feld)',
+                        'Protokoll (Art / Nummer / Datum)',
+                        'MAC Addresse',
+                        'IP Adresse',
+                        )
+
 PDF_FILETYPE = ('application/pdf',)
 DATA_FILETYPE = ('text/csv', 'application/json',
                  'application/vnd.ms-excel',

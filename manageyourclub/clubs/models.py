@@ -1,6 +1,5 @@
 # Author: Tobias
 from django.db import models
-from django_form_builder.models import DynamicFieldMap
 import os
 
 # Vorgabe von den Architekten:
