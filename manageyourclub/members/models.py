@@ -48,7 +48,7 @@ class Membership(models.Model):
     phone           = models.CharField(max_length=20, blank=False, null=True, verbose_name="Telefonnummer")
     first_name      = models.CharField(max_length=30, blank=False, null=True, verbose_name="Vorname")
     last_name       = models.CharField(max_length=30, blank=False, null=True, verbose_name="Nachname")
-    birthday        = models.DateField(blank=True, null=True, verbose_name="Geburtstag")
+    birthday        = models.DateField(blank=True, null=True, verbose_name="Geburtstag (YYYY-MM-DD)")
     adresse         = models.ForeignKey(to=AddressModel, blank=True, null=True, on_delete=models.PROTECT)
     gender          = models.ForeignKey(to=Gender, blank=True, null=True, on_delete=models.PROTECT)
     iban            = models.CharField(max_length=34, blank=True, null=True, verbose_name="IBAN")

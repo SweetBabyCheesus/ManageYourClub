@@ -7,13 +7,12 @@ from members.models import club_has_member, Membership, MemberState
 
 def allClubs(request):
     user = request.user
-    memberState = MemberState.objects.get(stateID=1)
 
     if not user.is_authenticated: 
         return redirect('login')
 
     #myClubs Liste von Max hinzugefügt um Beziehung zu den Vereinen im Template darzustellen
-    Memberships = Membership.objects.filter(member=user, memberState=memberState)
+    Memberships = Membership.objects.filter(member=user)
     myClubs = []
     for membership in Memberships:
         myClubs.append(membership.club)

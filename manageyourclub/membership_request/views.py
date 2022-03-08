@@ -84,49 +84,7 @@ def showFormDataView(request,club):
 
     return render(request, 'membership_request_Files_list.html', context)
 
-"""
-def membershipFormView(request, club):
-    #Auto: Max
-    #Wurde genutzt um Django Form Builder zu verstehen
-    user = request.user
-    
-    if not ClubModel.objects.filter(pk=club).exists():
-        return redirect('allclubs')
 
-    if not Membership.objects.filter(club=club, member = user.id).exists():
-        return redirect('MyClub')
-
-    fields = FieldsListModel.objects.filter(club = club)
-    constructor_dict = BaseDynamicForm.build_constructor_dict(fields)
-
-    if request.method == 'POST':
-        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
-                                        #data=data,
-                                        #files=files,
-                                        remove_filefields=False,
-                                        remove_datafields=False)
-    # if POST (form submitted)
-    else:
-        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
-                                        data=request.POST,
-                                        files=request.FILES,
-                                        remove_filefields=False,
-                                        remove_datafields=False)
-
-        if form.is_valid():
-            messages.add_message(request, messages.SUCCESS, "form is valid")
-        else:
-            # show all error messages
-            for k,v in get_labeled_errors(form).items():
-                messages.add_message(request, messages.ERROR,
-                                    "<b>{}</b>: {}".format(k, strip_tags(v)))
-
-    context = {
-        'form': form,
-        'club': club,
-        }
-    return render(request, "form.html", context)
-"""
 
 
 def FileAdd(request, club):
@@ -170,15 +128,15 @@ def RequestMembershipView(request, club):
     #Fragt Standartfelder ab
     #Fragt Custom Felder ab
     #https://www.codementor.io/@lakshminp/handling-multiple-forms-on-the-same-page-in-django-fv89t2s3j
+    user = request.user
 
     if not ClubModel.objects.filter(pk=club).exists():
             #falls der Club nicht existiert
             return redirect('allclubs')
 
 
-    if request.user.is_authenticated:
+    if user.is_authenticated:
         #Definition des Formulars für registrierte User
-        user = request.user
         form = RegisteredMembershipForm()
 
         if Membership.objects.filter(club=club, member = user.id).exists():
@@ -197,41 +155,52 @@ def RequestMembershipView(request, club):
     customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict)
 
     if request.method == 'POST': 
-        #Wird nach klicken auf Bestätigungsknopf ausgeführt
+    #Wird nach klicken auf Bestätigungsknopf ausgeführt
 
-        #Formulardaten werden für Membership Formular in form geladen
-        if request.user.is_authenticated:       
+
+        if user.is_authenticated:       
             form = RegisteredMembershipForm(request.POST)
         else:
             form = UnregisteredMembershipForm(request.POST)
 
-        if form.is_valid():
+            customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
+                        data=request.POST,
+                        files=request.FILES,
+                        remove_filefields=False,
+                        remove_datafields=False)
+
+
+        if form.is_valid() and customForm.is_valid():
             #Speicherung der Formulardaten, falls die Eingaben korrekt sind
-            print(form.errors)
-            if request.user.is_authenticated: 
+
+            if form.membershipExist(club):
+                return redirect('login')
+
+            if user.is_authenticated: 
                 membership = form.create(user,club)
             else:
                 membership = form.create(club)
 
         
-        if FieldsListModel.objects.filter(club = club).exists and form.is_valid() and customForm.is_valid:
-            #Formular für Custom Fields
-            #Für registrierte und unregistrierte Bewerber gleich
-            #Daten werden in JSON gespeichert
+            if FieldsListModel.objects.filter(club = club).exists:
+                #Formular für Custom Fields
+                #Für registrierte und unregistrierte Bewerber gleich
+                #Daten werden in JSON gespeichert
+                
+                files=request.FILES
+                saveToMedia(files, membership.number)
+                
+                data=json.dumps(request.POST)
+                data = getCustomFormData(data,request.user.is_authenticated)
             
-            files=request.FILES
-            saveToMedia(files, membership.number)
+                CustomMembershipData.get_or_create(membership, data) 
             
-            data=json.dumps(request.POST)
-            data = getCustomFormData(data,request.user.is_authenticated)
-        
-            CustomMembershipData.get_or_create(membership, data)        
+            if request.user.is_authenticated:
+            #weiterleitung nachdem die Eingaben des Bewerbers gespeichert wurden
+                return redirect('allclubs')
+            else:
+                return redirect('login')
     
-        if request.user.is_authenticated:
-        #weiterleitung nachdem die Eingaben des Bewerbers gespeichert wurden
-            return redirect('allclubs')
-        else:
-            return redirect('login')
 
     context = {
         'form': form,
@@ -240,6 +209,119 @@ def RequestMembershipView(request, club):
     }
 
     return render(request, 'custom_membership_Form.html', context)
+
+
+
+"""
+def RequestMembershipView(request, club):
+    #Autor: Max
+    #Erstellt ein Mitgliedschaftsantragsformular 
+    #Zeigt dem Bewerber von Verein Hochgeladene Dateien
+    #Fragt Standartfelder ab
+    #Fragt Custom Felder ab
+    #https://www.codegrepper.com/code-examples/python/Django+two+forms+one+submit
+
+    if not ClubModel.objects.filter(pk=club).exists():
+            #falls der Club nicht existiert
+            return redirect('allclubs')
+
+
+    if request.user.is_authenticated:
+        #für registrierte User
+        user = request.user
+        form = RegisteredMembershipForm()
+
+        if Membership.objects.filter(club=club, member = user.id).exists():
+            #falls der User bereits Mitglied im Verein ist
+            return redirect('allclubs')        
+
+    else:
+        #für nicht registrierte User
+        form = UnregisteredMembershipForm()
+
+
+    files = ClubDataModel.objects.filter(club = club)
+    club = ClubModel.objects.get(id = club)
+    fields = FieldsListModel.objects.filter(club = club)
+    constructor_dict = BaseDynamicForm.build_constructor_dict(fields)       
+    customForm = BaseDynamicForm()
+
+    if request.method == 'POST': # Wird nach klicken auf Bestätigungsknopf ausgeführt
+        #Formular für das Membership Model 
+        # bei registrierten Nutzern wird ein anderes genutzt als bei unregistrierten
+        if request.user.is_authenticated:       
+            form = RegisteredMembershipForm(request.POST)
+        else:
+            form = UnregisteredMembershipForm(request.POST)
+
+        if form.is_valid():
+            if request.user.is_authenticated: 
+                membership = form.create(user,club)
+            else:
+                membership = form.create(club)
+
+
+        #Formular für Custom Fields
+        #Für registrierte und unregistrierte gleich
+        #Daten werden in JSON gespeichert
+        if FieldsListModel.objects.filter(club = club).exists:
+            files=request.FILES
+            saveToMedia(files, membership.number)
+
+            data=json.dumps(request.POST)
+            data = getCustomFormData(data,request.user.is_authenticated)
+
+            CustomMembershipData.get_or_create(membership, data)
+
+            customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
+                                            #data=data,
+                                            #files=files,
+                                            remove_filefields=False,
+                                            remove_datafields=False)
+                # if POST (form submitted)
+            print(customForm)
+            print(form)
+
+        if request.user.is_authenticated: 
+            return redirect('allclubs')
+        else:
+            return redirect('login')
+
+    else:
+        #Für Membership Modell
+        if request.user.is_authenticated:       
+            form = RegisteredMembershipForm()
+        else:
+            form = UnregisteredMembershipForm() 
+
+        #Für Custom Felder
+        customForm = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
+                                        data=request.POST,
+                                        files=request.FILES,
+                                        remove_filefields=False,
+                                        remove_datafields=False)
+
+        #if not customForm.is_valid():
+           # messages.add_message(request, messages.SUCCESS, "OK")
+        if customForm.is_valid():
+            # show all error messages
+            for k,v in get_labeled_errors(customForm).items():
+                messages.add_message(request, messages.ERROR,
+                                    "<b>{}</b>: {}".format(k, strip_tags(v)))
+
+
+    context = {
+        'form': form,
+        'files': files,
+        'customForm': customForm,
+    }
+
+    return render(request, 'custom_membership_Form.html', context)
+"""
+
+
+
+
 
 
 

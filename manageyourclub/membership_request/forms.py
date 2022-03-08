@@ -102,6 +102,10 @@ class UnregisteredMembershipForm(forms.ModelForm):
                 self.cleaned_data['bank_account_owner'],
             )
 
+    def membershipExist(self,club):
+        membership = Membership.objects.filter(club = club, first_name= self.cleaned_data['first_name'], last_name = self.cleaned_data['last_name'], birthday = self.cleaned_data['birthday'])
+        return membership.exists()
+
     class Meta:
         model = Membership
         fields = ('phone','first_name','last_name','birthday','gender','postcode_id','streetAddress','houseNumber','village','iban', 'bank_account_owner')
