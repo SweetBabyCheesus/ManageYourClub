@@ -205,7 +205,6 @@ def RequestMembershipView(request, club):
         else:
             form = UnregisteredMembershipForm(request.POST)
 
-        print(form.errors)
         if form.is_valid():
             #Speicherung der Formulardaten, falls die Eingaben korrekt sind
             print(form.errors)
