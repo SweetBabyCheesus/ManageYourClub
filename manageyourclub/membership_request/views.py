@@ -207,13 +207,14 @@ def RequestMembershipView(request, club):
 
         if form.is_valid():
             #Speicherung der Formulardaten, falls die Eingaben korrekt sind
+            print(form.errors)
             if request.user.is_authenticated: 
                 membership = form.create(user,club)
             else:
                 membership = form.create(club)
 
         
-        if FieldsListModel.objects.filter(club = club).exists and customForm.is_valid:
+        if FieldsListModel.objects.filter(club = club).exists and form.is_valid() and customForm.is_valid:
             #Formular für Custom Fields
             #Für registrierte und unregistrierte Bewerber gleich
             #Daten werden in JSON gespeichert
