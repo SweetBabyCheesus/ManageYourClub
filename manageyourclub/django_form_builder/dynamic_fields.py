@@ -67,7 +67,7 @@ def get_fields_types(class_name=sys.modules[__name__]):
     for m in inspect.getmembers(class_name, inspect.isclass):
         if hasattr(m[1],'field_type'):
             field_type = getattr(m[1], 'field_type')
-            if field_type:
+            if field_type is not 'Verstecktes Feld':
                 fields_types.append(tuple((m[1].__name__, field_type)))
     fields_types.sort(key=lambda tup: tup[1])
     return fields_types
