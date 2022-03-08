@@ -222,8 +222,8 @@ class PositiveFloatField(DecimalField, BaseCustomField):
     def raise_error(self, name, cleaned_data, **kwargs):
         if not cleaned_data: return []
         # Only numbers (expressions like 16e50 aren't permitted)
-        if not re.match('^[0-9]+\.?[0-9]?$', str(cleaned_data)):
-            return [_("Nur Zahlen erlaubt"),]
+        if not re.match('^[0-9]+[\.\,]?[0-9]{0,3}$', str(cleaned_data)):
+            return [_("Pistive Zahlen mit bis zu 3 Nachkommastellen"),]
 
 
 class TextAreaField(CharField, BaseCustomField):
@@ -300,7 +300,7 @@ class BaseDateTimeField(BaseCustomField):
 
         # Hour SelectBox
         self.hour = CustomSelectBoxField(*args, **data_kwargs)
-        self.hour.label = _("{} (Student)").format(data_kwargs.get('label'))
+        self.hour.label = _("{} (Stunden)").format(data_kwargs.get('label'))
         self.hour.name = "{}_dyn".format(format_field_name(self.hour.label))
         self.hour.choices = [(i,i) for i in range(24)]
         self.hour.initial = 0
@@ -428,9 +428,9 @@ class ProtocolloField(BaseCustomField):
 
 
 class CustomHiddenField(CharField, BaseCustomField):
-    """
-    CharField Hidden
-    """
+
+    #CharField Hidden
+
     field_type = _("Verstecktes Feld")
     widget = forms.HiddenInput
 
@@ -439,9 +439,9 @@ class CustomHiddenField(CharField, BaseCustomField):
 
 
 class CaptchaHiddenField(CustomHiddenField):
-    """
-    Captcha Hidden field
-    """
+    
+    #Captcha Hidden field
+    
     field_type = ""
 
 
