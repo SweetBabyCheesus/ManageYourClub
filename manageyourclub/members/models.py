@@ -125,7 +125,9 @@ def get_membership(member, club=None):
     Wenn keine Mitgliedschaft mit den entsprechenden Eigenschaften 
     gefunden wurde wird None zurückgegeben."""
 
-    if club is None:
-        return Membership.objects.filter(member=member).first()
+    memberState = MemberState.objects.get(stateID=1)
 
-    return Membership.objects.filter(member=member, club=club).first()
+    if club is None:
+        return Membership.objects.filter(member=member, memberState=memberState).first()
+
+    return Membership.objects.filter(member=member, club=club, memberState=memberState).first()

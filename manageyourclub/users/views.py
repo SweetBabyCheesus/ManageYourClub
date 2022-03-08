@@ -118,7 +118,7 @@ def home_view(request, club=None):
     #alle
     if not request.user.is_authenticated:
         return redirect('login')
-
+    
     membership = get_membership(request.user, club)
 
     if membership is None:
